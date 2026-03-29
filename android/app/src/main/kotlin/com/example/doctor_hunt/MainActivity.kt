@@ -1,4 +1,4 @@
-package com.example.doctor_app_ui
+package com.example.doctor_hunt
 
 import io.flutter.embedding.android.FlutterActivity
 
