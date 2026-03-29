@@ -1,4 +1,4 @@
-import 'package:doctor_app_ui/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/presentation/widgets/buttons/book_now_button.dart';
-import 'package:doctor_app_ui/presentation/widgets/search/custom_search_bar.dart';
-import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/book_now_button.dart';
+import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +18,9 @@ class FindDoctorsScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/find_doctor_screen/find_doctor_screen_bg.png"),
+            image: AssetImage(
+              "assets/images/find_doctor_screen/find_doctor_screen_bg.png",
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -124,7 +126,10 @@ class FindDoctorsScreen extends StatelessWidget {
   ) {
     return Container(
       width: screenWidth * 0.9,
-      margin: EdgeInsets.symmetric(vertical: screenWidth * 0.02, horizontal: screenWidth * 0.05),
+      margin: EdgeInsets.symmetric(
+        vertical: screenWidth * 0.02,
+        horizontal: screenWidth * 0.05,
+      ),
       padding: EdgeInsets.all(screenWidth * 0.04),
       decoration: BoxDecoration(
         boxShadow: [
@@ -173,7 +178,9 @@ class FindDoctorsScreen extends StatelessWidget {
                         ),
                         Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? const Color(0xffFF0000) : const Color(0xff677294),
+                          color: isFavorite
+                              ? const Color(0xffFF0000)
+                              : const Color(0xff677294),
                           size: screenWidth * 0.06,
                         ),
                       ],
@@ -195,7 +202,11 @@ class FindDoctorsScreen extends StatelessWidget {
                     SizedBox(height: screenWidth * 0.01),
                     Row(
                       children: [
-                        const Icon(Icons.circle, color: Color(0xff0ebe7f), size: 10),
+                        const Icon(
+                          Icons.circle,
+                          color: Color(0xff0ebe7f),
+                          size: 10,
+                        ),
                         SizedBox(width: screenWidth * 0.01),
                         Expanded(
                           child: Text(

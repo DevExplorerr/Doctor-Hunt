@@ -1,10 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/controller/cart_controller.dart';
-import 'package:doctor_app_ui/presentation/screens/checkout/payment/add_card_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/checkout/address/address_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/checkout/order_succes_screen.dart';
-import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/controller/cart_controller.dart';
+import 'package:doctor_hunt/presentation/screens/checkout/address/address_screen.dart';
+import 'package:doctor_hunt/presentation/screens/checkout/order_succes_screen.dart';
+import 'package:doctor_hunt/presentation/screens/checkout/payment/add_card_screen.dart';
+import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -103,14 +103,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.location_on,
-                        color: Color(0xff0EBE7F), size: 18),
+                    const Icon(
+                      Icons.location_on,
+                      color: Color(0xff0EBE7F),
+                      size: 18,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         address['address'] ?? '',
                         style: GoogleFonts.rubik(
-                            fontSize: 14, color: const Color(0xff677294)),
+                          fontSize: 14,
+                          color: const Color(0xff677294),
+                        ),
                       ),
                     ),
                   ],
@@ -118,13 +123,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.markunread_mailbox,
-                        color: Color(0xff0EBE7F), size: 18),
+                    const Icon(
+                      Icons.markunread_mailbox,
+                      color: Color(0xff0EBE7F),
+                      size: 18,
+                    ),
                     const SizedBox(width: 10),
                     Text(
                       address['postcode'] ?? '',
                       style: GoogleFonts.rubik(
-                          fontSize: 14, color: const Color(0xff677294)),
+                        fontSize: 14,
+                        color: const Color(0xff677294),
+                      ),
                     ),
                   ],
                 ),
@@ -153,8 +163,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image:
-                          AssetImage("assets/images/bg/checkout_screen_bg.png"),
+                      image: AssetImage(
+                        "assets/images/bg/checkout_screen_bg.png",
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -163,11 +174,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       SizedBox(height: screenHeight * 0.03),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.04),
+                          horizontal: screenWidth * 0.04,
+                        ),
                         child: TopSection(
                           text: "Checkout",
-                          backButton:
-                              const Icon(Icons.arrow_back_ios, size: 20),
+                          backButton: const Icon(
+                            Icons.arrow_back_ios,
+                            size: 20,
+                          ),
                           onPressed: () => Get.back(),
                         ),
                       ),
@@ -200,10 +214,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         width: screenWidth * 0.16,
                                         height: screenWidth * 0.16,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xff677294)
-                                              .withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                          color: const Color(
+                                            0xff677294,
+                                          ).withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
                                           image: DecorationImage(
                                             image: AssetImage(item.image),
                                             fit: BoxFit.cover,
@@ -224,7 +240,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               ),
                                             ),
                                             SizedBox(
-                                                height: screenHeight * 0.01),
+                                              height: screenHeight * 0.01,
+                                            ),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -235,15 +252,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   style: GoogleFonts.rubik(
                                                     fontSize:
                                                         screenWidth * 0.035,
-                                                    color:
-                                                        const Color(0xff677294),
+                                                    color: const Color(
+                                                      0xff677294,
+                                                    ),
                                                   ),
                                                 ),
                                                 Text(
                                                   "Qty: ${item.quantityCount}",
                                                   style: GoogleFonts.rubik(
-                                                      fontSize:
-                                                          screenWidth * 0.035),
+                                                    fontSize:
+                                                        screenWidth * 0.035,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -262,8 +281,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       // Bottom Section
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.04,
-                            vertical: screenHeight * 0.015),
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenHeight * 0.015,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -271,8 +291,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Text(
                               "Delivery Address",
                               style: GoogleFonts.rubik(
-                                  fontSize: screenWidth * 0.04,
-                                  fontWeight: FontWeight.w500),
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             const SizedBox(height: 10),
 
@@ -281,7 +302,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 : Text(
                                     "No address provided",
                                     style: GoogleFonts.rubik(
-                                        color: const Color(0xff677294)),
+                                      color: const Color(0xff677294),
+                                    ),
                                   ),
                             const SizedBox(height: 10),
                             GestureDetector(
@@ -309,8 +331,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.location_on,
-                                        color: Color(0xff0EBE7F)),
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: Color(0xff0EBE7F),
+                                    ),
                                     const SizedBox(width: 10),
                                     Text(
                                       deliveryDetails != null
@@ -319,8 +343,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       style: GoogleFonts.rubik(),
                                     ),
                                     const Spacer(),
-                                    const Icon(Icons.arrow_forward_ios,
-                                        size: 16),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -331,23 +357,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Text(
                               "Apply Promo Code",
                               style: GoogleFonts.rubik(
-                                  fontSize: screenWidth * 0.04,
-                                  fontWeight: FontWeight.w500),
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             const SizedBox(height: 10),
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: const Color(0xffE0E0E0)),
+                                border: Border.all(
+                                  color: const Color(0xffE0E0E0),
+                                ),
                               ),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
+                                        horizontal: 12,
+                                      ),
                                       child: TextField(
                                         cursorColor: const Color(0xff0EBE7F),
                                         controller: promoCodeController,
@@ -363,18 +392,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     decoration: const BoxDecoration(
                                       color: Color(0xff0EBE7F),
                                       borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          bottomRight: Radius.circular(10)),
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
                                     ),
                                     child: TextButton(
                                       onPressed: () {
                                         cartController.applyPromoCode(
-                                            promoCodeController.text.trim());
+                                          promoCodeController.text.trim(),
+                                        );
                                       },
                                       child: Text(
                                         "Apply",
                                         style: GoogleFonts.rubik(
-                                            color: const Color(0xffFFFFFF)),
+                                          color: const Color(0xffFFFFFF),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -387,20 +419,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Text(
                               "Payment Method",
                               style: GoogleFonts.rubik(
-                                  fontSize: screenWidth * 0.04,
-                                  fontWeight: FontWeight.w500),
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             const SizedBox(height: 10),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0,
+                              ),
                               child: SizedBox(
                                 height: 40,
                                 width: double.infinity,
                                 child: ElevatedButton.icon(
                                   onPressed: () async {
                                     final result = await Get.to(
-                                        () => const AddCardScreen());
+                                      () => const AddCardScreen(),
+                                    );
                                     if (result != null) {
                                       setState(() {
                                         selectedCardDetails =
@@ -453,8 +488,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          const Icon(Icons.credit_card,
-                                              color: Color(0xff0EBE7F)),
+                                          const Icon(
+                                            Icons.credit_card,
+                                            color: Color(0xff0EBE7F),
+                                          ),
                                           SizedBox(width: screenWidth * 0.02),
                                           Expanded(
                                             child: Text(
@@ -470,9 +507,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       SizedBox(height: screenHeight * 0.008),
                                       Row(
                                         children: [
-                                          const Icon(Icons.calendar_today,
-                                              size: 18,
-                                              color: Color(0xff0EBE7F)),
+                                          const Icon(
+                                            Icons.calendar_today,
+                                            size: 18,
+                                            color: Color(0xff0EBE7F),
+                                          ),
                                           SizedBox(width: screenWidth * 0.02),
                                           Expanded(
                                             child: Text(
@@ -488,8 +527,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       SizedBox(height: screenHeight * 0.008),
                                       Row(
                                         children: [
-                                          const Icon(Icons.person,
-                                              color: Color(0xff0EBE7F)),
+                                          const Icon(
+                                            Icons.person,
+                                            color: Color(0xff0EBE7F),
+                                          ),
                                           SizedBox(width: screenWidth * 0.02),
                                           Expanded(
                                             child: Text(
@@ -515,13 +556,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 Text(
                                   "Subtotal",
                                   style: GoogleFonts.rubik(
-                                      fontSize: screenWidth * 0.04),
+                                    fontSize: screenWidth * 0.04,
+                                  ),
                                 ),
                                 Obx(
                                   () => Text(
                                     "\$${cartController.totalPrice.toStringAsFixed(2)}",
                                     style: GoogleFonts.rubik(
-                                        fontSize: screenWidth * 0.04),
+                                      fontSize: screenWidth * 0.04,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -533,13 +576,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 Text(
                                   "Tax (10%)",
                                   style: GoogleFonts.rubik(
-                                      fontSize: screenWidth * 0.04),
+                                    fontSize: screenWidth * 0.04,
+                                  ),
                                 ),
                                 Obx(
                                   () => Text(
                                     "\$${cartController.tax.toStringAsFixed(2)}",
                                     style: GoogleFonts.rubik(
-                                        fontSize: screenWidth * 0.04),
+                                      fontSize: screenWidth * 0.04,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -551,13 +596,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 Text(
                                   "Shipping Fee",
                                   style: GoogleFonts.rubik(
-                                      fontSize: screenWidth * 0.04),
+                                    fontSize: screenWidth * 0.04,
+                                  ),
                                 ),
                                 Obx(
                                   () => Text(
                                     "\$${cartController.shippingFee.toStringAsFixed(2)}",
                                     style: GoogleFonts.rubik(
-                                        fontSize: screenWidth * 0.04),
+                                      fontSize: screenWidth * 0.04,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -566,7 +613,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               () => cartController.discount > 0
                                   ? Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
+                                        vertical: 8.0,
+                                      ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -574,7 +622,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                           Text(
                                             "Promo Discount",
                                             style: GoogleFonts.rubik(
-                                                fontSize: screenWidth * 0.04),
+                                              fontSize: screenWidth * 0.04,
+                                            ),
                                           ),
                                           Text(
                                             "-\$${cartController.discount.toStringAsFixed(2)}",
@@ -635,8 +684,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ),
                             SizedBox(
-                                height: screenHeight *
-                                    0.03), // Extra bottom padding
+                              height: screenHeight * 0.03,
+                            ), // Extra bottom padding
                           ],
                         ),
                       ),

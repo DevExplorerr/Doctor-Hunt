@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/presentation/screens/home/favorite/favorite_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/doctors/find_doctors_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/home/live_chat_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/home/pharmacy/pharmacy_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/doctors/popular_doctor_screen.dart';
-import 'package:doctor_app_ui/presentation/screens/home/profile/profile_screen.dart';
-import 'package:doctor_app_ui/presentation/widgets/navigation/custom_bottom_navbar.dart';
-import 'package:doctor_app_ui/presentation/widgets/header/custom_headline.dart';
-import 'package:doctor_app_ui/presentation/widgets/search/custom_search_bar.dart';
+import 'package:doctor_hunt/presentation/screens/home/favorite/favorite_screen.dart';
+import 'package:doctor_hunt/presentation/screens/doctors/find_doctors_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/live_chat_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/pharmacy/pharmacy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/doctors/popular_doctor_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/profile/profile_screen.dart';
+import 'package:doctor_hunt/presentation/widgets/navigation/custom_bottom_navbar.dart';
+import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
+import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -57,14 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: _pages,
-        ),
-        bottomNavigationBar: CustomBottomNavBar(
-          selectedIndex: _selectedIndex,
-          onItemTapped: _onItemTapped,
-        ));
+      body: IndexedStack(index: _selectedIndex, children: _pages),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
+    );
   }
 
   Widget _buildHomeContent() {
@@ -81,14 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             padding: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: MediaQuery.of(context).size.width * 0.04),
+              vertical: 10,
+              horizontal: MediaQuery.of(context).size.width * 0.04,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomSearchBar(
-                  hintText: 'Search......',
-                ),
+                const CustomSearchBar(hintText: 'Search......'),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.02),
                 _buildLiveDoctors(),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.02),
@@ -109,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildTopSection() {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05, vertical: 50),
+        horizontal: MediaQuery.of(context).size.width * 0.05,
+        vertical: 50,
+      ),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xff0ebe7e), Color(0xff07D9AD)],
@@ -123,26 +122,35 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Hi Handworker!",
-                  style: GoogleFonts.rubik(
-                      fontSize: MediaQuery.of(context).size.width * 0.045,
-                      color: Colors.white)),
-              Text("Find Your Doctor",
-                  style: GoogleFonts.rubik(
-                      fontSize: MediaQuery.of(context).size.width * 0.06,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
+              Text(
+                "Hi Handworker!",
+                style: GoogleFonts.rubik(
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                "Find Your Doctor",
+                style: GoogleFonts.rubik(
+                  fontSize: MediaQuery.of(context).size.width * 0.06,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const ProfileScreen()));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
             },
             child: CircleAvatar(
               radius: MediaQuery.of(context).size.width * 0.08,
-              backgroundImage:
-                  const AssetImage("assets/images/home_screen/profile.png"),
+              backgroundImage: const AssetImage(
+                "assets/images/home_screen/profile.png",
+              ),
             ),
           ),
         ],
@@ -154,20 +162,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const DoctorLiveChatScreen()));
+          context,
+          MaterialPageRoute(builder: (context) => const DoctorLiveChatScreen()),
+        );
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.05),
+          horizontal: MediaQuery.of(context).size.width * 0.05,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Live Doctors",
-                style: GoogleFonts.rubik(
-                    fontSize: MediaQuery.of(context).size.width * 0.045,
-                    fontWeight: FontWeight.bold)),
+            Text(
+              "Live Doctors",
+              style: GoogleFonts.rubik(
+                fontSize: MediaQuery.of(context).size.width * 0.045,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: MediaQuery.of(context).size.width * 0.02),
             SizedBox(
               height: MediaQuery.of(context).size.width * 0.4,
@@ -177,13 +189,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width * 0.02),
+                      right: MediaQuery.of(context).size.width * 0.02,
+                    ),
                     width: MediaQuery.of(context).size.width * 0.25,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                         image: AssetImage(
-                            "assets/images/home_screen/live_doctor/live${index + 1}.png"),
+                          "assets/images/home_screen/live_doctor/live${index + 1}.png",
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -191,18 +205,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.topRight,
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.02,
-                            vertical: MediaQuery.of(context).size.width * 0.01),
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                          vertical: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xffFA002F),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Text("LIVE",
-                            style: GoogleFonts.rubik(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.03,
-                                color: Colors.white)),
+                        child: Text(
+                          "LIVE",
+                          style: GoogleFonts.rubik(
+                            fontSize: MediaQuery.of(context).size.width * 0.03,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -220,7 +236,9 @@ class _HomeScreenState extends State<HomeScreen> {
       scrollDirection: Axis.horizontal,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.05, vertical: 10),
+          horizontal: MediaQuery.of(context).size.width * 0.05,
+          vertical: 10,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -229,25 +247,35 @@ class _HomeScreenState extends State<HomeScreen> {
               const Color(0xff765AFC),
             ]),
             const SizedBox(width: 10),
-            _buildCategoryIcon("assets/images/home_screen/category/heart.png",
-                [const Color(0xff0EBE7E), const Color(0xff07D9AD)]),
+            _buildCategoryIcon("assets/images/home_screen/category/heart.png", [
+              const Color(0xff0EBE7E),
+              const Color(0xff07D9AD),
+            ]),
             const SizedBox(width: 10),
-            _buildCategoryIcon("assets/images/home_screen/category/eye.png",
-                [const Color(0xffFE7F44), const Color(0xffFFCF68)]),
+            _buildCategoryIcon("assets/images/home_screen/category/eye.png", [
+              const Color(0xffFE7F44),
+              const Color(0xffFFCF68),
+            ]),
             const SizedBox(width: 10),
-            _buildCategoryIcon("assets/images/home_screen/category/ear.png",
-                [const Color(0xffFF484C), const Color(0xffFF6C60)]),
+            _buildCategoryIcon("assets/images/home_screen/category/ear.png", [
+              const Color(0xffFF484C),
+              const Color(0xffFF6C60),
+            ]),
             const SizedBox(width: 10),
             _buildCategoryIcon("assets/images/home_screen/category/teeth.png", [
               const Color(0xff2753F3),
               const Color(0xff765AFC),
             ]),
             const SizedBox(width: 10),
-            _buildCategoryIcon("assets/images/home_screen/category/heart.png",
-                [const Color(0xff0EBE7E), const Color(0xff07D9AD)]),
+            _buildCategoryIcon("assets/images/home_screen/category/heart.png", [
+              const Color(0xff0EBE7E),
+              const Color(0xff07D9AD),
+            ]),
             const SizedBox(width: 10),
-            _buildCategoryIcon("assets/images/home_screen/category/eye.png",
-                [const Color(0xffFE7F44), const Color(0xffFFCF68)]),
+            _buildCategoryIcon("assets/images/home_screen/category/eye.png", [
+              const Color(0xffFE7F44),
+              const Color(0xffFFCF68),
+            ]),
           ],
         ),
       ),
@@ -259,16 +287,22 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.of(context).size.width * 0.15,
       width: MediaQuery.of(context).size.width * 0.15,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: color,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
-          borderRadius:
-              BorderRadius.circular(MediaQuery.of(context).size.width * 0.03)),
+        gradient: LinearGradient(
+          colors: color,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(
+          MediaQuery.of(context).size.width * 0.03,
+        ),
+      ),
       child: Center(
-          child: Image.asset(asset,
-              width: MediaQuery.of(context).size.width * 0.07,
-              height: MediaQuery.of(context).size.width * 0.07)),
+        child: Image.asset(
+          asset,
+          width: MediaQuery.of(context).size.width * 0.07,
+          height: MediaQuery.of(context).size.width * 0.07,
+        ),
+      ),
     );
   }
 
@@ -334,17 +368,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildDoctorCard(
-    String name,
-    String specialty,
-    String image,
-  ) {
+  Widget _buildDoctorCard(String name, String specialty, String image) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.32,
       width: MediaQuery.of(context).size.width * 0.38,
       decoration: BoxDecoration(
-        borderRadius:
-            BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+        borderRadius: BorderRadius.circular(
+          MediaQuery.of(context).size.width * 0.03,
+        ),
       ),
       child: Column(
         children: [
@@ -386,18 +417,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-          fullStars,
-          (index) =>
-              Icon(Icons.star, color: const Color(0xffF6D060), size: iconSize))
-        ..addAll(halfStar
-            ? [
-                Icon(Icons.star_half,
-                    color: const Color(0xffF6D060), size: iconSize)
-              ]
-            : [])
-        ..addAll(List.generate(5 - fullStars - (halfStar ? 1 : 0),
-            (index) => Icon(Icons.star, color: Colors.grey, size: iconSize))),
+      children:
+          List.generate(
+              fullStars,
+              (index) => Icon(
+                Icons.star,
+                color: const Color(0xffF6D060),
+                size: iconSize,
+              ),
+            )
+            ..addAll(
+              halfStar
+                  ? [
+                      Icon(
+                        Icons.star_half,
+                        color: const Color(0xffF6D060),
+                        size: iconSize,
+                      ),
+                    ]
+                  : [],
+            )
+            ..addAll(
+              List.generate(
+                5 - fullStars - (halfStar ? 1 : 0),
+                (index) => Icon(Icons.star, color: Colors.grey, size: iconSize),
+              ),
+            ),
     );
   }
 
@@ -406,38 +451,43 @@ class _HomeScreenState extends State<HomeScreen> {
       {
         "name": "Dr. Crick",
         "price": "\$25.00/ hours",
-        "image": "featuredoctor1.png"
+        "image": "featuredoctor1.png",
       },
       {
         "name": "Dr. Strain",
         "price": "\$22.00/ hours",
-        "image": "featuredoctor2.png"
+        "image": "featuredoctor2.png",
       },
       {
         "name": "Dr. Lachinet",
         "price": "\$29.00/ hours",
-        "image": "featuredoctor3.png"
+        "image": "featuredoctor3.png",
       },
       {
         "name": "Dr. Morgan",
         "price": "\$24.00/ hours",
-        "image": "featuredoctor2.png"
+        "image": "featuredoctor2.png",
       },
     ];
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05, vertical: 16),
+        horizontal: MediaQuery.of(context).size.width * 0.05,
+        vertical: 16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomHeadline(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FindDoctorsScreen()));
-              },
-              text: "Feature Doctor"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FindDoctorsScreen(),
+                ),
+              );
+            },
+            text: "Feature Doctor",
+          ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.26,
@@ -447,7 +497,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: List.generate(doctors.length, (index) {
                   var doctor = doctors[index];
                   return _buildFeatureDoctorCard(
-                      doctor["name"]!, doctor["price"]!, doctor["image"]!);
+                    doctor["name"]!,
+                    doctor["price"]!,
+                    doctor["image"]!,
+                  );
                 }),
               ),
             ),
@@ -458,7 +511,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFeatureDoctorCard(
-      String name, String pricing, String imagePath) {
+    String name,
+    String pricing,
+    String imagePath,
+  ) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
@@ -483,19 +539,26 @@ class _HomeScreenState extends State<HomeScreen> {
           CircleAvatar(
             radius: screenWidth * 0.12,
             backgroundImage: AssetImage(
-                "assets/images/home_screen/feature_doctor/$imagePath"),
+              "assets/images/home_screen/feature_doctor/$imagePath",
+            ),
           ),
           SizedBox(height: screenHeight * 0.01),
-          Text(name,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.rubik(
-                  fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xff333333))),
-          Text(pricing,
-              style: GoogleFonts.rubik(
-                  fontSize: screenWidth * 0.03,
-                  color: const Color(0xff0EBE7E))),
+          Text(
+            name,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.rubik(
+              fontSize: screenWidth * 0.035,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xff333333),
+            ),
+          ),
+          Text(
+            pricing,
+            style: GoogleFonts.rubik(
+              fontSize: screenWidth * 0.03,
+              color: const Color(0xff0EBE7E),
+            ),
+          ),
         ],
       ),
     );

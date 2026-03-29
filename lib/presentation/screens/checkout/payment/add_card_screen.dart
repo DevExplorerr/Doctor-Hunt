@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';

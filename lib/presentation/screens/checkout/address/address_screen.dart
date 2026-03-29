@@ -1,4 +1,4 @@
-import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_app_ui/models/cart_item.dart';
+import 'package:doctor_hunt/models/cart_item.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
