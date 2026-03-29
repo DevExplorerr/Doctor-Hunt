@@ -1,18 +1,18 @@
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
-class DeliveryAddressScreen extends StatefulWidget {
+class AddressScreen extends StatefulWidget {
   final Map<String, String>? initialAddress;
 
-  const DeliveryAddressScreen({super.key, this.initialAddress});
+  const AddressScreen({super.key, this.initialAddress});
 
   @override
-  State<DeliveryAddressScreen> createState() => _DeliveryAddressScreenState();
+  State<AddressScreen> createState() => _AddressScreenState();
 }
 
-class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
+class _AddressScreenState extends State<AddressScreen> {
   int _currentStep = 0;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -45,7 +45,10 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
           ),
         ),
         child: Padding(
-          padding:  EdgeInsets.symmetric(vertical:  30, horizontal: isLargeScreen ? 50 : 16,),
+          padding: EdgeInsets.symmetric(
+            vertical: 30,
+            horizontal: isLargeScreen ? 50 : 16,
+          ),
           child: Column(
             children: [
               TopSection(

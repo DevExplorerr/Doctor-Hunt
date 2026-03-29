@@ -1,6 +1,4 @@
-// ignore_for_file: file_names, use_build_context_synchronously
-
-import 'package:doctor_app_ui/screens/onboarding/onboarding_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,8 +13,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const OnBoardingScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const OnBoardingScreen()));
     });
   }
 
@@ -25,8 +23,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/splash_screen/splash_screen_bg.jpg"), fit: BoxFit.fill)),
+            image: DecorationImage(
+              image: AssetImage(
+                  "assets/images/splash_screen/splash_screen_bg.jpg"),
+              fit: BoxFit.fill,
+            ),
+          ),
           width: double.infinity,
           padding: const EdgeInsets.all(15),
           child: Column(

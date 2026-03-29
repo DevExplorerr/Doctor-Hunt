@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/screens/favorite_screen.dart';
-import 'package:doctor_app_ui/screens/doctors/find_doctors_screen.dart';
-import 'package:doctor_app_ui/screens/live_chat_screen.dart';
-import 'package:doctor_app_ui/screens/pharmacy_page.dart';
-import 'package:doctor_app_ui/screens/doctors/popular_doctor_screen.dart';
-import 'package:doctor_app_ui/screens/profile_screen.dart';
-import 'package:doctor_app_ui/widgets/navigation/custom_bottom_navbar.dart';
-import 'package:doctor_app_ui/widgets/header/custom_headline.dart';
-import 'package:doctor_app_ui/widgets/search/custom_search_bar.dart';
+import 'package:doctor_app_ui/presentation/screens/home/favorite/favorite_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/doctors/find_doctors_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/home/live_chat_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/home/pharmacy/pharmacy_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/doctors/popular_doctor_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/home/profile/profile_screen.dart';
+import 'package:doctor_app_ui/presentation/widgets/navigation/custom_bottom_navbar.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/custom_headline.dart';
+import 'package:doctor_app_ui/presentation/widgets/search/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pages = [
       Container(), // Placeholder
       const FavoriteScreen(),
-      const PharmacyPage(),
+      const PharmacyScreen(),
       const ProfileScreen(),
     ];
   }
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pages = [
       _buildHomeContent(),
       const FavoriteScreen(),
-      const PharmacyPage(),
+      const PharmacyScreen(),
       const ProfileScreen(),
     ];
   }

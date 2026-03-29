@@ -1,5 +1,5 @@
-import 'package:doctor_app_ui/widgets/header/custom_headline.dart';
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/custom_headline.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

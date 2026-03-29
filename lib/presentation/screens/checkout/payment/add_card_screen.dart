@@ -1,19 +1,19 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CardPaymentScreen extends StatefulWidget {
-  const CardPaymentScreen({super.key});
+class AddCardScreen extends StatefulWidget {
+  const AddCardScreen({super.key});
 
   @override
-  State<CardPaymentScreen> createState() => _CardPaymentScreenState();
+  State<AddCardScreen> createState() => AddCardScreenState();
 }
 
-class _CardPaymentScreenState extends State<CardPaymentScreen> {
+class AddCardScreenState extends State<AddCardScreen> {
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -39,8 +39,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
             width: screenWidth,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    "assets/images/bg/payment_screen_bg.png"),
+                image: AssetImage("assets/images/bg/payment_screen_bg.png"),
                 fit: BoxFit.cover,
               ),
             ),

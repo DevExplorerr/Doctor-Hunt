@@ -1,4 +1,4 @@
-import 'package:doctor_app_ui/screens/select_time_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/doctors/select_time_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

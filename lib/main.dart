@@ -1,5 +1,5 @@
-import 'package:doctor_app_ui/screens/onboarding/onboarding_screen.dart';
-import 'package:doctor_app_ui/screens/onboarding/splash_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

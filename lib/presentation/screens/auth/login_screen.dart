@@ -1,7 +1,7 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:doctor_app_ui/screens/auth/signup_screen.dart';
-import 'package:doctor_app_ui/screens/home_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/auth/signup_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

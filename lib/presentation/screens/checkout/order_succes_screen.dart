@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../screens/home_screen.dart';
+import '../home/home_screen.dart';
 
-class OrderConfirmationScreen extends StatelessWidget {
-  const OrderConfirmationScreen({super.key});
+class OrderSuccesScreen extends StatelessWidget {
+  const OrderSuccesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class OrderConfirmationScreen extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           backgroundColor: const Color(0xffFFFFFF),
           child: Container(
-            height: height * 0.6, 
+            height: height * 0.6,
             width: width * 0.85,
             padding: EdgeInsets.symmetric(
               horizontal: width * 0.05,
@@ -31,7 +31,7 @@ class OrderConfirmationScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: width * 0.35, 
+                  height: width * 0.35,
                   width: width * 0.35,
                   decoration: const BoxDecoration(
                     color: Color(0xffE7F8F2),

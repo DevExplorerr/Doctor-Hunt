@@ -1,20 +1,20 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/screens/cart/checkout_page.dart';
+import 'package:doctor_app_ui/presentation/screens/checkout/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:doctor_app_ui/controller/cart_controller.dart';
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _CartScreenState extends State<CartScreen> {
   final CartController cartController = Get.find();
 
   @override
@@ -275,7 +275,7 @@ class _CartPageState extends State<CartPage> {
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         } else {
-                          Get.to(() => const CheckoutPage());
+                          Get.to(() => const CheckoutScreen());
                         }
                       },
                       child: Text(

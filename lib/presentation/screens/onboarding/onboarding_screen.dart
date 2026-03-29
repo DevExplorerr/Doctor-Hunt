@@ -1,5 +1,5 @@
-import 'package:doctor_app_ui/screens/auth/login_screen.dart';
-import 'package:doctor_app_ui/widgets/buttons/onboarding_button.dart';
+import 'package:doctor_app_ui/presentation/screens/auth/login_screen.dart';
+import 'package:doctor_app_ui/presentation/widgets/buttons/onboarding_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

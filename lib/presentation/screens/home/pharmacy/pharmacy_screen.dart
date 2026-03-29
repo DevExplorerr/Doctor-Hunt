@@ -2,22 +2,23 @@
 
 import 'package:doctor_app_ui/controller/cart_controller.dart';
 import 'package:doctor_app_ui/models/cart_item.dart';
-import 'package:doctor_app_ui/screens/cart/cart_page.dart';
-import 'package:doctor_app_ui/widgets/header/custom_headline.dart';
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/screens/cart/cart_screen.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/custom_headline.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PharmacyPage extends StatefulWidget {
-  const PharmacyPage({super.key});
+class PharmacyScreen extends StatefulWidget {
+  const PharmacyScreen({super.key});
 
   @override
-  State<PharmacyPage> createState() => _PharmacyPageState();
+  State<PharmacyScreen> createState() => _PharmacyScreenState();
 }
 
-class _PharmacyPageState extends State<PharmacyPage> {
+class _PharmacyScreenState extends State<PharmacyScreen> {
   final CartController cartController = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -54,7 +55,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
                       IconButton(
                         icon: const Icon(Icons.shopping_cart_sharp),
                         onPressed: () {
-                          Get.to(() => const CartPage());
+                          Get.to(() => const CartScreen());
                         },
                       ),
                       Positioned(

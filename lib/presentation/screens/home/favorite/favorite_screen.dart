@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_app_ui/screens/doctors/find_doctors_screen.dart';
-import 'package:doctor_app_ui/widgets/header/custom_headline.dart';
-import 'package:doctor_app_ui/widgets/search/custom_search_bar.dart';
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/screens/doctors/find_doctors_screen.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/custom_headline.dart';
+import 'package:doctor_app_ui/presentation/widgets/search/custom_search_bar.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

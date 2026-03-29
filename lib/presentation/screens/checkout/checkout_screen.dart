@@ -1,22 +1,22 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:doctor_app_ui/controller/cart_controller.dart';
-import 'package:doctor_app_ui/screens/card_payment_screen.dart';
-import 'package:doctor_app_ui/screens/delivery_address_screen.dart';
-import 'package:doctor_app_ui/screens/order_confirmation_screen.dart';
-import 'package:doctor_app_ui/widgets/header/top_section.dart';
+import 'package:doctor_app_ui/presentation/screens/checkout/payment/add_card_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/checkout/address/address_screen.dart';
+import 'package:doctor_app_ui/presentation/screens/checkout/order_succes_screen.dart';
+import 'package:doctor_app_ui/presentation/widgets/header/top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({super.key});
+class CheckoutScreen extends StatefulWidget {
+  const CheckoutScreen({super.key});
 
   @override
-  State<CheckoutPage> createState() => _CheckoutPageState();
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
+class _CheckoutScreenState extends State<CheckoutScreen> {
   Map<String, String>? deliveryDetails;
   Map<String, String>? selectedCardDetails;
   final CartController cartController = Get.find();
@@ -66,7 +66,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
 
     cartController.clearCart();
-    Get.to(() => const OrderConfirmationScreen());
+    Get.to(() => const OrderSuccesScreen());
   }
 
   Widget _buildAddressCard(Map<String, String> address) {
@@ -258,7 +258,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           );
                         }),
                       ),
-const SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Bottom Section
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -289,7 +289,7 @@ const SizedBox(height: 10),
                                 final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DeliveryAddressScreen(
+                                    builder: (context) => AddressScreen(
                                       initialAddress: deliveryDetails,
                                     ),
                                   ),
@@ -400,7 +400,7 @@ const SizedBox(height: 10),
                                 child: ElevatedButton.icon(
                                   onPressed: () async {
                                     final result = await Get.to(
-                                        () => const CardPaymentScreen());
+                                        () => const AddCardScreen());
                                     if (result != null) {
                                       setState(() {
                                         selectedCardDetails =
