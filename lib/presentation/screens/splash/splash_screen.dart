@@ -1,9 +1,10 @@
-import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -12,44 +13,50 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const OnBoardingScreen()));
-    });
+    _navigateToNext();
+  }
+
+  Future<void> _navigateToNext() async {
+    await Future.delayed(const Duration(seconds: 4));
+
+    if (!mounted) return;
+
+    Get.offNamed('/onboardingscreen');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                  "assets/images/splash_screen/splash_screen_bg.jpg"),
-              fit: BoxFit.fill,
-            ),
+        width: .infinity,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            image: AssetImage("assets/images/background/background.webp"),
+            fit: .fill,
           ),
-          width: double.infinity,
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Image(
-                  image: AssetImage("assets/images/splash_screen/Frame.jpg"),
-                  height: 70,
-                  width: 70),
-              const SizedBox(
-                height: 25,
+        ),
+        child: Column(
+          mainAxisAlignment: .center,
+          children: [
+            Image.asset(
+              "assets/app_logo.png",
+              height: 90,
+              width: 90,
+              filterQuality: .high,
+            ),
+            const SizedBox(height: 25),
+            Text(
+              "Doctor Hut",
+              style: GoogleFonts.rubik(
+                fontWeight: .bold,
+                color: Colors.black,
+                fontSize: 25,
               ),
-              Text(
-                "Doctor Hunt",
-                style: GoogleFonts.rubik(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 25),
-              )
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
