@@ -4,20 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const DoctorHunt());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DoctorHunt extends StatelessWidget {
+  const DoctorHunt({super.key});
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+      const AssetImage("assets/images/background/background.webp"),
+      context,
+    );
+
     return GetMaterialApp(
       title: "Doctor Hunt",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),

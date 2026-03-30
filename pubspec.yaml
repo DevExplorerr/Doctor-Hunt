@@ -35,7 +35,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/splash_screen/
     - assets/images/onboarding_screen/
     - assets/images/home_screen/
     - assets/images/home_screen/live_doctor/

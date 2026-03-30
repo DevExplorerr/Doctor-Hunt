@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
@@ -26,28 +28,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: .infinity,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-            image: AssetImage("assets/images/background/background.webp"),
-            fit: .fill,
-          ),
-        ),
+    return MainWrapper(
+      child: Center(
         child: Column(
           mainAxisAlignment: .center,
           children: [
             Image.asset(
               "assets/app_logo.png",
               height: 90,
-              width: 90,
               filterQuality: .high,
             ),
             const SizedBox(height: 25),
             Text(
-              "Doctor Hut",
+              "Doctor Hunt",
               style: GoogleFonts.rubik(
                 fontWeight: .bold,
                 color: Colors.black,
