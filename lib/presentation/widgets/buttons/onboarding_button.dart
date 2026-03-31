@@ -1,16 +1,11 @@
-import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OnBoardingButton extends StatefulWidget {
+class OnBoardingButton extends StatelessWidget {
   final String text;
-  const OnBoardingButton({super.key, required this.text});
+  final VoidCallback onTap;
+  const OnBoardingButton({super.key, required this.text, required this.onTap});
 
-  @override
-  State<OnBoardingButton> createState() => _OnBoardingButtonState();
-}
-
-class _OnBoardingButtonState extends State<OnBoardingButton> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -29,14 +24,9 @@ class _OnBoardingButtonState extends State<OnBoardingButton> {
                 ),
                 backgroundColor: const Color(0xff0ebe7f),
               ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              },
+              onPressed: onTap,
               child: Text(
-                widget.text,
+                text,
                 style: GoogleFonts.rubik(
                   fontSize: screenWidth * 0.045,
                   color: const Color(0xffFFFFFF),

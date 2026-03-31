@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    Get.offNamed('/onboardingscreen');
+    Get.offNamed('/onboarding');
   }
 
   @override
