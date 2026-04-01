@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';
@@ -22,14 +23,12 @@ class DoctorHunt extends StatelessWidget {
     return GetMaterialApp(
       title: "Doctor Hunt",
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.appTheme,
+      defaultTransition: .cupertino,
       getPages: [
         GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(name: '/onboarding', page: () => const OnBoardingScreen()),
-        GetPage(
-          name: '/login',
-          page: () => const LoginScreen(),
-          transition: .cupertino,
-        ),
+        GetPage(name: '/login', page: () => const LoginScreen()),
       ],
     );
   }
