@@ -1,7 +1,6 @@
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,7 +10,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -41,11 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 25),
             Text(
               "Doctor Hunt",
-              style: GoogleFonts.rubik(
-                fontWeight: .bold,
-                color: Colors.black,
-                fontSize: 25,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontSize: 25),
             ),
           ],
         ),

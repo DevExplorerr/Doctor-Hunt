@@ -1,21 +1,22 @@
 import 'package:doctor_hunt/controller/onboarding_controller.dart';
+import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/onboarding_button.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingScreen extends GetView<OnBoardingController> {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     Get.put(OnBoardingController());
 
     return MainWrapper(
       child: Column(
         children: [
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           Expanded(
             child: PageView.builder(
               controller: controller.pageController,
@@ -26,25 +27,21 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
                 return Column(
                   mainAxisAlignment: .center,
                   children: [
-                    Image.asset(item['image']!, height: 280),
-                    const SizedBox(height: 30),
-                    Text(
-                      item['title']!,
-                      style: GoogleFonts.rubik(
-                        fontWeight: .bold,
-                        color: const Color(0xff333333),
-                        fontSize: 28,
-                      ),
+                    Image.asset(
+                      item['image']!,
+                      height: 280,
+                      filterQuality: .high,
                     ),
+                    const SizedBox(height: 30),
+                    Text(item['title']!, style: textTheme.headlineLarge),
                     const SizedBox(height: 15),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const .symmetric(horizontal: 40),
                       child: Text(
                         item['description']!,
                         textAlign: .center,
-                        style: GoogleFonts.rubik(
-                          color: const Color(0xff677294),
-                          fontSize: 14,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -55,7 +52,7 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
               },
             ),
           ),
-          _buildBottomButtons(),
+          _buildBottomButtons(textTheme),
           const SizedBox(height: 30),
         ],
       ),
@@ -69,14 +66,14 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
         children: List.generate(controller.onBoardingData.length, (index) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            margin: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const .symmetric(horizontal: 4),
             height: 8,
             width: controller.currentIndex.value == index ? 20 : 8,
             decoration: BoxDecoration(
               color: controller.currentIndex.value == index
-                  ? const Color(0xff0EBE7F)
-                  : const Color(0xff677294),
-              borderRadius: BorderRadius.circular(8),
+                  ? AppColors.primary
+                  : AppColors.secondary,
+              borderRadius: .circular(8),
             ),
           );
         }),
@@ -84,10 +81,10 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
     );
   }
 
-  Widget _buildBottomButtons() {
+  Widget _buildBottomButtons(TextTheme textTheme) {
     return Obx(
       () => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const .symmetric(horizontal: 20),
         child:
             controller.currentIndex.value < controller.onBoardingData.length - 1
             ? Row(
@@ -97,14 +94,16 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
                     onPressed: controller.skipToLogin,
                     child: Text(
                       "Skip",
-                      style: GoogleFonts.rubik(color: const Color(0xff677294)),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
                   IconButton(
                     onPressed: controller.goToNextPage,
                     icon: const Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xff0ebe7f),
+                      color: AppColors.primary,
                     ),
                   ),
                 ],

@@ -31,4 +31,10 @@ const TextTheme textTheme = TextTheme(
     fontWeight: .w700,
     color: AppColors.textPrimary,
   ),
+
+  headlineLarge: TextStyle(
+    fontSize: 26,
+    fontWeight: .w700,
+    color: AppColors.textPrimary,
+  ),
 );
