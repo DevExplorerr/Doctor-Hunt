@@ -1,6 +1,6 @@
 import 'package:doctor_hunt/controller/onboarding_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/presentation/widgets/buttons/onboarding_button.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -108,10 +108,7 @@ class OnBoardingScreen extends GetView<OnBoardingController> {
                   ),
                 ],
               )
-            : OnBoardingButton(
-                text: "Get Started",
-                onTap: controller.skipToLogin,
-              ),
+            : CustomButton(text: "Get Started", onTap: controller.skipToLogin),
       ),
     );
   }
