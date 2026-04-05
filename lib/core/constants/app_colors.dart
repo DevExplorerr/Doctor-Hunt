@@ -26,6 +26,8 @@ class AppColors {
   static const Color error = Color(0xFFFF0000);
   static const Color success = Color(0xff0EBE7E);
 
+  static const Color transparent = Colors.transparent;
+
   // Helper for transparency
   static Color glass(double opacity) => white.withValues(alpha: opacity);
 }

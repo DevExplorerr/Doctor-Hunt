@@ -26,7 +26,7 @@ class CustomDialog {
                   decoration: BoxDecoration(
                     color: AppColors.bg.withValues(alpha: 0.85),
                   ),
-                  child: Material(color: Colors.transparent, child: child),
+                  child: Material(color: AppColors.transparent, child: child),
                 ),
               ),
             ),
