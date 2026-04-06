@@ -2,7 +2,7 @@ import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/core/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final IconData? prefixIcon;
@@ -11,8 +11,6 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputAction textInputAction;
   final Function(String)? onChanged;
-  final VoidCallback? obscureOnpressed;
-  final bool obscureText;
 
   const CustomTextField({
     super.key,
@@ -24,33 +22,37 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.textInputAction = .next,
     this.onChanged,
-    this.obscureText = false,
-    this.obscureOnpressed,
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _obscureText = true;
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: isPassword ? obscureText : false,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      onChanged: onChanged,
-      validator: validator,
+      controller: widget.controller,
+      obscureText: widget.isPassword ? _obscureText : false,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      onChanged: widget.onChanged,
+      validator: widget.validator,
       style: textTheme.bodyLarge,
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: textTheme.bodyMedium,
-        prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: AppColors.icon)
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(widget.prefixIcon, color: AppColors.icon)
             : null,
-        suffixIcon: isPassword
+        suffixIcon: widget.isPassword
             ? IconButton(
                 icon: Icon(
-                  obscureText ? Icons.visibility_off : Icons.visibility,
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
                   color: AppColors.icon,
                 ),
-                onPressed: obscureOnpressed,
+                onPressed: () => setState(() => _obscureText = !_obscureText),
               )
             : null,
       ),
