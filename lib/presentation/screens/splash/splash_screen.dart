@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               "Doctor Hunt",
               style: Theme.of(
                 context,
-              ).textTheme.headlineMedium?.copyWith(fontSize: 25),
+              ).textTheme.headlineSmall?.copyWith(fontSize: 25),
             ),
           ],
         ),

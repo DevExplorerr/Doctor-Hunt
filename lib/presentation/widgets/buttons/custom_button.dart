@@ -55,7 +55,7 @@ class CustomButton extends StatelessWidget {
           fit: .scaleDown,
           child: Text(
             text,
-            style: theme.textTheme.titleLarge?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
               color: textColor ?? AppColors.white,
               fontSize: responsiveFontSize,
             ),

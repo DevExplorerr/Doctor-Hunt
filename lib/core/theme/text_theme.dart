@@ -20,14 +20,26 @@ const TextTheme textTheme = TextTheme(
     color: AppColors.textPrimary,
   ),
 
-  titleLarge: TextStyle(
+  titleMedium: TextStyle(
     fontSize: 18,
+    color: AppColors.textPrimary,
+    fontWeight: .w500,
+  ),
+
+  titleLarge: TextStyle(
+    fontSize: 20,
+    fontWeight: .w600,
+    color: AppColors.textPrimary,
+  ),
+
+  headlineSmall: TextStyle(
+    fontSize: 22,
     fontWeight: .w600,
     color: AppColors.textPrimary,
   ),
 
   headlineMedium: TextStyle(
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: .w700,
     color: AppColors.textPrimary,
   ),

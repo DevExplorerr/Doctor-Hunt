@@ -32,7 +32,7 @@ class AppEmptyState extends StatelessWidget {
           const SizedBox(height: 25),
           Text(
             title,
-            style: theme.textTheme.headlineMedium?.copyWith(
+            style: theme.textTheme.headlineSmall?.copyWith(
               color: AppColors.primary,
             ),
           ),
