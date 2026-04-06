@@ -1,5 +1,7 @@
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
+import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,8 @@ class DoctorHunt extends StatelessWidget {
         GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(name: '/onboarding', page: () => const OnBoardingScreen()),
         GetPage(name: '/login', page: () => const LoginScreen()),
+        GetPage(name: '/signup', page: () => const SignUpScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
       ],
     );
   }
