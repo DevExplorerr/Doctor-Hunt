@@ -1,14 +1,17 @@
 import 'package:doctor_hunt/core/theme/app_theme.dart';
+import 'package:doctor_hunt/firebase_options.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const DoctorHunt());
 }
 
