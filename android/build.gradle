@@ -8,9 +8,23 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(':app')
+    
+    // This hook runs while the subproject is being defined, 
+    // avoiding the "already evaluated" error.
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.ndk') {
+                details.useVersion "29.0.13846066"
+            }
+        }
+    }
+
+    // Force NDK version for all Android subprojects
+    project.plugins.withType(com.android.build.gradle.BasePlugin) {
+        project.android {
+            ndkVersion "29.0.13846066"
+        }
+    }
 }
 
 tasks.register("clean", Delete) {
