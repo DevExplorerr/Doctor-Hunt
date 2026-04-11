@@ -4,7 +4,7 @@ import 'package:doctor_hunt/presentation/screens/checkout/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:doctor_hunt/controller/cart_controller.dart';
+import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
 
 class CartScreen extends StatefulWidget {

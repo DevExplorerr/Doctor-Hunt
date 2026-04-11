@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controller/auth_controller/signup_controller.dart';
+import 'package:doctor_hunt/controllers/auth_controller/signup_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';

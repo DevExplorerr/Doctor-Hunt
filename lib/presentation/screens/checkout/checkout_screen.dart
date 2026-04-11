@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_hunt/controller/cart_controller.dart';
+import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/presentation/screens/checkout/address/address_screen.dart';
 import 'package:doctor_hunt/presentation/screens/checkout/order_succes_screen.dart';
 import 'package:doctor_hunt/presentation/screens/checkout/payment/add_card_screen.dart';

@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:doctor_hunt/controller/cart_controller.dart';
-import 'package:doctor_hunt/models/cart_item.dart';
+import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/data/models/cart_item.dart';
 import 'package:doctor_hunt/presentation/screens/cart/cart_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
