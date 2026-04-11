@@ -96,7 +96,12 @@ class SignUpScreen extends GetView<SignUpController> {
 
                         const SizedBox(height: 30),
 
-                        CustomButton(text: "Sign Up", onTap: controller.signUp),
+                        CustomButton(
+                          text: controller.isLoading.value
+                              ? "Creating Account..."
+                              : "Sign Up",
+                          onTap: controller.signUp,
+                        ),
 
                         const Spacer(flex: 2),
 

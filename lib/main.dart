@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/core/theme/app_theme.dart';
+import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/firebase_options.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
@@ -12,6 +13,9 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  Get.put(AuthRepository());
+
   runApp(const DoctorHunt());
 }
 
