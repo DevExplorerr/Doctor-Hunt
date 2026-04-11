@@ -40,6 +40,7 @@ class SignUpController extends GetxController {
         AppSnackBar.show(
           title: "Success",
           message: "Account Created Successfully",
+          snackPosition: .BOTTOM,
         );
 
         Get.offAllNamed('/home');

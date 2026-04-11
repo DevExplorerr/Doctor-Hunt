@@ -7,11 +7,12 @@ class AppSnackBar {
     required String title,
     required String message,
     bool isError = false,
+    SnackPosition? snackPosition = .TOP,
   }) {
     Get.snackbar(
       title,
       message,
-      snackPosition: .TOP,
+      snackPosition: snackPosition,
       backgroundColor: isError
           ? AppColors.error.withValues(alpha: 0.1)
           : AppColors.primary.withValues(alpha: 0.1),
