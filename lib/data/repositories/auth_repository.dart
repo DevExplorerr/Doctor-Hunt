@@ -57,6 +57,14 @@ class AuthRepository extends GetxService {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      throw "An unexpected error occurred. Please try again.";
+    }
+  }
+
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'email-already-in-use':
