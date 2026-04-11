@@ -44,14 +44,35 @@ class AuthRepository extends GetxService {
     }
   }
 
+  Future<UserCredential> signInWithEmail(String email, String password) async {
+    try {
+      final UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw "An unexpected error occurred. Please try again.";
+    }
+  }
+
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'email-already-in-use':
         return 'This email is already registered. Please log in.';
+      case 'user-not-found':
+        return "No account found with this email.";
+      case 'wrong-password':
+        return "Incorrect password. Please try again.";
       case 'invalid-email':
         return 'The email address is not valid.';
+      case 'user-disabled':
+        return "This account has been disabled. Contact support.";
       case 'weak-password':
         return 'The password is too weak. Please use a stronger password.';
+      case 'too-many-requests':
+        return "Too many login attempts. Try again later.";
       case 'network-request-failed':
         return 'Network error. Check your internet connection.';
       default:

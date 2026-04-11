@@ -27,84 +27,89 @@ class LoginScreen extends GetView<LoginController> {
                 child: IntrinsicHeight(
                   child: Form(
                     key: controller.loginFormKey,
-                    child: Column(
-                      mainAxisAlignment: .center,
-                      children: [
-                        const SizedBox(height: kToolbarHeight),
-                        const Spacer(flex: 1),
-                        Text('Welcome Back', style: textTheme.headlineMedium),
-                        const SizedBox(height: 15),
-                        Text(
-                          'You can search doctors, book appointments and manage your health records effortlessly',
-                          textAlign: .center,
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-                        CustomTextField(
-                          controller: controller.emailController,
-                          hintText: "Email",
-                          prefixIcon: Icons.email_outlined,
-                          keyboardType: .emailAddress,
-                          validator: (val) => GetUtils.isEmail(val ?? '')
-                              ? null
-                              : "Enter a valid email",
-                        ),
-                        const SizedBox(height: 20),
-                        CustomTextField(
-                          controller: controller.passwordController,
-                          hintText: "Password",
-                          isPassword: true,
-                          keyboardType: .visiblePassword,
-                          textInputAction: .done,
-                          prefixIcon: Icons.lock_outline,
-                          validator: (val) => (val?.length ?? 0) >= 6
-                              ? null
-                              : "Password too short",
-                        ),
-                        const SizedBox(height: 30),
-                        CustomButton(
-                          text: "Login",
-                          onTap: controller.login,
-                          height: 54,
-                        ),
-                        const SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () => _showForgotPassword(context),
-                          child: Text(
-                            "Forgot Password?",
+                    child: 
+                    Obx(() =>
+                    AbsorbPointer(
+                      absorbing: controller.isLoading.value,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: kToolbarHeight),
+                          const Spacer(flex: 1),
+                          Text('Welcome Back', style: textTheme.headlineMedium),
+                          const SizedBox(height: 15),
+                          Text(
+                            'You can search doctors, book appointments and manage your health records effortlessly',
+                            textAlign: .center,
                             style: textTheme.bodyMedium?.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.textSecondary,
                             ),
                           ),
-                        ),
-                        const Spacer(flex: 2),
-                        Padding(
-                          padding: const .only(bottom: 40.0),
-                          child: GestureDetector(
-                            onTap: () => Get.toNamed('/signup'),
-                            child: RichText(
-                              text: TextSpan(
-                                text: "Don't have an account? ",
-                                style: textTheme.bodyMedium,
-                                children: [
-                                  TextSpan(
-                                    text: "Join us",
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.primary,
-                                      fontWeight: .w700,
-                                    ),
-                                  ),
-                                ],
+                          const SizedBox(height: 40),
+                          CustomTextField(
+                            controller: controller.emailController,
+                            hintText: "Email",
+                            prefixIcon: Icons.email_outlined,
+                            keyboardType: .emailAddress,
+                            validator: (val) => GetUtils.isEmail(val ?? '')
+                                ? null
+                                : "Enter a valid email",
+                          ),
+                          const SizedBox(height: 20),
+                          CustomTextField(
+                            controller: controller.passwordController,
+                            hintText: "Password",
+                            isPassword: true,
+                            keyboardType: .visiblePassword,
+                            textInputAction: .done,
+                            prefixIcon: Icons.lock_outline,
+                            validator: (val) => (val?.length ?? 0) >= 6
+                                ? null
+                                : "Password too short",
+                          ),
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            text: "Login",
+                            onTap: controller.login,
+                            isLoading: controller.isLoading.value,
+                          ),
+                          const SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () => _showForgotPassword(context),
+                            child: Text(
+                              "Forgot Password?",
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: AppColors.primary,
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          const Spacer(flex: 2),
+                          Padding(
+                            padding: const .only(bottom: 40.0),
+                            child: GestureDetector(
+                              onTap: () => Get.toNamed('/signup'),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Don't have an account? ",
+                                  style: textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(
+                                      text: "Join us",
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: .w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+              ),
               ),
             );
           },
