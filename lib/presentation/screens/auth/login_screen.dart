@@ -147,7 +147,7 @@ class LoginScreen extends GetView<LoginController> {
           Obx(
             () => CustomButton(
               text: "Send Link",
-              onTap: () => controller.sendPasswordReset,
+              onTap: controller.sendPasswordReset,
               isLoading: controller.isLoading.value,
             ),
           ),
