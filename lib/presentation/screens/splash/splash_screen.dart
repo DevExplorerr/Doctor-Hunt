@@ -1,6 +1,8 @@
+import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,11 +19,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToNext() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 2));
 
-    if (!mounted) return;
+    final prefs = await SharedPreferences.getInstance();
+    final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
 
-    Get.offNamed('/onboarding');
+    final bool isLoggedIn = AuthRepository.instance.currentUser != null;
+
+    if (!seenOnboarding) {
+      await prefs.setBool('seenOnboarding', true);
+      Get.offAllNamed('/onboarding');
+    } else if (!isLoggedIn) {
+      Get.offAllNamed('/login');
+    } else {
+      Get.offAllNamed('/home');
+    }
   }
 
   @override
