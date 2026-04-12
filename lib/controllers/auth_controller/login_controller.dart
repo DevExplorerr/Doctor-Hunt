@@ -9,11 +9,6 @@ class LoginController extends GetxController {
   final loginFormKey = GlobalKey<FormState>();
 
   final forgotEmailController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
-  final otpControllers = List.generate(4, (_) => TextEditingController());
-  final otpFocusNodes = List.generate(4, (_) => FocusNode());
 
   final isLoading = false.obs;
 
@@ -48,10 +43,26 @@ class LoginController extends GetxController {
     }
   }
 
-  void verifyEmailAndStepNext(BuildContext context, Function nextStep) {
-    if (GetUtils.isEmail(forgotEmailController.text)) {
-      Get.back();
-      nextStep();
+  Future<void> sendPasswordReset() async {
+    if (GetUtils.isEmail(forgotEmailController.text.trim())) {
+      try {
+        isLoading.value = true;
+
+        await AuthRepository.instance.sendPasswordResetEmail(
+          forgotEmailController.text.trim(),
+        );
+
+        Get.back();
+
+        AppSnackBar.show(
+          title: "Email Sent",
+          message: "Check your inbox for a link to reset your password.",
+        );
+      } catch (e) {
+        AppSnackBar.show(title: "Error", message: e.toString(), isError: true);
+      } finally {
+        isLoading.value = false;
+      }
     } else {
       AppSnackBar.show(
         title: "Error",
@@ -61,41 +72,11 @@ class LoginController extends GetxController {
     }
   }
 
-  void verifyOTPAndStepNext(Function nextStep) {
-    String code = otpControllers.map((e) => e.text).join();
-    if (code.length == 4) {
-      Get.back();
-      nextStep();
-    } else {
-      AppSnackBar.show(
-        title: "Error",
-        message: "Enter the full 4-digit code",
-        isError: true,
-      );
-    }
-  }
-
-  void resetPassword() {
-    if (newPasswordController.text == confirmPasswordController.text &&
-        newPasswordController.text.length >= 6) {
-      Get.back();
-      AppSnackBar.show(
-        title: "Success",
-        message: "Password updated! Please login.",
-      );
-    } else {
-      AppSnackBar.show(
-        title: "Error",
-        message: "Passwords must match and be 6+ chars",
-        isError: true,
-      );
-    }
-  }
-
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
+    forgotEmailController.dispose();
     super.onClose();
   }
 }
