@@ -25,6 +25,13 @@ class AuthRepository extends GetxService {
     }
   }
 
+  Future<Map<String, dynamic>?> fetchUserName() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+    final doc = await _firestore.collection('users').doc(user.uid).get();
+    return doc.data();
+  }
+
   Future<UserCredential> signUpWithEmail(
     String email,
     String password,

@@ -1,7 +1,9 @@
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
+import 'package:doctor_hunt/presentation/screens/home/widgets/home_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
+import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,93 +14,45 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTopSection(context),
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/home_screen/home_bg.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: MediaQuery.of(context).size.width * 0.04,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return MainWrapper(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              clipBehavior: .none,
+              alignment: .center,
               children: [
-                const CustomSearchBar(hintText: 'Search......'),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                _buildLiveDoctors(context),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                _buildCategories(context),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                _buildPopularDoctors(context),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                _buildFeatureDoctors(context),
+                const HomeAppBar(),
+                Positioned(
+                  bottom: -25,
+                  left: 20,
+                  right: 20,
+                  child: CustomSearchBar(
+                    controller: controller.searchController,
+                    hintText: "Search...",
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  // --- TOP SECTION ---
-  Widget _buildTopSection(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      padding: EdgeInsets.only(
-        left: width * 0.05,
-        right: width * 0.05,
-        top: 60,
-        bottom: 30,
-      ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
-        gradient: LinearGradient(
-          colors: [Color(0xff0ebe7e), Color(0xff07D9AD)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hi Handworker!",
-                style: GoogleFonts.rubik(
-                  fontSize: width * 0.045,
-                  color: Colors.white.withOpacity(0.9),
-                ),
+            Padding(
+              padding: const .only(top: 40.0, right: 15, left: 15),
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  const SizedBox(height: 15),
+                  _buildLiveDoctors(context),
+                  const SizedBox(height: 15),
+                  _buildCategories(context),
+                  const SizedBox(height: 15),
+                  _buildPopularDoctors(context),
+                  const SizedBox(height: 15),
+                  _buildFeatureDoctors(context),
+                ],
               ),
-              Text(
-                "Find Your Doctor",
-                style: GoogleFonts.rubik(
-                  fontSize: width * 0.065,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          CircleAvatar(
-            radius: width * 0.07,
-            backgroundImage: const AssetImage(
-              "assets/images/home_screen/profile.png",
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -319,7 +273,7 @@ class HomeContent extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5),
         ],
       ),
       child: Column(
