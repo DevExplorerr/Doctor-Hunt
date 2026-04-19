@@ -62,10 +62,7 @@ class HomeContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Live Doctors",
-          style: GoogleFonts.rubik(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        const CustomHeadline(text: "Live Doctors", onlyText: true),
         const SizedBox(height: 10),
         SizedBox(
           height: 120,
@@ -159,6 +156,7 @@ class HomeContent extends StatelessWidget {
     return Column(
       children: [
         CustomHeadline(
+          onlyText: false,
           text: "Popular Doctor",
           onPressed: () => controller.viewAll('popular', 'Popular Doctors'),
         ),
@@ -243,6 +241,7 @@ class HomeContent extends StatelessWidget {
     return Column(
       children: [
         CustomHeadline(
+          onlyText: false,
           text: "Feature Doctor",
           onPressed: () => controller.viewAll('feature', 'Feature Doctors'),
         ),

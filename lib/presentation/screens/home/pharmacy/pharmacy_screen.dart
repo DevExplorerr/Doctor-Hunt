@@ -264,6 +264,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomHeadline(
+            onlyText: false,
             onPressed: () {},
             text: "Popular Tablets",
           ),
@@ -311,6 +312,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomHeadline(
+            onlyText: false,
             onPressed: () {},
             text: "Popular Syrup",
           ),

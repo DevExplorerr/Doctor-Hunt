@@ -35,7 +35,7 @@ class PopularDoctorScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomHeadline(text: "Popular Doctor"),
+                      const CustomHeadline(text: "Popular Doctor", onlyText: false,),
                       const SizedBox(height: 16),
                       SizedBox(
                         height: 200,

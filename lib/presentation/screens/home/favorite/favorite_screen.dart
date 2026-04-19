@@ -218,6 +218,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomHeadline(
+            onlyText: false,
             onPressed: () {
               Navigator.push(
                 context,
