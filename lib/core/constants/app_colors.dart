@@ -18,8 +18,8 @@ class AppColors {
   static const Color bg = Color(0xFFFFFFFF);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
+  static const Color grey = Color(0xFF808080);
   static const Color red = Color(0xFFFF0000);
-  
 
   // Form/Border Colors
   static const Color borderEnabled = Color(0xFF858EA9);

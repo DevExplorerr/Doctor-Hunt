@@ -1,5 +1,6 @@
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_cards/popular_doctor_card.dart';
+import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/home_skeleton.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,8 +24,17 @@ class PopularDoctorSection extends StatelessWidget {
         const SizedBox(height: 10),
         SizedBox(
           height: 240,
-          child: Obx(
-            () => ListView.builder(
+          child: Obx(() {
+            if (controller.isLoading.value) {
+              return ListView.builder(
+                scrollDirection: .horizontal,
+                padding: const .symmetric(horizontal: 15),
+                itemCount: 4,
+                itemBuilder: (context, index) => const PopularDoctorSkeleton(),
+              );
+            }
+
+            return ListView.builder(
               scrollDirection: .horizontal,
               padding: const .symmetric(horizontal: 15),
               clipBehavior: .none,
@@ -33,8 +43,8 @@ class PopularDoctorSection extends StatelessWidget {
                 final doctor = controller.popularDoctors[index];
                 return PopularDoctorCard(doctor: doctor);
               },
-            ),
-          ),
+            );
+          }),
         ),
       ],
     );
