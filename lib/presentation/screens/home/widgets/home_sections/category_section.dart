@@ -1,5 +1,7 @@
+import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({super.key});
@@ -8,29 +10,70 @@ class CategorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> categories = [
       {
+        'name': 'Skin',
+        'searchKey': 'Dermatologist',
+        'icon': Icons.face_retouching_natural_rounded,
+        'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
+      },
+      {
+        'name': 'General',
+        'searchKey': 'General Physician',
+        'icon': Icons.medical_services_rounded,
+        'colors': [const Color(0xff2753F3), const Color(0xff765AFC)],
+      },
+      {
+        'name': 'Surgery',
+        'searchKey': 'Surgeon',
+        'icon': Icons.content_cut_rounded,
+        'colors': [const Color(0xff0EBE7E), const Color(0xff07D9AD)],
+      },
+      {
+        'name': 'Bone',
+        'searchKey': 'Orthopedic',
+        'icon': Icons.accessibility_new_rounded,
+        'colors': [const Color(0xffFF484C), const Color(0xffFF6C60)],
+      },
+      {
+        'name': 'Mental',
+        'searchKey': 'Psychologist',
+        'icon': Icons.psychology_rounded,
+        'colors': [const Color(0xff765AFC), const Color(0xff2753F3)],
+      },
+      {
+        'name': 'Women',
+        'searchKey': 'Gynecologist',
+        'icon': Icons.pregnant_woman_rounded,
+        'colors': [const Color(0xffFF6C60), const Color(0xffFF484C)],
+      },
+      {
+        'name': 'Brain',
+        'searchKey': 'Neurologist',
+        'icon': Icons.settings_suggest_rounded,
+        'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
+      },
+      {
         'name': 'Dental',
+        'searchKey': 'Dentist',
         'icon': Icons.health_and_safety,
         'colors': [const Color(0xff2753F3), const Color(0xff765AFC)],
       },
       {
-        'name': 'Heart',
-        'icon': CupertinoIcons.heart_fill,
+        'name': 'Kids',
+        'searchKey': 'Pediatrician',
+        'icon': Icons.child_care_rounded,
         'colors': [const Color(0xff0EBE7E), const Color(0xff07D9AD)],
       },
       {
-        'name': 'Eye',
-        'icon': Icons.visibility_rounded,
-        'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
-      },
-      {
-        'name': 'Brain',
-        'icon': Icons.psychology,
+        'name': 'Heart',
+        'searchKey': 'Cardiologist',
+        'icon': CupertinoIcons.heart_fill,
         'colors': [const Color(0xffFF484C), const Color(0xffFF6C60)],
       },
       {
-        'name': 'Ear',
-        'icon': CupertinoIcons.ear,
-        'colors': [const Color(0xff2753F3), const Color(0xff765AFC)],
+        'name': 'Medicine',
+        'searchKey': 'Medicine',
+        'icon': Icons.medication_rounded,
+        'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
       },
     ];
 
@@ -43,41 +86,51 @@ class CategorySection extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final item = categories[index];
-          return Padding(
-            padding: const .only(right: 15),
-            child: Column(
-              children: [
-                // Icon Box
-                Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: item['colors'],
-                      begin: .topLeft,
-                      end: .bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (item['colors'][0] as Color).withValues(
-                          alpha: 0.3,
-                        ),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed(
+                '/all-doctors',
+                arguments: {
+                  'category': item['searchKey'],
+                  'title': item['name'],
+                },
+              );
+            },
+            child: Padding(
+              padding: const .only(right: 15),
+              child: Column(
+                children: [
+                  Container(
+                    height: 55,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: item['colors'],
+                        begin: .topLeft,
+                        end: .bottomRight,
                       ),
-                    ],
+                      borderRadius: .circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (item['colors'][0] as Color).withValues(
+                            alpha: 0.3,
+                          ),
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Icon(item['icon'], color: AppColors.white, size: 30),
                   ),
-                  child: Icon(item['icon'], color: Colors.white, size: 30),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  item['name'],
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(fontWeight: .w500),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    item['name'],
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(fontWeight: .w500),
+                  ),
+                ],
+              ),
             ),
           );
         },

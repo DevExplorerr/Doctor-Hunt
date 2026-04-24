@@ -17,8 +17,13 @@ class FeatureDoctorSection extends StatelessWidget {
           padding: const .symmetric(horizontal: 15.0),
           child: CustomHeadline(
             onlyText: false,
-            text: "Feature Doctor",
-            onPressed: () => controller.viewAll('feature', 'Feature Doctors'),
+            text: "Feature Doctors",
+            onPressed: () {
+              Get.toNamed(
+                '/all-doctors',
+                arguments: {'type': 'feature', 'title': 'Featured'},
+              );
+            },
           ),
         ),
         const SizedBox(height: 10),

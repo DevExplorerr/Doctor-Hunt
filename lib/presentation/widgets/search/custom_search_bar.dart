@@ -4,13 +4,29 @@ import 'package:flutter/material.dart';
 class CustomSearchBar extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
+  final VoidCallback? onTap;
+  final bool readOnly;
+  final Function(String)? onChanged;
+  final FocusNode? focusNode;
 
-  const CustomSearchBar({super.key, required this.hintText, this.controller});
+  const CustomSearchBar({
+    super.key,
+    required this.hintText,
+    this.controller,
+    this.onChanged,
+    this.onTap,
+    this.readOnly = false,
+    this.focusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
       controller: controller,
+      onTap: onTap,
+      readOnly: readOnly,
+      onChanged: onChanged,
+      focusNode: focusNode,
       keyboardType: .text,
       textInputAction: .search,
       textStyle: WidgetStatePropertyAll(Theme.of(context).textTheme.bodyLarge),

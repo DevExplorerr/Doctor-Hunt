@@ -7,6 +7,7 @@ import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/popu
 import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeContent extends StatelessWidget {
   final HomeController controller;
@@ -28,8 +29,14 @@ class HomeContent extends StatelessWidget {
                   left: 20,
                   right: 20,
                   child: CustomSearchBar(
-                    controller: controller.searchController,
                     hintText: "Search...",
+                    readOnly: true,
+                    onTap: () {
+                      Get.toNamed(
+                        '/all-doctors',
+                        arguments: {'title': 'Search', 'focusSearch': true},
+                      );
+                    },
                   ),
                 ),
               ],

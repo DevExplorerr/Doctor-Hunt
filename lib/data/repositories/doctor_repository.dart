@@ -52,4 +52,19 @@ class DoctorRepository extends GetxService {
       throw "Could not fetch doctor list: $e";
     }
   }
+
+  Future<List<DoctorModel>> getDoctorsByCategory(String category) async {
+    try {
+      final snapshot = await _db
+          .collection('doctors')
+          .where(
+            'specialty',
+            isEqualTo: category,
+          )
+          .get();
+      return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
+    } catch (e) {
+      throw "Could not fetch $category doctors: $e";
+    }
+  }
 }

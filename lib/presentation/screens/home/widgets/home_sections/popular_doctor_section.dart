@@ -16,9 +16,14 @@ class PopularDoctorSection extends StatelessWidget {
         Padding(
           padding: const .symmetric(horizontal: 15.0),
           child: CustomHeadline(
-            text: "Popular Doctor",
-            onPressed: () => controller.viewAll('popular', 'Popular Doctors'),
+            text: "Popular Doctors",
             onlyText: false,
+            onPressed: () {
+              Get.toNamed(
+                '/all-doctors',
+                arguments: {'type': 'popular', 'title': "Popular"},
+              );
+            },
           ),
         ),
         const SizedBox(height: 10),
