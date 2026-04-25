@@ -11,6 +11,7 @@ class DoctorModel {
   final bool isLive;
   final bool isPopular;
   final bool isFeature;
+  final int experience;
 
   DoctorModel({
     required this.id,
@@ -23,6 +24,7 @@ class DoctorModel {
     this.isLive = false,
     this.isPopular = false,
     this.isFeature = false,
+    required this.experience,
   });
 
   factory DoctorModel.fromSnapshot(
@@ -40,6 +42,7 @@ class DoctorModel {
       isLive: data['isLive'] ?? false,
       isPopular: data['isPopular'] ?? false,
       isFeature: data['isFeature'] ?? false,
+      experience: data['experience'] ?? 0,
     );
   }
 }

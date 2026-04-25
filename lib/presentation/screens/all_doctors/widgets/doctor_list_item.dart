@@ -59,7 +59,10 @@ class DoctorListItem extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text("7 Years Experience", style: textTheme.bodySmall),
+                    Text(
+                      "${doctor.experience} Years Experience",
+                      style: textTheme.bodySmall,
+                    ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
