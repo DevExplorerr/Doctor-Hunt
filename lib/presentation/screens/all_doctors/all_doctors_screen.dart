@@ -56,16 +56,17 @@ class AllDoctorsScreen extends StatelessWidget {
 
             Expanded(
               child: Obx(() {
-                if (controller.isLoading.value) {
+                if (controller.isLoading.value ||
+                    controller.isSearching.value) {
                   return const AllDoctorsShimmer();
                 }
 
-                if (controller.allDoctors.isEmpty) {
+                if (controller.filteredDoctors.isEmpty) {
                   return const AppEmptyState(
                     title: 'No doctors found.',
                     description:
-                        'We couldn`t find a doctor matching your search. Please try a different specialty or keyword.',
-                    icon: Icons.search_off,
+                        'Try searching for a different name or specialty.',
+                    icon: Icons.search_off_rounded,
                   );
                 }
 

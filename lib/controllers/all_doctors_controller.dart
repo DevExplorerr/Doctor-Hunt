@@ -11,7 +11,9 @@ class AllDoctorsController extends GetxController {
 
   var allDoctors = <DoctorModel>[].obs;
   var filteredDoctors = <DoctorModel>[].obs;
+
   var isLoading = false.obs;
+  var isSearching = false.obs;
 
   var selectedFilter = "All".obs;
   var title = "Doctors".obs;
@@ -75,7 +77,11 @@ class AllDoctorsController extends GetxController {
     }
   }
 
-  void searchDoctors(String query) {
+  void searchDoctors(String query) async {
+    isSearching.value = true;
+
+    await Future.delayed(const Duration(milliseconds: 300));
+
     if (query.isEmpty) {
       filteredDoctors.assignAll(allDoctors);
     } else {
@@ -89,6 +95,7 @@ class AllDoctorsController extends GetxController {
             .toList(),
       );
     }
+    isSearching.value = false;
   }
 
   void filterByCategory(String category) {

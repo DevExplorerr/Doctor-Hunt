@@ -37,6 +37,8 @@ class FilterChipsRow extends StatelessWidget {
               final isSelected =
                   controller.selectedFilter.value == filters[index];
               return ChoiceChip(
+                showCheckmark: true,
+                checkmarkColor: AppColors.white,
                 label: Text(filters[index]),
                 selected: isSelected,
                 onSelected: (bool selected) {
@@ -45,10 +47,10 @@ class FilterChipsRow extends StatelessWidget {
                 },
                 selectedColor: AppColors.primary,
                 labelStyle: textTheme.bodyMedium?.copyWith(
-                  color: isSelected ? AppColors.white : AppColors.textPrimary,
-                  fontWeight: .w600,
+                  color: isSelected ? AppColors.white : AppColors.primary,
+                  fontWeight: .w500,
                 ),
-                backgroundColor: AppColors.white,
+                backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                 shape: RoundedRectangleBorder(borderRadius: .circular(8)),
                 side: .none,
               );
