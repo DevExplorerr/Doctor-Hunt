@@ -79,6 +79,14 @@ class DoctorListItem extends StatelessWidget {
                             color: AppColors.textPrimary,
                           ),
                         ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "(${doctor.reviews.toString()})",
+                          style: textTheme.bodySmall?.copyWith(
+                            fontWeight: .w500,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
                       ],
                     ),
                   ],
