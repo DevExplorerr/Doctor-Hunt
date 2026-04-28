@@ -43,7 +43,9 @@ class FilterChipsRow extends StatelessWidget {
                 selected: isSelected,
                 onSelected: (bool selected) {
                   controller.selectedFilter.value = filters[index];
-                  controller.filterByCategory(filters[index]);
+                  if (selected) {
+                    controller.filterByCategory(filters[index]);
+                  }
                 },
                 selectedColor: AppColors.primary,
                 labelStyle: textTheme.bodyMedium?.copyWith(

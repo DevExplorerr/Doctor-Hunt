@@ -8,6 +8,7 @@ import 'package:doctor_hunt/presentation/widgets/state/app_empty_state.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AllDoctorsScreen extends StatelessWidget {
   const AllDoctorsScreen({super.key});
@@ -22,22 +23,43 @@ class AllDoctorsScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const .only(top: 50, left: 20, right: 20, bottom: 20),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back, color: AppColors.icon),
-                    style: IconButton.styleFrom(
-                      backgroundColor: AppColors.white,
-                      shape: const CircleBorder(),
+              child: Obx(
+                () => Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.arrow_back, color: AppColors.icon),
+                      style: IconButton.styleFrom(
+                        backgroundColor: AppColors.white,
+                        shape: const CircleBorder(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "${controller.title.toString()} Doctors",
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "${controller.title.value} Doctors",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    if (controller.currentType != null ||
+                        controller.selectedFilter.value != "All")
+                      GestureDetector(
+                        onTap: () => controller.resetFilters(),
+                        child: Container(
+                          padding: const .all(6),
+                          decoration: BoxDecoration(
+                            color: AppColors.red.withValues(alpha: 0.1),
+                            shape: .circle,
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            size: 18,
+                            color: AppColors.red,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -71,12 +93,27 @@ class AllDoctorsScreen extends StatelessWidget {
                 }
 
                 return ListView.builder(
+                  controller: controller.scrollController,
                   physics: const BouncingScrollPhysics(),
                   padding: const .symmetric(horizontal: 15, vertical: 20),
-                  itemCount: controller.filteredDoctors.length,
+                  itemCount: controller.hasMore.value
+                      ? controller.filteredDoctors.length + 1
+                      : controller.filteredDoctors.length,
                   itemBuilder: (context, index) {
-                    final doctor = controller.filteredDoctors[index];
-                    return DoctorListItem(doctor: doctor);
+                    if (index < controller.filteredDoctors.length) {
+                      final doctor = controller.filteredDoctors[index];
+                      return DoctorListItem(doctor: doctor);
+                    } else {
+                      return Padding(
+                        padding: const .symmetric(vertical: 20),
+                        child: Center(
+                          child: LoadingAnimationWidget.threeRotatingDots(
+                            color: AppColors.primary,
+                            size: 40,
+                          ),
+                        ),
+                      );
+                    }
                   },
                 );
               }),

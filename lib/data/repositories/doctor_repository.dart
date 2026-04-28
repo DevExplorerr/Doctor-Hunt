@@ -6,50 +6,68 @@ class DoctorRepository extends GetxService {
   static DoctorRepository get instance => Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<List<DoctorModel>> getPopularDoctors() async {
+  Future<List<DoctorModel>> getPopularDoctors() async =>
+      _fetchSimple('isPopular', true, 5);
+  Future<List<DoctorModel>> getFeatureDoctors() async =>
+      _fetchSimple('isFeature', true, 5);
+  Future<List<DoctorModel>> getLiveDoctors() async =>
+      _fetchSimple('isLive', true);
+
+  Future<List<DoctorModel>> _fetchSimple(
+    String field,
+    dynamic value, [
+    int? limit,
+  ]) async {
     try {
-      final snapshot = await _db
-          .collection('doctors')
-          .where('isPopular', isEqualTo: true)
-          .limit(5)
-          .get();
-      return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
+      Query query = _db.collection('doctors').where(field, isEqualTo: value);
+      if (limit != null) query = query.limit(limit);
+      final snapshot = await query.get();
+      return snapshot.docs
+          .map(
+            (doc) => DoctorModel.fromSnapshot(
+              doc as DocumentSnapshot<Map<String, dynamic>>,
+            ),
+          )
+          .toList();
     } catch (e) {
-      throw "Could not fetch popular doctors: $e";
+      throw "Fetch Error ($field): $e";
     }
   }
 
-  Future<List<DoctorModel>> getFeatureDoctors() async {
+  Future<Map<String, dynamic>> getAllDoctors({
+    DocumentSnapshot? lastDocument,
+    int limit = 10,
+    String? type,
+  }) async {
     try {
-      final snapshot = await _db
-          .collection('doctors')
-          .where('isFeature', isEqualTo: true)
-          .limit(5)
-          .get();
-      return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
-    } catch (e) {
-      throw "Could not fetch featured doctors: $e";
-    }
-  }
+      Query query = _db.collection('doctors');
 
-  Future<List<DoctorModel>> getLiveDoctors() async {
-    try {
-      final snapshot = await _db
-          .collection('doctors')
-          .where('isLive', isEqualTo: true)
-          .get();
-      return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
-    } catch (e) {
-      throw "Could not fetch live doctors: $e";
-    }
-  }
+      if (type == 'popular') {
+        query = query.where('isPopular', isEqualTo: true);
+      } else if (type == 'feature') {
+        query = query.where('isFeature', isEqualTo: true);
+      }
 
-  Future<List<DoctorModel>> getAllDoctors() async {
-    try {
-      final snapshot = await _db.collection('doctors').get();
-      return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
+      query = query.orderBy('name');
+
+      if (lastDocument != null) query = query.startAfterDocument(lastDocument);
+      query = query.limit(limit);
+
+      final snapshot = await query.get();
+      final doctors = snapshot.docs
+          .map(
+            (doc) => DoctorModel.fromSnapshot(
+              doc as DocumentSnapshot<Map<String, dynamic>>,
+            ),
+          )
+          .toList();
+
+      return {
+        'doctors': doctors,
+        'lastDocument': snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
+      };
     } catch (e) {
-      throw "Could not fetch doctor list: $e";
+      throw "Could not fetch doctors list.";
     }
   }
 
@@ -57,14 +75,11 @@ class DoctorRepository extends GetxService {
     try {
       final snapshot = await _db
           .collection('doctors')
-          .where(
-            'specialty',
-            isEqualTo: category,
-          )
+          .where('specialty', isEqualTo: category)
           .get();
       return snapshot.docs.map((doc) => DoctorModel.fromSnapshot(doc)).toList();
     } catch (e) {
-      throw "Could not fetch $category doctors: $e";
+      throw "Could not fetch $category doctors.";
     }
   }
 }

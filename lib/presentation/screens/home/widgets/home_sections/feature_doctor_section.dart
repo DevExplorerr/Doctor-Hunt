@@ -21,7 +21,7 @@ class FeatureDoctorSection extends StatelessWidget {
             onPressed: () {
               Get.toNamed(
                 '/all-doctors',
-                arguments: {'type': 'feature', 'title': 'Featured'},
+                arguments: {'type': 'feature', 'title': 'Featured Doctors'},
               );
             },
           ),

@@ -21,7 +21,7 @@ class PopularDoctorSection extends StatelessWidget {
             onPressed: () {
               Get.toNamed(
                 '/all-doctors',
-                arguments: {'type': 'popular', 'title': "Popular"},
+                arguments: {'type': 'popular', 'title': "Popular Doctors"},
               );
             },
           ),
