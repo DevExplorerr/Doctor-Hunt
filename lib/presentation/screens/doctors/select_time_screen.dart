@@ -47,43 +47,33 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
     bool hasSlots = slots[selectedDate]?.isNotEmpty ?? false;
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                "assets/images/select_time_screen/select_time_screen_bg.png"),
-            fit: BoxFit.fill,
-          ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05,
+          vertical: screenHeight * 0.02,
         ),
-        width: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.05,
-            vertical: screenHeight * 0.02,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: screenHeight * 0.02),
-                child: TopSection(
-                  text: 'Select Time',
-                  backButton: const Icon(Icons.chevron_left),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: screenHeight * 0.02),
+              child: TopSection(
+                text: 'Select Time',
+                backButton: const Icon(Icons.chevron_left),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              SizedBox(height: screenHeight * 0.02),
-              _doctorCard(screenWidth),
-              SizedBox(height: screenHeight * 0.03),
-              _dateSelector(screenWidth, screenHeight),
-              SizedBox(height: screenHeight * 0.03),
-              hasSlots
-                  ? _timeSlots(selectedDate, screenWidth)
-                  : _noSlotsAvailable(screenWidth),
-            ],
-          ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            _doctorCard(screenWidth),
+            SizedBox(height: screenHeight * 0.03),
+            _dateSelector(screenWidth, screenHeight),
+            SizedBox(height: screenHeight * 0.03),
+            hasSlots
+                ? _timeSlots(selectedDate, screenWidth)
+                : _noSlotsAvailable(screenWidth),
+          ],
         ),
       ),
     );
@@ -95,11 +85,6 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 0,
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: const AssetImage(
-              "assets/images/select_time_screen/timescreendoctor.png"),
-          radius: screenWidth * 0.08,
-        ),
         title: Text("Dr. Shruti Kedia",
             style: GoogleFonts.rubik(
                 fontSize: screenWidth * 0.045,
