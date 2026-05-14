@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_cards/feature_doctor_card.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/home_skeleton.dart';
@@ -46,7 +47,14 @@ class FeatureDoctorSection extends StatelessWidget {
               itemCount: controller.featureDoctors.length,
               itemBuilder: (context, index) {
                 final doctor = controller.featureDoctors[index];
-                return FeatureDoctorCard(doctor: doctor);
+                return GestureDetector(
+                  onTap: () {
+                    final bookingController = Get.put(BookingController());
+                    bookingController.selectedDoctor.value = doctor;
+                    Get.toNamed('/doctor-details');
+                  },
+                  child: FeatureDoctorCard(doctor: doctor),
+                );
               },
             );
           }),

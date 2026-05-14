@@ -82,4 +82,33 @@ class DoctorRepository extends GetxService {
       throw "Could not fetch $category doctors.";
     }
   }
+
+  Future<List<String>> getDoctorTimeSlots(String doctorId) async {
+    try {
+      final snapshot = await _db
+          .collection('doctors')
+          .doc(doctorId)
+          .collection('time_slots')
+          .get();
+
+      return snapshot.docs.map((doc) => doc['time'] as String).toList();
+    } catch (e) {
+      throw "Could not fetch time slots: $e";
+    }
+  }
+
+  Future<void> saveAppointment(
+    String userId,
+    Map<String, dynamic> appointmentData,
+  ) async {
+    try {
+      await _db
+          .collection('users')
+          .doc(userId)
+          .collection('appointments')
+          .add(appointmentData);
+    } catch (e) {
+      throw "Booking failed: $e";
+    }
+  }
 }
