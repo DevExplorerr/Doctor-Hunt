@@ -5,7 +5,7 @@ import 'package:doctor_hunt/firebase_options.dart';
 import 'package:doctor_hunt/presentation/screens/all_doctors/all_doctors_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
-import 'package:doctor_hunt/presentation/screens/doctor_details/widgets/doctor_details_screen.dart';
+import 'package:doctor_hunt/presentation/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';

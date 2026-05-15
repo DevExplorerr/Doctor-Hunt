@@ -12,6 +12,9 @@ class DoctorModel {
   final bool isPopular;
   final bool isFeature;
   final int experience;
+  final List<String> services;
+  final int running;
+  final int patients;
 
   DoctorModel({
     required this.id,
@@ -25,6 +28,9 @@ class DoctorModel {
     this.isPopular = false,
     this.isFeature = false,
     required this.experience,
+    required this.services,
+    required this.running,
+    required this.patients,
   });
 
   factory DoctorModel.fromSnapshot(
@@ -43,6 +49,9 @@ class DoctorModel {
       isPopular: data['isPopular'] ?? false,
       isFeature: data['isFeature'] ?? false,
       experience: data['experience'] ?? 0,
+      services: List<String>.from(data['services'] ?? []),
+      running: data['running'] ?? 0,
+      patients: data['patients'] ?? 0,
     );
   }
 }
