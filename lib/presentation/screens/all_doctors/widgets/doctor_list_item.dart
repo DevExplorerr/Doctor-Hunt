@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DoctorListItem extends StatelessWidget {
   final DoctorModel doctor;
@@ -11,6 +13,7 @@ class DoctorListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final controller = Get.find<BookingController>();
 
     return Container(
       margin: const .only(bottom: 15, left: 5, right: 5),
@@ -116,13 +119,18 @@ class DoctorListItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text("10:00 AM tomorrow", style: textTheme.bodySmall),
+                  Text(
+                    controller.getNextAvailableSlotText(doctor),
+                    style: textTheme.bodySmall,
+                  ),
                 ],
               ),
               const Spacer(),
               CustomButton(
                 text: "Book Now",
-                onTap: () {},
+                onTap: () {
+                  controller.startBooking(doctor);
+                },
                 borderRadius: 8,
                 height: 40,
                 width: 110,

@@ -8,11 +8,19 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class DoctorDetailsCard extends StatelessWidget {
   final DoctorModel doctor;
-  const DoctorDetailsCard({super.key, required this.doctor});
+  final String? buttonText;
+  final VoidCallback? onTap;
+  const DoctorDetailsCard({
+    super.key,
+    required this.doctor,
+    this.buttonText,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final bool showButton = buttonText != null && onTap != null;
     return Container(
       width: .infinity,
       padding: const .all(15),
@@ -114,8 +122,15 @@ class DoctorDetailsCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          CustomButton(text: "Book Now", height: 40, width: 150, onTap: () {}),
+          if (showButton) ...[
+            const SizedBox(height: 20),
+            CustomButton(
+              text: buttonText!,
+              height: 40,
+              width: 150,
+              onTap: onTap!,
+            ),
+          ],
         ],
       ),
     );

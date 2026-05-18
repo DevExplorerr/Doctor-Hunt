@@ -8,6 +8,7 @@ import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:doctor_hunt/presentation/screens/select_time/select_time_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class DoctorHunt extends StatelessWidget {
           name: '/doctor-details',
           page: () => const DoctorDetailsScreen(),
         ),
+        GetPage(name: '/select-time', page: () => const SelectTimeScreen()),
       ],
     );
   }
