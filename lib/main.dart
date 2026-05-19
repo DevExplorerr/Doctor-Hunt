@@ -1,3 +1,5 @@
+import 'package:doctor_hunt/controllers/all_doctors_controller.dart';
+import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
@@ -45,7 +47,14 @@ class DoctorHunt extends StatelessWidget {
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/signup', page: () => const SignUpScreen()),
         GetPage(name: '/home', page: () => const HomeScreen()),
-        GetPage(name: '/all-doctors', page: () => const AllDoctorsScreen()),
+        GetPage(
+          name: '/all-doctors',
+          page: () => const AllDoctorsScreen(),
+          binding: BindingsBuilder(() {
+            Get.lazyPut(() => AllDoctorsController());
+            Get.lazyPut(() => BookingController());
+          }),
+        ),
         GetPage(
           name: '/doctor-details',
           page: () => const DoctorDetailsScreen(),
