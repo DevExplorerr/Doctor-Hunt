@@ -52,6 +52,32 @@ class BookingController extends GetxController {
             slot.contains("07:30"))) {
       return true;
     }
+
+    final String formattedSelected = DateFormat(
+      'yyyy-MM-dd',
+    ).format(selectedDate.value);
+    final String formattedToday = DateFormat(
+      'yyyy-MM-dd',
+    ).format(DateTime.now());
+
+    if (formattedSelected == formattedToday) {
+      final DateFormat parser = DateFormat("hh:mm a");
+      final DateTime parsedSlotTime = parser.parse(slot);
+      final DateTime now = DateTime.now();
+
+      final DateTime slotDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        parsedSlotTime.hour,
+        parsedSlotTime.minute,
+      );
+
+      if (slotDateTime.isBefore(now)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
