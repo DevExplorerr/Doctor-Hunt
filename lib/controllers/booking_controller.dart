@@ -29,7 +29,7 @@ class BookingController extends GetxController {
     Get.toNamed('/select-time');
   }
 
-  bool _isSlotBlocked(String slot, int dayOfWeek) {
+  bool _isSlotBlocked(String slot, int dayOfWeek, DateTime evaluationDate) {
     if (dayOfWeek == 1 && (slot.contains("02:00") || slot.contains("06:30"))) {
       return true;
     }
@@ -53,14 +53,14 @@ class BookingController extends GetxController {
       return true;
     }
 
-    final String formattedSelected = DateFormat(
+    final String formattedEvaluation = DateFormat(
       'yyyy-MM-dd',
-    ).format(selectedDate.value);
+    ).format(evaluationDate);
     final String formattedToday = DateFormat(
       'yyyy-MM-dd',
     ).format(DateTime.now());
 
-    if (formattedSelected == formattedToday) {
+    if (formattedEvaluation == formattedToday) {
       final DateFormat parser = DateFormat("hh:mm a");
       final DateTime parsedSlotTime = parser.parse(slot);
       final DateTime now = DateTime.now();
@@ -85,7 +85,7 @@ class BookingController extends GetxController {
     int dayOfWeek = selectedDate.value.weekday;
     if (dayOfWeek == 7) return [];
     return masterAfternoonSlots
-        .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+        .where((slot) => !_isSlotBlocked(slot, dayOfWeek, selectedDate.value))
         .toList();
   }
 
@@ -93,7 +93,7 @@ class BookingController extends GetxController {
     int dayOfWeek = selectedDate.value.weekday;
     if (dayOfWeek == 7) return [];
     return masterEveningSlots
-        .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+        .where((slot) => !_isSlotBlocked(slot, dayOfWeek, selectedDate.value))
         .toList();
   }
 
@@ -140,10 +140,10 @@ class BookingController extends GetxController {
     if (dayOfWeek == 7) return 0;
 
     int afternoonCount = masterAfternoonSlots
-        .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+        .where((slot) => !_isSlotBlocked(slot, dayOfWeek, date))
         .length;
     int eveningCount = masterEveningSlots
-        .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+        .where((slot) => !_isSlotBlocked(slot, dayOfWeek, date))
         .length;
 
     return afternoonCount + eveningCount;
@@ -199,10 +199,10 @@ class BookingController extends GetxController {
       if (dayOfWeek == 7) continue;
 
       List<String> validAfternoon = shiftAfternoon
-          .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+          .where((slot) => !_isSlotBlocked(slot, dayOfWeek, day))
           .toList();
       List<String> validEvening = shiftEvening
-          .where((slot) => !_isSlotBlocked(slot, dayOfWeek))
+          .where((slot) => !_isSlotBlocked(slot, dayOfWeek, day))
           .toList();
 
       String dayWord = index == 0
