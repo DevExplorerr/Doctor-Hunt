@@ -56,7 +56,7 @@ class TimeSlotsGrid extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppColors.primary
-                        : AppColors.secondary.withValues(alpha: 0.1),
+                        : AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: .circular(8),
                   ),
                   child: Text(
