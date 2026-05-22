@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../data/models/doctor_model.dart';
@@ -17,6 +18,10 @@ class BookingController extends GetxController {
 
   final masterAfternoonSlots = <String>[].obs;
   final masterEveningSlots = <String>[].obs;
+
+  var selectedPatientType = "My Self".obs;
+  var patientNameController = TextEditingController();
+  var contactNumberController = TextEditingController();
 
   List<DateTime> get upcomingDays =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
@@ -216,16 +221,7 @@ class BookingController extends GetxController {
     return "No slots this week";
   }
 
-  Future<void> confirmBooking() async {
-    if (selectedTime.isEmpty) {
-      AppSnackBar.show(
-        title: "Error",
-        message: "Please select a time slot",
-        isError: true,
-      );
-      return;
-    }
-
+  Future<bool> confirmBooking() async {
     isLoading.value = true;
     try {
       String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -235,14 +231,18 @@ class BookingController extends GetxController {
         'doctorName': selectedDoctor.value!.name,
         'date': selectedDate.value.toIso8601String(),
         'time': selectedTime.value,
+        'patientName': patientNameController.text.trim(),
+        'contact': contactNumberController.text.trim(),
+        'patientType': selectedPatientType.value,
         'status': 'upcoming',
         'createdAt': FieldValue.serverTimestamp(),
       };
 
       await _repo.saveAppointment(uid, appointment);
-      Get.offAllNamed('/thank-you');
+      return true;
     } catch (e) {
       AppSnackBar.show(title: "Booking Error", message: e.toString());
+      return false;
     } finally {
       isLoading.value = false;
     }

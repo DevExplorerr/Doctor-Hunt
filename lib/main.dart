@@ -5,6 +5,7 @@ import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
 import 'package:doctor_hunt/firebase_options.dart';
 import 'package:doctor_hunt/presentation/screens/all_doctors/all_doctors_screen.dart';
+import 'package:doctor_hunt/presentation/screens/appointment_details/appointment_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/doctor_details_screen.dart';
@@ -60,6 +61,7 @@ class DoctorHunt extends StatelessWidget {
           page: () => const DoctorDetailsScreen(),
         ),
         GetPage(name: '/select-time', page: () => const SelectTimeScreen()),
+        GetPage(name: '/appointment-details', page: () => const AppointmentDetailsScreen()),
       ],
     );
   }
