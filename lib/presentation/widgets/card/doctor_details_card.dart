@@ -10,21 +10,24 @@ class DoctorDetailsCard extends StatelessWidget {
   final DoctorModel doctor;
   final String? buttonText;
   final VoidCallback? onTap;
+  final bool? isLoading;
   const DoctorDetailsCard({
     super.key,
     required this.doctor,
     this.buttonText,
     this.onTap,
+    this.isLoading,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bool showButton = buttonText != null && onTap != null;
+    final bool showButton = buttonText != null;
+    final bool currentlyLoading = isLoading ?? false;
     return Container(
       width: .infinity,
       padding: const .all(15),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const .symmetric(horizontal: 20),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: const .all(.circular(12)),
@@ -125,10 +128,11 @@ class DoctorDetailsCard extends StatelessWidget {
           if (showButton) ...[
             const SizedBox(height: 20),
             CustomButton(
-              text: buttonText!,
+              text: buttonText ?? "",
               height: 40,
               width: 150,
-              onTap: onTap!,
+              onTap: onTap ?? () {},
+              isLoading: currentlyLoading,
             ),
           ],
         ],
