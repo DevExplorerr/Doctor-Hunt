@@ -54,4 +54,41 @@ class DoctorModel {
       patients: data['patients'] ?? 0,
     );
   }
+
+  factory DoctorModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return DoctorModel(
+      id: documentId,
+      name: data['name'] ?? 'Unknown Doctor',
+      specialty: data['specialty'] ?? 'General',
+      image: data['image'] ?? '',
+      rating: (data['rating'] ?? 0.0).toDouble(),
+      reviews: data['reviews'] ?? 0,
+      pricePerHour: (data['pricePerHour'] ?? 0.0).toDouble(),
+      isLive: data['isLive'] ?? false,
+      isPopular: data['isPopular'] ?? false,
+      isFeature: data['isFeature'] ?? false,
+      experience: data['experience'] ?? 0,
+      services: List<String>.from(data['services'] ?? []),
+      running: data['running'] ?? 0,
+      patients: data['patients'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'specialty': specialty,
+      'image': image,
+      'rating': rating,
+      'reviews': reviews,
+      'pricePerHour': pricePerHour,
+      'isLive': isLive,
+      'isPopular': isPopular,
+      'isFeature': isFeature,
+      'experience': experience,
+      'services': services,
+      'running': running,
+      'patients': patients,
+    };
+  }
 }
