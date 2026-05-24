@@ -1,5 +1,6 @@
 import 'package:doctor_hunt/controllers/all_doctors_controller.dart';
 import 'package:doctor_hunt/controllers/booking_controller.dart';
+import 'package:doctor_hunt/controllers/favorite_controller.dart';
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
@@ -23,6 +24,7 @@ void main() async {
 
   Get.put(AuthRepository());
   Get.put(DoctorRepository());
+  Get.put(FavoriteController(), permanent: true);
 
   runApp(const DoctorHunt());
 }
@@ -61,7 +63,10 @@ class DoctorHunt extends StatelessWidget {
           page: () => const DoctorDetailsScreen(),
         ),
         GetPage(name: '/select-time', page: () => const SelectTimeScreen()),
-        GetPage(name: '/appointment-details', page: () => const AppointmentDetailsScreen()),
+        GetPage(
+          name: '/appointment-details',
+          page: () => const AppointmentDetailsScreen(),
+        ),
       ],
     );
   }

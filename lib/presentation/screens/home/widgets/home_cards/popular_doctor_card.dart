@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -57,13 +58,7 @@ class PopularDoctorCard extends StatelessWidget {
                     color: AppColors.white.withValues(alpha: 0.5),
                     shape: .circle,
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.favorite,
-                      size: 18,
-                      color: AppColors.favorite,
-                    ),
-                  ),
+                  child: FavoriteButton(doctor: doctor),
                 ),
               ),
             ],

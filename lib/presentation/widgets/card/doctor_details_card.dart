@@ -3,6 +3,7 @@ import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/widgets/star_rating.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -78,14 +79,7 @@ class DoctorDetailsCard extends StatelessWidget {
                             style: textTheme.titleMedium,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.favorite,
-                            color: AppColors.favorite,
-                            size: 18,
-                          ),
-                        ),
+                        FavoriteButton(doctor: doctor),
                       ],
                     ),
                     const SizedBox(height: 3),

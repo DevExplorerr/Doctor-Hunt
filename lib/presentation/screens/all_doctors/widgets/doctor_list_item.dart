@@ -3,6 +3,7 @@ import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -95,14 +96,7 @@ class DoctorListItem extends StatelessWidget {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: const Icon(
-                  Icons.favorite_border,
-                  color: AppColors.icon,
-                  size: 20,
-                ),
-              ),
+              FavoriteButton(doctor: doctor),
             ],
           ),
           const SizedBox(height: 15),

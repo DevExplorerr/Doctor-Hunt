@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
+import 'package:doctor_hunt/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -30,11 +31,7 @@ class FeatureDoctorCard extends StatelessWidget {
           Row(
             mainAxisAlignment: .spaceBetween,
             children: [
-              const Icon(
-                Icons.favorite_border,
-                size: 18,
-                color: AppColors.icon,
-              ),
+              FavoriteButton(doctor: doctor),
               Row(
                 children: [
                   const Icon(Icons.star, color: AppColors.review, size: 16),
