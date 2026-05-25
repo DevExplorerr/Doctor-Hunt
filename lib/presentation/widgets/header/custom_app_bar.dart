@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
+  final VoidCallback? onBackPressed;
   final VoidCallback? onReset;
   final bool showReset;
 
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget {
     required this.title,
     this.onReset,
     this.showReset = false,
+    this.onBackPressed,
   });
 
   @override
@@ -22,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
         children: [
           // Back Button
           IconButton(
-            onPressed: () => Get.back(),
+            onPressed: onBackPressed ?? () => Get.back(),
             icon: const Icon(Icons.arrow_back, color: AppColors.icon),
             style: IconButton.styleFrom(
               backgroundColor: AppColors.white,
