@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/controllers/favorite_controller.dart';
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
@@ -55,8 +56,16 @@ class FavoriteScreen extends StatelessWidget {
                 padding: const .symmetric(horizontal: 20, vertical: 10),
                 itemCount: controller.favoriteDoctors.length,
                 itemBuilder: (context, index) {
-                  return FavoriteCard(
-                    doctor: controller.favoriteDoctors[index],
+                  final selectedDoctor = controller.favoriteDoctors[index];
+                  return GestureDetector(
+                    onTap: () {
+                      final bookingController = Get.put(BookingController());
+                      bookingController.selectedDoctor.value = selectedDoctor;
+                      Get.toNamed('/doctor-details');
+                    },
+                    child: FavoriteCard(
+                      doctor: controller.favoriteDoctors[index],
+                    ),
                   );
                 },
               );
