@@ -11,6 +11,7 @@ import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/profile/edit_profile_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/select_time/select_time_screen.dart';
 import 'package:doctor_hunt/presentation/screens/splash/splash_screen.dart';
@@ -67,6 +68,7 @@ class DoctorHunt extends StatelessWidget {
           name: '/appointment-details',
           page: () => const AppointmentDetailsScreen(),
         ),
+        GetPage(name: '/edit-profile', page: () => const EditProfileScreen()),
       ],
     );
   }

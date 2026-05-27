@@ -1,241 +1,226 @@
-// ignore_for_file: deprecated_member_use
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:doctor_hunt/controllers/home_controller.dart';
+import 'package:doctor_hunt/controllers/profile_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/data/repositories/auth_repository.dart';
+import 'package:doctor_hunt/presentation/screens/home/profile/widgets/profile_menu_item.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
-import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';
-import 'package:doctor_hunt/presentation/widgets/header/top_section.dart';
+import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
+import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final controller = Get.put(ProfileController());
+    final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: const Color(0xffFFFFFF).withOpacity(0.1),
-      body: Container(
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/profile_screen/profile_bg.png"),
-            fit: BoxFit.cover,
+    return MainWrapper(
+      child: Column(
+        children: [
+          CustomAppBar(
+            title: "My Profile",
+            onBackPressed: () {
+              if (Get.isRegistered<HomeController>()) {
+                Get.find<HomeController>().changeTabIndex(0);
+              } else {
+                Get.back();
+              }
+            },
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05,
-                  vertical: screenHeight * 0.03,
-                ),
-                decoration: const BoxDecoration(
-                  color: Color(0xff0EBE7F),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
+          const SizedBox(height: 20),
+
+          Expanded(
+            child: Obx(() {
+              if (controller.isLoading.value && controller.user.value == null) {
+                return Center(
+                  child: LoadingAnimationWidget.threeRotatingDots(
+                    color: AppColors.primary,
+                    size: 40,
                   ),
-                ),
+                );
+              }
+
+              final currentUser = controller.user.value;
+              final String displayName = currentUser?.name ?? "Patient";
+              final String displayEmail = currentUser?.email ?? "Not Available";
+              final String avatarUrl = currentUser?.avatar ?? "";
+
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    TopSection(
-                      text: 'Profile',
-                      textStyle: GoogleFonts.rubik(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      margin: const .symmetric(horizontal: 20),
+                      padding: const .all(20),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: .circular(16),
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                    CircleAvatar(
-                      radius: screenWidth * 0.15,
-                      backgroundImage: const AssetImage(
-                        "assets/images/profile_screen/profile.png",
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: CircleAvatar(
-                          radius: screenWidth * 0.05,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: screenWidth * 0.04,
-                            color: const Color(0xff677294),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.015),
-                    Text(
-                      "Set up your profile",
-                      style: GoogleFonts.rubik(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.045,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Text(
-                      "Update your profile to connect your doctor with better impression.",
-                      style: GoogleFonts.rubik(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.035,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05,
-                  vertical: screenHeight * 0.03,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Personal information",
-                      style: GoogleFonts.rubik(
-                        fontWeight: FontWeight.w500,
-                        fontSize: screenWidth * 0.045,
-                        color: const Color(0xff333333),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                    buildTextField("Name", "Abdullah Mamun", screenWidth),
-                    SizedBox(height: screenHeight * 0.015),
-                    buildTextField(
-                      "Contact Number",
-                      "+8801800000000",
-                      screenWidth,
-                    ),
-                    SizedBox(height: screenHeight * 0.015),
-                    buildTextField("Date of birth", "DD MM YYYY", screenWidth),
-                    SizedBox(height: screenHeight * 0.015),
-                    buildTextField("Location", "Add Details", screenWidth),
-                    SizedBox(height: screenHeight * 0.03),
-                    CustomButton(
-                      text: "Logout",
-                      onTap: () {
-                        CustomDialog.show(
-                          context,
-                          child: Column(
-                            mainAxisSize: .min,
-                            children: [
-                              Text(
-                                "Logout",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(color: AppColors.primary),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                "Are you sure you want to logout?",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      child: Text(
-                                        "Cancel",
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyLarge,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 75,
+                            width: 75,
+                            decoration: BoxDecoration(
+                              shape: .circle,
+                              border: .all(color: AppColors.white, width: 2),
+                            ),
+                            child: ClipOval(
+                              child: avatarUrl.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: avatarUrl,
+                                      fit: .cover,
+                                      placeholder: (_, __) => Container(
+                                        color: AppColors.white.withValues(
+                                          alpha: 0.2,
+                                        ),
                                       ),
+                                      errorWidget: (_, __, ___) => const Icon(
+                                        Icons.person,
+                                        size: 40,
+                                        color: AppColors.white,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 40,
+                                      color: AppColors.white,
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: CustomButton(
-                                      height: 50,
-                                      text: "Logout",
-                                      onTap: () {
-                                        AuthRepository.instance.logout();
-                                        AppSnackBar.show(
-                                          title: "Success",
-                                          message: "Logout Successfully",
-                                          snackPosition: .TOP,
-                                        );
-                                        Get.offAllNamed('/login');
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
-                        );
+                          const SizedBox(width: 15),
+
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                Text(
+                                  displayName,
+                                  style: textTheme.titleLarge?.copyWith(
+                                    color: AppColors.white,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: .ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  displayEmail,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.white.withValues(
+                                      alpha: 0.8,
+                                    ),
+                                  ),
+                                  maxLines: 1,
+                                  overflow: .ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+
+                    ProfileMenuItem(
+                      icon: Icons.edit_rounded,
+                      title: "Edit Profile",
+                      onTap: () {
+                        Get.toNamed('/edit-profile');
                       },
                     ),
+                    ProfileMenuItem(
+                      icon: Icons.history_edu_rounded,
+                      title: "My Consultations",
+                      onTap: () {},
+                    ),
+                    ProfileMenuItem(
+                      icon: Icons.lock_outline_rounded,
+                      title: "Privacy Policy",
+                      onTap: () {},
+                    ),
+                    ProfileMenuItem(
+                      icon: Icons.settings_outlined,
+                      title: "Settings",
+                      onTap: () {},
+                    ),
+
+                    const Padding(
+                      padding: .symmetric(vertical: 10),
+                      child: Divider(color: AppColors.bg),
+                    ),
+
+                    ProfileMenuItem(
+                      icon: Icons.logout_rounded,
+                      title: "Sign Out",
+                      iconColor: AppColors.red,
+                      textColor: AppColors.red,
+                      onTap: () => _showLogoutConfirmation(context, controller),
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
-              ),
-            ],
+              );
+            }),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Widget buildTextField(String label, String hintText, double screenWidth) {
-    return TextField(
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: GoogleFonts.rubik(
-          color: const Color(0xff0EBE7F),
-          fontWeight: FontWeight.w500,
-          fontSize: screenWidth * 0.04,
-        ),
-        hintText: hintText,
-        hintStyle: GoogleFonts.rubik(
-          color: const Color(0xff677294),
-          fontWeight: FontWeight.w300,
-          fontSize: screenWidth * 0.035,
-        ),
-        suffixIcon: label == "Contact Number" || label == "Date of birth"
-            ? Icon(
-                Icons.edit,
-                color: const Color(0xff677294),
-                size: screenWidth * 0.05,
-              )
-            : label == "Location"
-            ? Icon(
-                Icons.location_on,
-                color: const Color(0xff677294),
-                size: screenWidth * 0.05,
-              )
-            : null,
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        filled: true,
-        fillColor: const Color(0xffFFFFFF),
+  void _showLogoutConfirmation(
+    BuildContext context,
+    ProfileController controller,
+  ) {
+    CustomDialog.show(
+      context,
+      child: Column(
+        mainAxisSize: .min,
+        children: [
+          Text(
+            "Sign Out",
+            style: Theme.of(
+              context,
+            ).textTheme.headlineMedium?.copyWith(color: AppColors.primary),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "Are you sure you want to logout?",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: CustomButton(
+                  height: 45,
+                  text: "Sign Out",
+                  isLoading: controller.isLoading.value,
+                  onTap: () {
+                    Get.back();
+                    controller.logout();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
