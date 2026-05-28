@@ -23,6 +23,7 @@ dependencies:
   shimmer: ^3.0.0
   intl: ^0.20.2
   firebase_storage: ^13.4.1
+  file_picker: ^11.0.2
 
 dev_dependencies:
   flutter_test:
