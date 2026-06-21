@@ -78,8 +78,13 @@ class MedicalRecordsScreen extends StatelessWidget {
                     BottomSheetActionTile(
                       icon: Icons.camera_alt_outlined,
                       title: "Take a photo",
-                      onTap: () {
-                        // TODO: Implement camera logic
+                      onTap: () async {
+                        Get.back();
+                        await controller.takePhoto();
+
+                        if (controller.selectedFile.value != null) {
+                          Get.toNamed('/add-record-form');
+                        }
                       },
                     ),
                     BottomSheetActionTile(

@@ -5,9 +5,11 @@ import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MedicalRecordController extends GetxController {
   final MedicalRecordRepository _repo = MedicalRecordRepository.instance;
+  final ImagePicker _picker = ImagePicker();
 
   var records = <MedicalRecordModel>[].obs;
   var isLoading = false.obs;
@@ -50,6 +52,27 @@ class MedicalRecordController extends GetxController {
       AppSnackBar.show(
         title: "Error",
         message: "Could not pick file",
+        isError: true,
+      );
+    }
+  }
+
+  Future<void> takePhoto() async {
+    try {
+      final XFile? photo = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 85,
+      );
+
+      if (photo != null) {
+        selectedFile.value = File(photo.path);
+        selectedFileName.value =
+            "camera_capture_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      }
+    } catch (e) {
+      AppSnackBar.show(
+        title: "Camera Error",
+        message: "Failed to initialize or capture photo with device hardware",
         isError: true,
       );
     }
