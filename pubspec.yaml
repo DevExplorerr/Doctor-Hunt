@@ -25,6 +25,7 @@ dependencies:
   firebase_storage: ^13.4.1
   file_picker: ^11.0.2
   http: ^1.6.0
+  image_picker: ^1.2.2
 
 dev_dependencies:
   flutter_test:
