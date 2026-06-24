@@ -14,11 +14,14 @@ class HomeController extends GetxController {
   var featureDoctors = <DoctorModel>[].obs;
   var liveDoctors = <DoctorModel>[].obs;
 
+  var upcomingAppointments = <Map<String, dynamic>>[].obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchHomeData();
     getUserName();
+    fetchUpcomingAppointments();
   }
 
   Future<void> fetchHomeData() async {
@@ -53,4 +56,8 @@ class HomeController extends GetxController {
   }
 
   void changeTabIndex(int index) => selectedIndex.value = index;
+
+  void fetchUpcomingAppointments() async {
+    upcomingAppointments.assignAll(await _repo.getUpcomingAppointments());
+  }
 }

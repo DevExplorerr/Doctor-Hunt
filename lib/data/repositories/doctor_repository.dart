@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../models/doctor_model.dart';
 
 class DoctorRepository extends GetxService {
@@ -109,6 +112,63 @@ class DoctorRepository extends GetxService {
           .add(appointmentData);
     } catch (e) {
       throw "Booking failed: $e";
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUpcomingAppointments() async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+
+      final snapshot = await _db
+          .collection('users')
+          .doc(uid)
+          .collection('appointments')
+          .where('status', isEqualTo: 'upcoming')
+          .get();
+
+      if (snapshot.docs.isEmpty) return [];
+
+      List<Map<String, dynamic>> appointments = snapshot.docs.map((doc) {
+        var data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+
+      final now = DateTime.now();
+      final DateFormat timeParser = DateFormat("hh:mm a");
+
+      appointments.retainWhere((appt) {
+        try {
+          DateTime apptDate = DateTime.parse(appt['date']);
+          String timeString = appt['time'] ?? "12:00 AM";
+          DateTime parsedTime = timeParser.parse(timeString);
+          DateTime exactApptMoment = DateTime(
+            apptDate.year,
+            apptDate.month,
+            apptDate.day,
+            parsedTime.hour,
+            parsedTime.minute,
+          );
+
+          return exactApptMoment.isAfter(now);
+        } catch (e) {
+          DateTime fallbackDate = DateTime.parse(appt['date']);
+          return fallbackDate.isAfter(now);
+        }
+      });
+
+      if (appointments.isEmpty) return [];
+
+      appointments.sort((a, b) {
+        DateTime dateA = DateTime.parse(a['date']);
+        DateTime dateB = DateTime.parse(b['date']);
+        return dateA.compareTo(dateB);
+      });
+
+      return appointments.take(3).toList();
+    } catch (e) {
+      debugPrint("Fetch Upcoming Appointments Error: $e");
+      return [];
     }
   }
 }

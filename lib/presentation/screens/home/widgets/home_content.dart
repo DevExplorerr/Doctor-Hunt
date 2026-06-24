@@ -4,6 +4,7 @@ import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/feat
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/live_doctor_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_app_bar.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/popular_doctor_section.dart';
+import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/upcoming_appointment_section.dart';
 import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,7 @@ class HomeContent extends StatelessWidget {
                 crossAxisAlignment: .start,
                 children: [
                   const SizedBox(height: 15),
+                  const UpcomingAppointmentSection(),
                   LiveDoctorSection(controller: controller),
                   const SizedBox(height: 30),
                   const CategorySection(),

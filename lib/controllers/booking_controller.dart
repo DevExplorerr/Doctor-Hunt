@@ -229,6 +229,8 @@ class BookingController extends GetxController {
       Map<String, dynamic> appointment = {
         'doctorId': selectedDoctor.value!.id,
         'doctorName': selectedDoctor.value!.name,
+        'image': selectedDoctor.value!.image,
+        'specialty': selectedDoctor.value!.specialty,
         'date': selectedDate.value.toIso8601String(),
         'time': selectedTime.value,
         'patientName': patientNameController.text.trim(),
