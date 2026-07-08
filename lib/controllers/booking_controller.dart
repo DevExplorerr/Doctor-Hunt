@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_hunt/controllers/appointment_controller.dart';
+import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ class BookingController extends GetxController {
   final DoctorRepository _repo = DoctorRepository.instance;
 
   final selectedDoctor = Rxn<DoctorModel>();
+  var reschedulingAppointmentId = RxnString();
   final availableSlots = <String>[].obs;
   final selectedDate = DateTime.now().obs;
   final selectedTime = "".obs;
@@ -26,10 +29,11 @@ class BookingController extends GetxController {
   List<DateTime> get upcomingDays =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
 
-  void startBooking(DoctorModel doctor) {
+  void startBooking(DoctorModel doctor, {String? oldAppointmentId}) {
     selectedDoctor.value = doctor;
     selectedDate.value = DateTime.now();
     selectedTime.value = "";
+    reschedulingAppointmentId.value = oldAppointmentId;
     fetchSlots(doctor.id);
     Get.toNamed('/select-time');
   }
@@ -226,21 +230,50 @@ class BookingController extends GetxController {
     try {
       String uid = FirebaseAuth.instance.currentUser!.uid;
 
-      Map<String, dynamic> appointment = {
-        'doctorId': selectedDoctor.value!.id,
-        'doctorName': selectedDoctor.value!.name,
-        'image': selectedDoctor.value!.image,
-        'specialty': selectedDoctor.value!.specialty,
-        'date': selectedDate.value.toIso8601String(),
-        'time': selectedTime.value,
-        'patientName': patientNameController.text.trim(),
-        'contact': contactNumberController.text.trim(),
-        'patientType': selectedPatientType.value,
-        'status': 'upcoming',
-        'createdAt': FieldValue.serverTimestamp(),
-      };
+      if (reschedulingAppointmentId.value != null) {
+        await _repo.updateAppointmentTime(
+          reschedulingAppointmentId.value!,
+          selectedDate.value.toIso8601String(),
+          selectedTime.value,
+        );
+        AppSnackBar.show(
+          title: "Rescheduled",
+          message: "Appointment time updated successfully!",
+        );
+      } else {
+        Map<String, dynamic> appointment = {
+          'doctorId': selectedDoctor.value!.id,
+          'doctorName': selectedDoctor.value!.name,
+          'image': selectedDoctor.value!.image,
+          'specialty': selectedDoctor.value!.specialty,
+          'experience': selectedDoctor.value!.experience,
+          'pricePerHour': selectedDoctor.value!.pricePerHour.toDouble(),
+          'date': selectedDate.value.toIso8601String(),
+          'time': selectedTime.value,
+          'patientName': patientNameController.text.trim(),
+          'contact': contactNumberController.text.trim(),
+          'patientType': selectedPatientType.value,
+          'status': 'upcoming',
+          'createdAt': FieldValue.serverTimestamp(),
+        };
 
-      await _repo.saveAppointment(uid, appointment);
+        await _repo.saveAppointment(uid, appointment);
+        AppSnackBar.show(
+          title: "Success",
+          message: "Appointment booked successfully!",
+        );
+      }
+
+      if (Get.isRegistered<HomeController>()) {
+        Get.find<HomeController>().fetchUpcomingAppointments();
+      }
+
+      if (Get.isRegistered<AppointmentController>()) {
+        Get.find<AppointmentController>().fetchAllAppointments();
+      }
+
+      reschedulingAppointmentId.value = null;
+
       return true;
     } catch (e) {
       AppSnackBar.show(title: "Booking Error", message: e.toString());

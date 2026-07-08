@@ -86,6 +86,18 @@ class DoctorRepository extends GetxService {
     }
   }
 
+  Future<DoctorModel> getDoctorById(String doctorId) async {
+    try {
+      final doc = await _db.collection('doctors').doc(doctorId).get();
+      if (doc.exists) {
+        return DoctorModel.fromSnapshot(doc);
+      }
+      throw "Doctor not found";
+    } catch (e) {
+      throw "Fetch Doctor Error: $e";
+    }
+  }
+
   Future<List<String>> getDoctorTimeSlots(String doctorId) async {
     try {
       final snapshot = await _db
@@ -112,6 +124,30 @@ class DoctorRepository extends GetxService {
           .add(appointmentData);
     } catch (e) {
       throw "Booking failed: $e";
+    }
+  }
+
+  Future<bool> updateAppointmentTime(
+    String appointmentId,
+    String newDate,
+    String newTime,
+  ) async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      await _db
+          .collection('users')
+          .doc(uid)
+          .collection('appointments')
+          .doc(appointmentId)
+          .update({
+            'date': newDate,
+            'time': newTime,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+      return true;
+    } catch (e) {
+      debugPrint("Reschedule Update Error: $e");
+      return false;
     }
   }
 
@@ -169,6 +205,46 @@ class DoctorRepository extends GetxService {
     } catch (e) {
       debugPrint("Fetch Upcoming Appointments Error: $e");
       return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUserAppointments() async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final snapshot = await _db
+          .collection('users')
+          .doc(uid)
+          .collection('appointments')
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      return snapshot.docs.map((doc) {
+        var data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+    } catch (e) {
+      debugPrint("Fetch All Appointments Error: $e");
+      return [];
+    }
+  }
+
+  Future<bool> updateAppointmentStatus(
+    String appointmentId,
+    String newStatus,
+  ) async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      await _db
+          .collection('users')
+          .doc(uid)
+          .collection('appointments')
+          .doc(appointmentId)
+          .update({'status': newStatus});
+      return true;
+    } catch (e) {
+      debugPrint("Update Appointment Error: $e");
+      return false;
     }
   }
 }

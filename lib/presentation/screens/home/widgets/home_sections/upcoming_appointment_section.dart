@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,7 +52,9 @@ class _UpcomingAppointmentSectionState
             child: CustomHeadline(
               text: "Upcoming Appointments",
               onlyText: false,
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => const MyAppointmentsScreen());
+              },
             ),
           ),
           const SizedBox(height: 15),
@@ -150,7 +153,7 @@ class _UpcomingAppointmentSectionState
                 ),
                 child: ClipOval(
                   child: CachedNetworkImage(
-                    fit: BoxFit.cover,
+                    fit: .cover,
                     imageUrl: image,
                     placeholder: (_, __) =>
                         LoadingAnimationWidget.threeArchedCircle(
