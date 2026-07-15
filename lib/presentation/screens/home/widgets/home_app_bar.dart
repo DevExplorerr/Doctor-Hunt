@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/controllers/home_controller.dart';
+import 'package:doctor_hunt/controllers/menu_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,9 +43,13 @@ class HomeAppBar extends StatelessWidget {
               ),
             ],
           ),
-          const CircleAvatar(
-            radius: 30,
-            child: Icon(Icons.person, color: AppColors.white, size: 30),
+          IconButton(
+            onPressed: () {
+              if (Get.isRegistered<AppMenuController>()) {
+                Get.find<AppMenuController>().toggleDrawer();
+              }
+            },
+            icon: const Icon(Icons.menu_rounded, color: AppColors.white),
           ),
         ],
       ),

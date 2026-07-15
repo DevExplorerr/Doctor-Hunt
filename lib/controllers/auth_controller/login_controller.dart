@@ -1,5 +1,6 @@
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +8,6 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
-
   final forgotEmailController = TextEditingController();
 
   final isLoading = false.obs;
@@ -30,7 +30,11 @@ class LoginController extends GetxController {
           snackPosition: .BOTTOM,
         );
 
-        Get.offAllNamed('/home');
+        if (FirebaseAuth.instance.currentUser != null) {
+          Get.offAllNamed('/layout');
+        } else {
+          Get.offAllNamed('/login');
+        }
       } catch (e) {
         AppSnackBar.show(
           title: "Login Failed",

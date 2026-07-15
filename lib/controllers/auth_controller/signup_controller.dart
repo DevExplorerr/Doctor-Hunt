@@ -43,7 +43,7 @@ class SignUpController extends GetxController {
           snackPosition: .BOTTOM,
         );
 
-        Get.offAllNamed('/home');
+        Get.offAllNamed('/layout');
       } catch (e) {
         AppSnackBar.show(
           title: "Sign Up Failed",

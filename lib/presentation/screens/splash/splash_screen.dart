@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else if (!isLoggedIn) {
       Get.offAllNamed('/login');
     } else {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/layout');
     }
   }
 
