@@ -22,9 +22,12 @@ class MenuItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final profileController = Get.put(ProfileController());
+    final profileController = Get.find<ProfileController>();
 
     return ListTile(
+      contentPadding: const .symmetric(horizontal: 5),
+      horizontalTitleGap: 10,
+      minVerticalPadding: 20,
       splashColor: AppColors.white.withValues(alpha: 0.2),
       leading: Icon(icon, color: AppColors.white),
       trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.white),
@@ -33,8 +36,7 @@ class MenuItems extends StatelessWidget {
         style: textTheme.bodyLarge?.copyWith(color: AppColors.white),
         softWrap: true,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      minVerticalPadding: 25,
+      shape: RoundedRectangleBorder(borderRadius: .circular(15.0)),
       onTap: () {
         if (isLogout) {
           CustomDialog.show(
