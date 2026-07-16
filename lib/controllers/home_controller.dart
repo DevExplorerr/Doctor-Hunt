@@ -1,10 +1,12 @@
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import '../../../data/models/doctor_model.dart';
 import '../../../data/repositories/doctor_repository.dart';
 
 class HomeController extends GetxController {
   final DoctorRepository _repo = DoctorRepository.instance;
+  late PageController pageController;
 
   var userName = "User".obs;
   var selectedIndex = 0.obs;
@@ -22,6 +24,7 @@ class HomeController extends GetxController {
     fetchHomeData();
     getUserName();
     fetchUpcomingAppointments();
+    pageController = PageController(initialPage: selectedIndex.value);
   }
 
   Future<void> fetchHomeData() async {
@@ -55,9 +58,22 @@ class HomeController extends GetxController {
     }
   }
 
-  void changeTabIndex(int index) => selectedIndex.value = index;
+  void changeTabIndex(int index) {
+    selectedIndex.value = index;
+    pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   void fetchUpcomingAppointments() async {
     upcomingAppointments.assignAll(await _repo.getUpcomingAppointments());
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 }

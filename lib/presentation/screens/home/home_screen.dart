@@ -22,11 +22,14 @@ class HomeScreen extends GetView<HomeController> {
     ];
 
     return Scaffold(
-      body: Obx(
-        () => IndexedStack(
-          index: controller.selectedIndex.value,
-          children: pages,
-        ),
+      extendBody: true,
+      body: PageView(
+        controller: controller.pageController,
+        physics: const BouncingScrollPhysics(),
+        onPageChanged: (index) {
+          controller.selectedIndex.value = index;
+        },
+        children: pages,
       ),
       bottomNavigationBar: Obx(
         () => CustomBottomNavBar(
