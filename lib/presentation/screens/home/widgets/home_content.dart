@@ -44,7 +44,7 @@ class HomeContent extends StatelessWidget {
             ),
 
             Padding(
-              padding: const .symmetric(vertical: 40),
+              padding: const .only(top: 40, bottom: 120),
               child: Column(
                 crossAxisAlignment: .start,
                 children: [

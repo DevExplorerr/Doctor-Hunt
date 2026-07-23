@@ -25,7 +25,8 @@ class HomeScreen extends GetView<HomeController> {
       extendBody: true,
       body: PageView(
         controller: controller.pageController,
-        physics: const BouncingScrollPhysics(),
+        physics: const ScrollPhysics(),
+        dragStartBehavior: .down,
         onPageChanged: (index) {
           controller.selectedIndex.value = index;
         },

@@ -60,11 +60,7 @@ class HomeController extends GetxController {
 
   void changeTabIndex(int index) {
     selectedIndex.value = index;
-    pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    pageController.jumpToPage(index);
   }
 
   void fetchUpcomingAppointments() async {
