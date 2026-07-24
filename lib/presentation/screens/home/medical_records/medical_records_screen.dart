@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/controllers/medical_record_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/presentation/screens/home/pharmacy/widgets/medical_record_card.dart';
+import 'package:doctor_hunt/presentation/screens/home/medical_records/widgets/medical_record_card.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/overlays/custom_bottom_sheet.dart';
