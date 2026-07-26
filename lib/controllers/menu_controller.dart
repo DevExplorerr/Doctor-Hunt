@@ -1,6 +1,6 @@
 import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/medical_records/medical_records_screen.dart';
-import 'package:doctor_hunt/presentation/screens/home/medical_records/pharmacy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +57,7 @@ class AppMenuController extends GetxController {
           // Get.to(() => const PaymentsScreen());
           break;
         case "Medicine Orders":
-          Get.to(() => const PharmacyScreen());
+          Get.to(() => const MedicineOrdersScreen());
           break;
         case "Privacy & Policy":
           // Get.to(() => const PrivacyPolicyScreen());
