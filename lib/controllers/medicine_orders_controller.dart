@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/pharmacy_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/empty_orders_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/prescription_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +30,9 @@ class MedicineOrdersController extends GetxController {
         Get.to(() => EmptyOrdersScreen(title: title));
       }
     } else if (title == "Pharmacy") {
-      Get.to(const PharmacyScreen());
+      Get.to(() => const PharmacyScreen());
     } else if (title == "Prescription") {
-      Get.to(const PrescriptionScreen());
+      Get.to(() => const PrescriptionScreen());
     } else {
       Get.snackbar("Routing", "Going to the $title screen.");
     }

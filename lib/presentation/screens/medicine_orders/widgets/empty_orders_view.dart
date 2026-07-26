@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/pharmacy_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/state/app_empty_state.dart';
 import 'package:flutter/material.dart';
