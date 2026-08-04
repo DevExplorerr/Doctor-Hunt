@@ -50,10 +50,6 @@ flutter:
     - assets/images/
     - assets/images/onboarding_screen/
     - assets/images/live_doctor_screen/
-    - assets/images/profile_screen/
-    - assets/images/medicine_screen/
-    - assets/images/medicine_screen/medicines/
-    - assets/images/background/
 
   fonts:
     - family: Rubik
