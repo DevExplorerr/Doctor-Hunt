@@ -1,7 +1,8 @@
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_card.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/search_medicine_shimmer.dart';
+import 'package:doctor_hunt/data/models/pharmacy_model.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/medicine_grid_card.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/search_medicine_shimmer.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/state/app_empty_state.dart';
@@ -50,7 +51,7 @@ class _SearchMedicinesScreenState extends State<SearchMedicinesScreen> {
           const SizedBox(height: 15),
           Expanded(
             child: Obx(() {
-              final searchResults = [
+              final List<PharmacyModel> searchResults = <PharmacyModel>[
                 ...controller.filteredTablets,
                 ...controller.filteredSyrups,
               ];
@@ -75,16 +76,16 @@ class _SearchMedicinesScreenState extends State<SearchMedicinesScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 15,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.68,
                 ),
                 itemCount: searchResults.length,
                 itemBuilder: (context, index) {
                   final product = searchResults[index];
-                  return MedicineCard(
-                    name: product['name'],
-                    quantity: product['quantity'],
-                    image: product['image'],
-                    price: product['price'],
+                  return MedicineGridCard(
+                    name: product.name,
+                    quantity: product.quantity,
+                    image: product.image,
+                    price: product.price,
                     cartController: cartController,
                   );
                 },

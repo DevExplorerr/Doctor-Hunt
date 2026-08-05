@@ -1,7 +1,9 @@
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
+import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/all_medicines_screen.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_card.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_horizontal_card.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/pharmacy_shimmer.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
@@ -35,46 +37,40 @@ class PharmacyScreen extends StatelessWidget {
             child: SingleChildScrollView(
               padding: const .symmetric(horizontal: 15),
               child: Obx(() {
+                if (pharmacyController.isLoading.value) {
+                  return const PharmacyShimmer();
+                }
                 return Column(
                   children: [
                     const SizedBox(height: 25),
-                    if (pharmacyController.filteredTablets.isNotEmpty)
-                      ProductCategorySection(
-                        title: "Tablets",
-                        cartController: cartController,
-                        products: pharmacyController.filteredTablets,
-                        onSeeAll: () {
-                          Get.to(
-                            () => AllMedicinesScreen(
-                              categoryTitle: "All Tablets",
-                              products: pharmacyController.allTablets,
-                            ),
-                          );
-                        },
-                      ),
-                    const SizedBox(height: 20),
-
-                    if (pharmacyController.filteredSyrups.isNotEmpty)
-                      ProductCategorySection(
-                        title: "Syrup",
-                        cartController: cartController,
-                        products: pharmacyController.filteredSyrups,
-                        onSeeAll: () {
-                          Get.to(
-                            () => AllMedicinesScreen(
-                              categoryTitle: "All Syrups",
-                              products: pharmacyController.allSyrups,
-                            ),
-                          );
-                        },
-                      ),
-                    if (pharmacyController.filteredTablets.isEmpty &&
-                        pharmacyController.filteredSyrups.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 50.0),
-                        child: Text("No medicines found for your search."),
-                      ),
-                    const SizedBox(height: 20),
+                    ProductCategorySection(
+                      title: "Tablets",
+                      cartController: cartController,
+                      products: pharmacyController.filteredTablets.toList(),
+                      onSeeAll: () {
+                        Get.to(
+                          () => AllMedicinesScreen(
+                            categoryTitle: "All Tablets",
+                            products: pharmacyController.allTablets.toList(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 25),
+                    ProductCategorySection(
+                      title: "Syrup",
+                      cartController: cartController,
+                      products: pharmacyController.filteredSyrups.toList(),
+                      onSeeAll: () {
+                        Get.to(
+                          () => AllMedicinesScreen(
+                            categoryTitle: "All Syrups",
+                            products: pharmacyController.allSyrups.toList(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 40),
                   ],
                 );
               }),
@@ -89,7 +85,7 @@ class PharmacyScreen extends StatelessWidget {
 class ProductCategorySection extends StatelessWidget {
   final String title;
   final CartController cartController;
-  final List<Map<String, dynamic>> products;
+  final List<PharmacyModel> products;
   final VoidCallback onSeeAll;
 
   const ProductCategorySection({
@@ -106,22 +102,25 @@ class ProductCategorySection extends StatelessWidget {
       children: [
         CustomHeadline(onlyText: false, onPressed: onSeeAll, text: title),
         const SizedBox(height: 10),
-        SingleChildScrollView(
-          scrollDirection: .horizontal,
-          clipBehavior: .none,
-          child: Row(
-            children: products.map((product) {
-              return Padding(
-                padding: const .only(right: 15.0),
-                child: MedicineCard(
-                  name: product['name'],
-                  quantity: product['quantity'],
-                  image: product['image'],
-                  price: product['price'],
-                  cartController: cartController,
-                ),
-              );
-            }).toList(),
+        SizedBox(
+          height: 270,
+          child: SingleChildScrollView(
+            scrollDirection: .horizontal,
+            clipBehavior: .none,
+            child: Row(
+              children: products.map((product) {
+                return Padding(
+                  padding: const .only(right: 15.0),
+                  child: MedicineHorizontalCard(
+                    name: product.name,
+                    quantity: product.quantity,
+                    image: product.image,
+                    price: product.price,
+                    cartController: cartController,
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ],
