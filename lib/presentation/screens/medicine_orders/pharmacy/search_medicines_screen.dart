@@ -1,4 +1,3 @@
-import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
@@ -19,7 +18,6 @@ class SearchMedicinesScreen extends StatefulWidget {
 
 class _SearchMedicinesScreenState extends State<SearchMedicinesScreen> {
   final PharmacyController controller = Get.find<PharmacyController>();
-  final CartController cartController = Get.find<CartController>();
 
   bool isSearching = false;
 
@@ -86,7 +84,7 @@ class _SearchMedicinesScreenState extends State<SearchMedicinesScreen> {
                     quantity: product.quantity,
                     image: product.image,
                     price: product.price,
-                    cartController: cartController,
+                    onTap: () {},
                   );
                 },
               );

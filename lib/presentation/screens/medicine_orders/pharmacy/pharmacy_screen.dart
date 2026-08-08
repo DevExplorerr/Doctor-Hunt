@@ -1,4 +1,3 @@
-import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/all_medicines_screen.dart';
@@ -16,7 +15,6 @@ class PharmacyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.put(CartController());
     final PharmacyController pharmacyController = Get.put(PharmacyController());
 
     return MainWrapper(
@@ -46,7 +44,6 @@ class PharmacyScreen extends StatelessWidget {
                       const SizedBox(height: 25),
                       ProductCategorySection(
                         title: "Tablets",
-                        cartController: cartController,
                         products: pharmacyController.allTablets
                             .take(5)
                             .toList(),
@@ -65,7 +62,6 @@ class PharmacyScreen extends StatelessWidget {
                       const SizedBox(height: 25),
                       ProductCategorySection(
                         title: "Syrup",
-                        cartController: cartController,
                         products: pharmacyController.allSyrups.take(5).toList(),
                         onSeeAll: () {
                           Get.to(
@@ -92,14 +88,12 @@ class PharmacyScreen extends StatelessWidget {
 
 class ProductCategorySection extends StatelessWidget {
   final String title;
-  final CartController cartController;
   final List<PharmacyModel> products;
   final VoidCallback onSeeAll;
 
   const ProductCategorySection({
     super.key,
     required this.title,
-    required this.cartController,
     required this.products,
     required this.onSeeAll,
   });
@@ -124,7 +118,7 @@ class ProductCategorySection extends StatelessWidget {
                     quantity: product.quantity,
                     image: product.image,
                     price: product.price,
-                    cartController: cartController,
+                    onTap: () {},
                   ),
                 );
               }).toList(),

@@ -1,10 +1,8 @@
-import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AllMedicinesScreen extends StatelessWidget {
   final String categoryTitle;
@@ -18,8 +16,6 @@ class AllMedicinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.find<CartController>();
-
     return MainWrapper(
       child: Column(
         children: [
@@ -56,7 +52,7 @@ class AllMedicinesScreen extends StatelessWidget {
                       quantity: product.quantity,
                       image: product.image,
                       price: product.price,
-                      cartController: cartController,
+                      onTap: () {},
                     );
                   },
                 );
