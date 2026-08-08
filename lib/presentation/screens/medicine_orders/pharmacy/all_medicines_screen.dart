@@ -1,6 +1,6 @@
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/medicine_grid_card.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';

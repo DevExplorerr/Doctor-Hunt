@@ -72,6 +72,8 @@ class PharmacyController extends GetxController {
       focusNode.requestFocus();
     });
     await Get.toNamed('/search-medicines');
+    searchController.clear();
+    searchQuery.value = '';
     focusNode.unfocus();
   }
 

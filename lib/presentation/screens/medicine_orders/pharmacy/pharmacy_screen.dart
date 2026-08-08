@@ -37,40 +37,48 @@ class PharmacyScreen extends StatelessWidget {
             child: SingleChildScrollView(
               padding: const .symmetric(horizontal: 15),
               child: Obx(() {
-                if (pharmacyController.isLoading.value) {
-                  return const PharmacyShimmer();
-                }
                 return Column(
                   children: [
-                    const SizedBox(height: 25),
-                    ProductCategorySection(
-                      title: "Tablets",
-                      cartController: cartController,
-                      products: pharmacyController.filteredTablets.toList(),
-                      onSeeAll: () {
-                        Get.to(
-                          () => AllMedicinesScreen(
-                            categoryTitle: "All Tablets",
-                            products: pharmacyController.allTablets.toList(),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 25),
-                    ProductCategorySection(
-                      title: "Syrup",
-                      cartController: cartController,
-                      products: pharmacyController.filteredSyrups.toList(),
-                      onSeeAll: () {
-                        Get.to(
-                          () => AllMedicinesScreen(
-                            categoryTitle: "All Syrups",
-                            products: pharmacyController.allSyrups.toList(),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 40),
+                    if (pharmacyController.isLoading.value)
+                      const PharmacyShimmer(),
+                    if (!pharmacyController.isLoading.value &&
+                        pharmacyController.allTablets.isNotEmpty) ...[
+                      const SizedBox(height: 25),
+                      ProductCategorySection(
+                        title: "Tablets",
+                        cartController: cartController,
+                        products: pharmacyController.allTablets
+                            .take(5)
+                            .toList(),
+                        onSeeAll: () {
+                          Get.to(
+                            () => AllMedicinesScreen(
+                              categoryTitle: "All Tablets",
+                              products: pharmacyController.allTablets.toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                    if (!pharmacyController.isLoading.value &&
+                        pharmacyController.allSyrups.isNotEmpty) ...[
+                      const SizedBox(height: 25),
+                      ProductCategorySection(
+                        title: "Syrup",
+                        cartController: cartController,
+                        products: pharmacyController.allSyrups.take(5).toList(),
+                        onSeeAll: () {
+                          Get.to(
+                            () => AllMedicinesScreen(
+                              categoryTitle: "All Syrups",
+                              products: pharmacyController.allSyrups.toList(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 40),
+                    ],
                   ],
                 );
               }),

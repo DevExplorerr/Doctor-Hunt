@@ -39,10 +39,13 @@ class MedicineGridCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AppColors.black.withValues(alpha: 0.08),
+                color: AppColors.black.withValues(alpha: 0.06),
                 blurRadius: 15,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
+                spreadRadius: 0,
+                offset: const Offset(
+                  0,
+                  8,
+                ), // Softer, more modern downward shadow
               ),
             ],
           ),
@@ -69,20 +72,17 @@ class MedicineGridCard extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 12),
-
               Text(
                 name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
+                  height: 1.2,
                 ),
               ),
-
               const SizedBox(height: 4),
-
               Text(
                 quantity,
                 maxLines: 1,
@@ -91,9 +91,7 @@ class MedicineGridCard extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
               ),
-
               const Spacer(),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -101,35 +99,39 @@ class MedicineGridCard extends StatelessWidget {
                     child: Text(
                       "\$${price.toStringAsFixed(2)}",
                       overflow: TextOverflow.ellipsis,
-                      style: textTheme.titleMedium,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      cartController.addToCart(
-                        CartItem(
-                          name: name,
-                          price: price,
-                          image: image,
-                          quantityCount: quantityCount,
+                  const SizedBox(width: 8),
+                  Material(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(8),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {
+                        cartController.addToCart(
+                          CartItem(
+                            name: name,
+                            price: price,
+                            image: image,
+                            quantityCount: quantityCount,
+                          ),
+                        );
+                        AppSnackBar.show(
+                          title: "Added to Cart",
+                          message: "$name added successfully!",
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.add,
+                          size: 20,
+                          color: AppColors.white,
                         ),
-                      );
-
-                      AppSnackBar.show(
-                        title: "Added to Cart",
-                        message: "$name added successfully!",
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 20,
-                        color: AppColors.white,
                       ),
                     ),
                   ),
