@@ -11,6 +11,7 @@ class PharmacyController extends GetxController {
 
   var isLoading = true.obs;
   var searchQuery = ''.obs;
+  final isSearching = false.obs;
 
   var allTablets = <PharmacyModel>[].obs;
   var allSyrups = <PharmacyModel>[].obs;
@@ -39,10 +40,6 @@ class PharmacyController extends GetxController {
     }
 
     isLoading.value = false;
-  }
-
-  void updateSearch(String query) {
-    searchQuery.value = query;
   }
 
   List<PharmacyModel> get filteredTablets {
@@ -75,6 +72,16 @@ class PharmacyController extends GetxController {
     searchController.clear();
     searchQuery.value = '';
     focusNode.unfocus();
+  }
+
+  Future<void> handleSearch(String query) async {
+    isSearching.value = true;
+
+    searchQuery.value = query;
+
+    await Future.delayed(const Duration(milliseconds: 400));
+
+    isSearching.value = false;
   }
 
   @override
