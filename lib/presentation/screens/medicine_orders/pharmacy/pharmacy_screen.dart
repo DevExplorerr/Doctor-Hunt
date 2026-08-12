@@ -1,6 +1,7 @@
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/all_medicines_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/medicine_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_horizontal_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/pharmacy_shimmer.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -114,11 +115,14 @@ class ProductCategorySection extends StatelessWidget {
                 return Padding(
                   padding: const .only(right: 15.0),
                   child: MedicineHorizontalCard(
+                    id: product.id,
                     name: product.name,
                     quantity: product.quantity,
                     image: product.image,
                     price: product.price,
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => MedicineDetailsScreen(medicine: product));
+                    },
                   ),
                 );
               }).toList(),

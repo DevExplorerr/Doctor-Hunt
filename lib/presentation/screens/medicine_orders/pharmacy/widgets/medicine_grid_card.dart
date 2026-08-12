@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MedicineGridCard extends StatelessWidget {
+  final String id;
   final String name;
   final String quantity;
   final String image;
@@ -17,6 +18,7 @@ class MedicineGridCard extends StatelessWidget {
     required this.image,
     required this.price,
     required this.onTap,
+    required this.id,
   });
 
   @override
@@ -52,19 +54,22 @@ class MedicineGridCard extends StatelessWidget {
                   Center(
                     child: SizedBox(
                       height: imageHeight,
-                      child: CachedNetworkImage(
-                        imageUrl: image,
-                        fit: .contain,
-                        placeholder: (_, __) => Center(
-                          child: LoadingAnimationWidget.threeArchedCircle(
-                            color: AppColors.primary,
-                            size: 30,
+                      child: Hero(
+                        tag: 'medicine_$id',
+                        child: CachedNetworkImage(
+                          imageUrl: image,
+                          fit: .contain,
+                          placeholder: (_, __) => Center(
+                            child: LoadingAnimationWidget.threeArchedCircle(
+                              color: AppColors.primary,
+                              size: 30,
+                            ),
                           ),
-                        ),
-                        errorWidget: (_, __, ___) => const Icon(
-                          Icons.medication,
-                          size: 40,
-                          color: AppColors.icon,
+                          errorWidget: (_, __, ___) => const Icon(
+                            Icons.medication,
+                            size: 40,
+                            color: AppColors.icon,
+                          ),
                         ),
                       ),
                     ),

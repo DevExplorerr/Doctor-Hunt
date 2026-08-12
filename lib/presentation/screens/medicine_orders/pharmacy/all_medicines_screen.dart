@@ -1,8 +1,10 @@
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/medicine_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AllMedicinesScreen extends StatelessWidget {
   final String categoryTitle;
@@ -48,11 +50,14 @@ class AllMedicinesScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final product = products[index];
                     return MedicineGridCard(
+                      id: product.id,
                       name: product.name,
                       quantity: product.quantity,
                       image: product.image,
                       price: product.price,
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => MedicineDetailsScreen(medicine: product));
+                      },
                     );
                   },
                 );

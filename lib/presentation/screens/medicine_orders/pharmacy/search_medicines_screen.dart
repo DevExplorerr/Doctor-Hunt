@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/medicine_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/search_medicine_shimmer.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -71,11 +72,14 @@ class SearchMedicinesScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final product = searchResults[index];
                     return MedicineGridCard(
+                      id: product.id,
                       name: product.name,
                       quantity: product.quantity,
                       image: product.image,
                       price: product.price,
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => MedicineDetailsScreen(medicine: product));
+                      },
                     );
                   },
                 );
