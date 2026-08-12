@@ -210,7 +210,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "This is a placeholder description for ${medicine.name}. It is highly recommended to consult your doctor before using any medication. Please check the packaging for exact dosage instructions and side effects.",
+                    medicine.desciption,
                     style: textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.5,
