@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PharmacyModel {
   final String id;
   final String name;
-  final String desciption;
+  final String description;
   final String category;
   final String quantity;
   final double price;
@@ -13,7 +13,7 @@ class PharmacyModel {
   PharmacyModel({
     required this.id,
     required this.name,
-    required this.desciption,
+    required this.description,
     required this.category,
     required this.quantity,
     required this.price,
@@ -26,7 +26,7 @@ class PharmacyModel {
     return PharmacyModel(
       id: doc.id,
       name: data['name'] ?? '',
-      desciption: data['description'] ?? '',
+      description: data['description'] ?? '',
       category: data['category'] ?? '',
       quantity: data['quantity'] ?? '',
       price: (data['price'] ?? 0.0).toDouble(),
