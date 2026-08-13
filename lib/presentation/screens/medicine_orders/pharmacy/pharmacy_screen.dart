@@ -21,7 +21,7 @@ class PharmacyScreen extends StatelessWidget {
     return MainWrapper(
       child: Column(
         children: [
-          const CustomAppBar(title: "Pharmacy"),
+          const CustomAppBar(title: "Pharmacy", showCart: true),
           Padding(
             padding: const .only(left: 15, right: 15, bottom: 15),
             child: CustomSearchBar(

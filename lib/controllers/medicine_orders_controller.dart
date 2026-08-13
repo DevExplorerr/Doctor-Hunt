@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/presentation/screens/medicine_orders/cart/cart_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/pharmacy_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/empty_orders_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/prescription_screen.dart';
@@ -9,6 +10,7 @@ class MedicineOrdersController extends GetxController {
 
   final List<Map<String, dynamic>> categories = [
     {"title": "Pharmacy", "icon": Icons.local_pharmacy},
+    {"title": "Cart", "icon": Icons.shopping_cart},
     {"title": "Prescription", "icon": Icons.medication},
     {"title": "Order status", "icon": Icons.shopping_cart_checkout},
     {"title": "Order delivery", "icon": Icons.local_shipping_outlined},
@@ -33,6 +35,8 @@ class MedicineOrdersController extends GetxController {
       Get.to(() => const PharmacyScreen());
     } else if (title == "Prescription") {
       Get.to(() => const PrescriptionScreen());
+    } else if (title == "Cart") {
+      Get.to(() => const CartScreen());
     } else {
       Get.snackbar("Routing", "Going to the $title screen.");
     }

@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/controllers/medicine_orders_controller.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/widgets/medicine_category_grid.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -11,6 +12,7 @@ class MedicineOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(MedicineOrdersController());
+    Get.put(CartController());
     return const MainWrapper(
       child: Column(
         children: [
