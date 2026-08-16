@@ -226,6 +226,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                               name: medicine.name,
                               price: medicine.price,
                               image: medicine.image,
+                              quantityCount: selectedQuantity.value,
                             ),
                           );
                           Get.back();

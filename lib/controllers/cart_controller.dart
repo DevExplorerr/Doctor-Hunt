@@ -69,5 +69,7 @@ class CartController extends GetxController {
 
   double get totalWithPromo => totalWithShipping - discount.value;
 
-  int get totalItems => cartItems.length;
+  int get totalItems {
+    return cartItems.fold(0, (sum, item) => sum + item.quantityCount);
+  }
 }

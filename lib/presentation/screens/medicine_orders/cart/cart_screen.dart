@@ -48,7 +48,7 @@ class CartScreen extends StatelessWidget {
                           mainAxisAlignment: .spaceBetween,
                           children: [
                             Text(
-                              "${cartController.cartItems.length} Items",
+                              "${cartController.totalItems} Items",
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: .w700,
                                 color: AppColors.textSecondary,

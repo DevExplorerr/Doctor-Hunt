@@ -11,7 +11,7 @@ class CartIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final CartController cartController = Get.find<CartController>();
     return Obx(() {
-      final itemCount = cartController.cartItems.length;
+      final itemCount = cartController.totalItems;
       return Stack(
         alignment: Alignment.center,
         children: [
