@@ -232,6 +232,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                           AppSnackBar.show(
                             title: "Added to Cart",
                             message: "${medicine.name} added successfully!",
+                            snackPosition: .BOTTOM,
                           );
                         },
                       ),
