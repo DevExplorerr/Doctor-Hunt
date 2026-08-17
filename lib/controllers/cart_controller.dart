@@ -1,13 +1,13 @@
-import 'package:doctor_hunt/data/models/cart_item.dart';
+import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
-  var cartItems = <CartItem>[].obs;
+  var cartItems = <CartModel>[].obs;
 
   var promoCode = ''.obs;
   var discount = 0.0.obs;
 
-  void addToCart(CartItem item) {
+  void addToCart(CartModel item) {
     int index = cartItems.indexWhere((i) => i.name == item.name);
     if (index != -1) {
       cartItems[index].quantityCount++;
@@ -17,12 +17,12 @@ class CartController extends GetxController {
     }
   }
 
-  void removeFromCart(CartItem item) {
+  void removeFromCart(CartModel item) {
     cartItems.remove(item);
     cartItems.refresh();
   }
 
-  void increaseQuantity(CartItem item) {
+  void increaseQuantity(CartModel item) {
     int index = cartItems.indexWhere((i) => i.name == item.name);
     if (index != -1) {
       cartItems[index].quantityCount++;
@@ -30,7 +30,7 @@ class CartController extends GetxController {
     }
   }
 
-  void decreaseQuantity(CartItem item) {
+  void decreaseQuantity(CartModel item) {
     int index = cartItems.indexWhere((i) => i.name == item.name);
     if (index != -1 && cartItems[index].quantityCount > 1) {
       cartItems[index].quantityCount--;

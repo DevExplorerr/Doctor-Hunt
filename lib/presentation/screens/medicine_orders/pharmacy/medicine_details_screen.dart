@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/data/models/cart_item.dart';
+import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
@@ -222,7 +222,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                         borderRadius: 16,
                         onTap: () {
                           controller.addToCart(
-                            CartItem(
+                            CartModel(
                               name: medicine.name,
                               price: medicine.price,
                               image: medicine.image,
