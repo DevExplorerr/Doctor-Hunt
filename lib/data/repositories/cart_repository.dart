@@ -15,56 +15,32 @@ class CartRepository {
         .collection('users')
         .doc(uid)
         .collection('cart')
+        .doc('my_cart')
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => CartModel.fromMap(doc.data()))
+          if (!snapshot.exists || snapshot.data() == null) return [];
+
+          final data = snapshot.data()!;
+          final List items = data['items'] ?? [];
+
+          return items
+              .map((e) => CartModel.fromMap(e as Map<String, dynamic>))
               .toList();
         });
   }
 
-  Future<void> addToCart(CartModel item) async {
+  Future<void> saveCart(List<CartModel> items) async {
     if (uid == null) return;
+
+    final List<Map<String, dynamic>> mappedItems = items
+        .map((item) => item.toMap())
+        .toList();
+
     await _firestore
         .collection('users')
         .doc(uid)
         .collection('cart')
-        .doc(item.name)
-        .set(item.toMap());
-  }
-
-  Future<void> updateQuantity(String itemName, int newQuantity) async {
-    if (uid == null) return;
-    await _firestore
-        .collection('users')
-        .doc(uid)
-        .collection('cart')
-        .doc(itemName)
-        .update({'quantityCount': newQuantity});
-  }
-
-  Future<void> removeFromCart(String itemName) async {
-    if (uid == null) return;
-    await _firestore
-        .collection('users')
-        .doc(uid)
-        .collection('cart')
-        .doc(itemName)
-        .delete();
-  }
-
-  Future<void> clearCart(List<CartModel> currentItems) async {
-    if (uid == null) return;
-
-    WriteBatch batch = _firestore.batch();
-    for (var item in currentItems) {
-      var docRef = _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('cart')
-          .doc(item.name);
-      batch.delete(docRef);
-    }
-    await batch.commit();
+        .doc('my_cart')
+        .set({'items': mappedItems});
   }
 }

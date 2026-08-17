@@ -20,34 +20,44 @@ class CartController extends GetxController {
     var existingItem = cartItems.firstWhereOrNull((e) => e.name == item.name);
 
     if (existingItem != null) {
-      int newQuantity = existingItem.quantityCount + item.quantityCount;
-      _repository.updateQuantity(item.name, newQuantity);
+      existingItem.quantityCount += item.quantityCount;
     } else {
-      _repository.addToCart(item);
+      cartItems.add(item);
     }
+    _syncToFirestore();
   }
 
   void removeFromCart(CartModel item) {
-    _repository.removeFromCart(item.name);
+    cartItems.remove(item);
+    _syncToFirestore();
   }
 
   void increaseQuantity(CartModel item) {
-    _repository.updateQuantity(item.name, item.quantityCount + 1);
+    item.quantityCount++;
+    cartItems.refresh();
+    _syncToFirestore();
   }
 
   void decreaseQuantity(CartModel item) {
     if (item.quantityCount > 1) {
-      _repository.updateQuantity(item.name, item.quantityCount - 1);
+      item.quantityCount--;
+      cartItems.refresh();
+      _syncToFirestore();
     }
   }
 
   void clearCart() {
-    _repository.clearCart(cartItems.toList());
+    cartItems.clear();
+    _syncToFirestore();
     discount.value = 0.0;
     promoCode.value = '';
   }
 
-    void applyPromoCode(String code) {
+  void _syncToFirestore() {
+    _repository.saveCart(cartItems.toList());
+  }
+
+  void applyPromoCode(String code) {
     promoCode.value = code;
 
     if (code.trim().toUpperCase() == 'SAVE10') {
