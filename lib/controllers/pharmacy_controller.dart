@@ -16,59 +16,46 @@ class PharmacyController extends GetxController {
   var allTablets = <PharmacyModel>[].obs;
   var allSyrups = <PharmacyModel>[].obs;
 
+  var searchDatabase = <PharmacyModel>[].obs;
+
   @override
   void onInit() {
     super.onInit();
-    fetchMedicines();
+    fetchDashboardPreviews();
   }
 
-  Future<void> fetchMedicines() async {
+  Future<void> fetchDashboardPreviews() async {
     isLoading.value = true;
 
-    final List<PharmacyModel> fetchedMedicines = await _repository
-        .getAllMedicines();
+    final results = await Future.wait([
+      _repository.getMedicinesByCategory('Tablet', limit: 5),
+      _repository.getMedicinesByCategory('Syrup', limit: 5),
+    ]);
 
-    allTablets.clear();
-    allSyrups.clear();
-
-    for (var medicine in fetchedMedicines) {
-      if (medicine.category.toLowerCase() == 'tablet') {
-        allTablets.add(medicine);
-      } else if (medicine.category.toLowerCase() == 'syrup') {
-        allSyrups.add(medicine);
-      }
-    }
+    allTablets.assignAll(results[0]);
+    allSyrups.assignAll(results[1]);
 
     isLoading.value = false;
   }
 
-  List<PharmacyModel> get filteredTablets {
-    if (searchQuery.value.isEmpty) return allTablets;
-    return allTablets
-        .where(
-          (med) =>
-              med.name.toLowerCase().contains(searchQuery.value.toLowerCase()),
-        )
-        .toList();
-  }
-
-  List<PharmacyModel> get filteredSyrups {
-    if (searchQuery.value.isEmpty) return allSyrups;
-    return allSyrups
-        .where(
-          (med) =>
-              med.name.toLowerCase().contains(searchQuery.value.toLowerCase()),
-        )
-        .toList();
+  Future<List<PharmacyModel>> fetchFullCategory(String category) async {
+    return await _repository.getMedicinesByCategory(category);
   }
 
   Future<void> openSearchScreen() async {
     searchController.clear();
     searchQuery.value = '';
+
+    if (searchDatabase.isEmpty) {
+      searchDatabase.value = await _repository.getAllMedicinesForSearch();
+    }
+
     Future.delayed(const Duration(milliseconds: 300), () {
       focusNode.requestFocus();
     });
+
     await Get.toNamed('/search-medicines');
+
     searchController.clear();
     searchQuery.value = '';
     focusNode.unfocus();
@@ -76,12 +63,19 @@ class PharmacyController extends GetxController {
 
   Future<void> handleSearch(String query) async {
     isSearching.value = true;
-
     searchQuery.value = query;
-
     await Future.delayed(const Duration(milliseconds: 400));
-
     isSearching.value = false;
+  }
+
+  List<PharmacyModel> get filteredSearchMedicines {
+    if (searchQuery.value.isEmpty) return searchDatabase;
+    return searchDatabase
+        .where(
+          (med) =>
+              med.name.toLowerCase().contains(searchQuery.value.toLowerCase()),
+        )
+        .toList();
   }
 
   @override

@@ -36,10 +36,7 @@ class SearchMedicinesScreen extends StatelessWidget {
             const SizedBox(height: 15),
             Expanded(
               child: Obx(() {
-                final searchResults = [
-                  ...controller.filteredTablets,
-                  ...controller.filteredSyrups,
-                ];
+                final searchResults = controller.filteredSearchMedicines;
 
                 if (controller.isSearching.value) {
                   return const SearchMedicineShimmer();

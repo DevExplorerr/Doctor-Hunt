@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/cart_model.dart';
@@ -9,6 +10,7 @@ import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
   final PharmacyModel medicine;
@@ -69,11 +71,22 @@ class MedicineDetailsScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Hero(
                             tag: 'medicine_${medicine.id}',
-                            child: Image.network(
-                              medicine.image,
+                            child: CachedNetworkImage(
+                              imageUrl: medicine.image,
                               height: 220,
                               fit: .contain,
                               filterQuality: .high,
+                              placeholder: (_, __) => Center(
+                                child: LoadingAnimationWidget.threeArchedCircle(
+                                  color: AppColors.primary,
+                                  size: 30,
+                                ),
+                              ),
+                              errorWidget: (_, __, ___) => const Icon(
+                                Icons.medication,
+                                size: 40,
+                                color: AppColors.icon,
+                              ),
                             ),
                           ),
                         ),

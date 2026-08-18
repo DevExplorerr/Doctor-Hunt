@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
+import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/all_medicines_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/medicine_details_screen.dart';
@@ -10,6 +11,7 @@ import 'package:doctor_hunt/presentation/widgets/search/custom_search_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PharmacyScreen extends StatelessWidget {
   const PharmacyScreen({super.key});
@@ -48,11 +50,23 @@ class PharmacyScreen extends StatelessWidget {
                         products: pharmacyController.allTablets
                             .take(5)
                             .toList(),
-                        onSeeAll: () {
+                        onSeeAll: () async {
+                          Get.dialog(
+                            Center(
+                              child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: AppColors.primary,
+                                size: 50,
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          );
+                          final fullList = await pharmacyController
+                              .fetchFullCategory('Tablet');
+                          Get.back();
                           Get.to(
                             () => AllMedicinesScreen(
                               categoryTitle: "All Tablets",
-                              products: pharmacyController.allTablets.toList(),
+                              products: fullList,
                             ),
                           );
                         },
@@ -64,16 +78,27 @@ class PharmacyScreen extends StatelessWidget {
                       ProductCategorySection(
                         title: "Syrup",
                         products: pharmacyController.allSyrups.take(5).toList(),
-                        onSeeAll: () {
+                        onSeeAll: () async {
+                          Get.dialog(
+                            Center(
+                              child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: AppColors.primary,
+                                size: 50,
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          );
+                          final fullList = await pharmacyController
+                              .fetchFullCategory('Syrup');
+                          Get.back();
                           Get.to(
                             () => AllMedicinesScreen(
                               categoryTitle: "All Syrups",
-                              products: pharmacyController.allSyrups.toList(),
+                              products: fullList,
                             ),
                           );
                         },
                       ),
-
                       const SizedBox(height: 40),
                     ],
                   ],
