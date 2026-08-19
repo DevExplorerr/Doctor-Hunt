@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/cart_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/checkout_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';
@@ -322,7 +323,9 @@ class CartScreen extends StatelessWidget {
                         child: CustomButton(
                           text: "Checkout",
                           borderRadius: 16,
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(() => const CheckoutScreen());
+                          },
                         ),
                       ),
                     ],

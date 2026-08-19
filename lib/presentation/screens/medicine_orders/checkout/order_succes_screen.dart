@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../home/home_screen.dart';
+import '../../home/home_screen.dart';
 
 class OrderSuccesScreen extends StatelessWidget {
   const OrderSuccesScreen({super.key});
