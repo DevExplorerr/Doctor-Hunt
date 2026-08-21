@@ -1,6 +1,6 @@
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/checkout_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
+import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
@@ -51,7 +51,11 @@ class AddAddressScreen extends StatelessWidget {
                       onTap: () async {
                         bool isSaved = await controller.saveNewAddress();
                         if (isSaved) {
-                          Get.to(() => const CheckoutScreen());
+                          Get.back();
+                          AppSnackBar.show(
+                            title: 'Saved',
+                            message: 'Address saved successfully!',
+                          );
                         }
                       },
                     ),

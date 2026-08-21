@@ -85,7 +85,7 @@ class CheckoutController extends GetxController {
     await _repository.saveAllAddresses(updatedList);
     selectAddress(newAddress);
     isSavingAddress.value = false;
-    AppSnackBar.show(title: 'Saved', message: 'Address saved successfully!');
+    // AppSnackBar.show(title: 'Saved', message: 'Address saved successfully!');
     return true;
   }
 
