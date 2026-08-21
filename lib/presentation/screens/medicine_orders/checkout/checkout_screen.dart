@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/payment_option_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -117,28 +118,27 @@ class CheckoutScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  SectionCard(
+                  const SectionCard(
                     title: "Payment Method",
                     child: Column(
-                      crossAxisAlignment: .start,
                       children: [
-                        _buildPaymentOption(
+                        PaymentOptionCard(
                           title: "Cash on Delivery (COD)",
                           icon: Icons.money,
                           isActive: true,
                           isSelected: true,
                         ),
-                        const SizedBox(height: 10),
-                        _buildPaymentOption(
+                        SizedBox(height: 10),
+                        PaymentOptionCard(
                           title: "Credit/Debit Card",
-                          icon: Icons.credit_card,
+                          icon: Icons.money,
                           isActive: false,
                           isSelected: false,
                         ),
-                        const SizedBox(height: 10),
-                        _buildPaymentOption(
+                        SizedBox(height: 10),
+                        PaymentOptionCard(
                           title: "PayPal",
-                          icon: Icons.account_balance_wallet,
+                          icon: Icons.money,
                           isActive: false,
                           isSelected: false,
                         ),
@@ -273,63 +273,6 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaymentOption({
-    required String title,
-    required IconData icon,
-    required bool isActive,
-    required bool isSelected,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isSelected
-            ? AppColors.primary.withValues(alpha: 0.1)
-            : AppColors.white,
-        border: Border.all(
-          color: isSelected
-              ? AppColors.primary
-              : AppColors.textSecondary.withValues(alpha: 0.2),
-        ),
-        borderRadius: BorderRadius.circular(12),
-        backgroundBlendMode: isActive ? null : BlendMode.multiply,
-      ),
-      child: Opacity(
-        opacity: isActive ? 1.0 : 0.5,
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-            ),
-            if (!isActive)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.textSecondary.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  "Coming Soon",
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                ),
-              )
-            else if (isSelected)
-              const Icon(Icons.check_circle, color: AppColors.primary),
           ],
         ),
       ),
