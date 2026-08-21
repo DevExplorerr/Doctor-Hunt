@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/data/models/address_model.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/add_address_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/payment_option_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/summary_row.dart';
@@ -99,19 +101,177 @@ class CheckoutScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        CustomTextField(
-                          controller: controller.addressController,
-                          hintText: "Full Delivery Address",
-                          keyboardType: .streetAddress,
-                          prefixIcon: Icons.location_on_outlined,
-                        ),
+                        Obx(() {
+                          if (controller.savedAddresses.isEmpty) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                child: Text(
+                                  "No addresses saved yet.",
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return SizedBox(
+                            height: 130,
+                            child: RadioGroup<AddressModel>(
+                              groupValue: controller.selectedAddress.value,
+                              onChanged: (AddressModel? value) {
+                                if (value != null) {
+                                  controller.selectAddress(value);
+                                }
+                              },
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.savedAddresses.length,
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(width: 10),
+                                itemBuilder: (context, index) {
+                                  final addr = controller.savedAddresses[index];
+                                  final isSelected =
+                                      controller.selectedAddress.value == addr;
+                                  return GestureDetector(
+                                    onTap: () => controller.selectAddress(addr),
+                                    child: Container(
+                                      width: 280,
+                                      padding: const .all(12),
+                                      decoration: BoxDecoration(
+                                        color: isSelected
+                                            ? AppColors.primary.withValues(
+                                                alpha: 0.1,
+                                              )
+                                            : AppColors.white,
+                                        border: .all(
+                                          color: isSelected
+                                              ? AppColors.primary
+                                              : AppColors.grey.withValues(
+                                                  alpha: 0.2,
+                                                ),
+                                          width: isSelected ? 1.5 : 1.0,
+                                        ),
+                                        borderRadius: .circular(12),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: .start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: .spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 24,
+                                                    width: 24,
+                                                    child: Radio<AddressModel>(
+                                                      value: addr,
+                                                      activeColor:
+                                                          AppColors.primary,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    "Deliver Here",
+                                                    style: textTheme.bodySmall
+                                                        ?.copyWith(
+                                                          fontWeight: isSelected
+                                                              ? FontWeight.w700
+                                                              : FontWeight
+                                                                    .normal,
+                                                          color: isSelected
+                                                              ? AppColors
+                                                                    .primary
+                                                              : AppColors
+                                                                    .textSecondary,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () => controller
+                                                        .editAddress(addr),
+                                                    child: const Icon(
+                                                      Icons.edit,
+                                                      size: 18,
+                                                      color: AppColors.grey,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  GestureDetector(
+                                                    onTap: () => controller
+                                                        .deleteAddress(addr),
+                                                    child: const Icon(
+                                                      Icons.delete_outline,
+                                                      size: 18,
+                                                      color: AppColors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            addr.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: textTheme.bodyMedium
+                                                ?.copyWith(fontWeight: .w700),
+                                          ),
+                                          Text(
+                                            addr.address,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: textTheme.bodyMedium
+                                                ?.copyWith(fontWeight: .w700),
+                                          ),
+                                          const Spacer(),
+                                          Text(
+                                            addr.phoneNumber,
+                                            style: textTheme.bodySmall
+                                                ?.copyWith(
+                                                  color:
+                                                      AppColors.textSecondary,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        }),
                         const SizedBox(height: 15),
-                        CustomTextField(
-                          controller: controller.phoneController,
-                          hintText: "Phone Number",
-                          keyboardType: .phone,
-                          textInputAction: .done,
-                          prefixIcon: Icons.phone_outlined,
+                        SizedBox(
+                          width: .infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              controller.addressBeingEdited = null;
+
+                              controller.nameController.clear();
+                              controller.addressController.clear();
+                              controller.phoneController.clear();
+
+                              Get.to(() => const AddAddressScreen());
+                            },
+                            icon: const Icon(Icons.add),
+                            label: const Text("Add New Address"),
+                            style: OutlinedButton.styleFrom(
+                              padding: const .symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: .circular(12),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
