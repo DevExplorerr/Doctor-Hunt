@@ -10,9 +10,8 @@ class MedicineCategoryGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MedicineOrdersController>();
     return GridView.builder(
-      physics: const ScrollPhysics(),
-      padding: const .all(15),
-      clipBehavior: .none,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 60),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,

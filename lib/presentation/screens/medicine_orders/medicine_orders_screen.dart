@@ -17,7 +17,6 @@ class MedicineOrdersScreen extends StatelessWidget {
       child: Column(
         children: [
           CustomAppBar(title: "Medicine Orders"),
-          SizedBox(height: 20),
           Expanded(child: MedicineCategoryGrid()),
         ],
       ),
