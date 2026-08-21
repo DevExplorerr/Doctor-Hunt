@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/address_model.dart';
+import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/add_address_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/payment_option_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/summary_row.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
+import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
@@ -33,6 +35,13 @@ class CheckoutScreen extends StatelessWidget {
                   const CustomAppBar(title: "Checkout"),
                   SectionCard(
                     title: "Order Items",
+                    trailing: Text(
+                      "${controller.cartItems.length} items",
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: .w700,
+                      ),
+                    ),
                     child: Container(
                       height: 180,
                       decoration: BoxDecoration(
@@ -415,13 +424,77 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: CustomButton(
-                          text: "Place Order",
-                          borderRadius: 16,
-                          isLoading: controller.isProcessing.value,
-                          onTap: () {
-                            controller.placeOrder();
-                          },
+                        child: Obx(
+                          () => CustomButton(
+                            text: "Place Order",
+                            borderRadius: 16,
+                            isLoading: controller.isProcessing.value,
+                            onTap: () async {
+                              bool success = await controller.placeOrder();
+
+                              if (!context.mounted) return;
+
+                              if (success) {
+                                CustomDialog.show(
+                                  context,
+                                  child: Column(
+                                    mainAxisSize: .min,
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.1,
+                                          ),
+                                          shape: .circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.thumb_up_alt_rounded,
+                                          color: AppColors.primary,
+                                          size: 50,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 25),
+                                      Text(
+                                        "Thank You!",
+                                        style: textTheme.headlineSmall
+                                            ?.copyWith(
+                                              fontWeight: .w700,
+                                              color: AppColors.textPrimary,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        "Your Order is Successfully Placed",
+                                        textAlign: TextAlign.center,
+                                        style: textTheme.titleMedium?.copyWith(
+                                          fontWeight: .w600,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        "You will receive a confirmation shortly.",
+                                        textAlign: TextAlign.center,
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 30),
+                                      CustomButton(
+                                        text: "Done",
+                                        borderRadius: 16,
+                                        onTap: () {
+                                          Get.offAll(() => const HomeScreen());
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],

@@ -4,7 +4,6 @@ import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:doctor_hunt/data/models/order_model.dart';
 import 'package:doctor_hunt/data/repositories/checkout_repository.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/add_address_screen.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/order_succes_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -120,22 +119,24 @@ class CheckoutController extends GetxController {
     }
   }
 
-  Future<void> placeOrder() async {
-    if (addressController.text.trim().isEmpty ||
+  Future<bool> placeOrder() async {
+    if (nameController.text.trim().isEmpty ||
+        addressController.text.trim().isEmpty ||
         phoneController.text.trim().isEmpty) {
       AppSnackBar.show(
         title: 'Required',
         message: 'Please enter shipping details',
         isError: true,
       );
-      return;
+      return false;
     }
 
-    if (_cartController.cartItems.isEmpty) return;
+    if (_cartController.cartItems.isEmpty) return false;
 
     isProcessing.value = true;
 
     final newOrder = OrderModel(
+      name: nameController.text.trim(),
       address: addressController.text.trim(),
       phoneNumber: phoneController.text.trim(),
       subTotal: subTotal,
@@ -154,18 +155,14 @@ class CheckoutController extends GetxController {
 
     if (success) {
       _cartController.cartItems.clear();
-
-      Get.to(() => const OrderSuccesScreen());
-      AppSnackBar.show(
-        title: 'Order Placed!',
-        message: 'Your order has been placed successfully.',
-      );
+      return true;
     } else {
       AppSnackBar.show(
         title: 'Error',
         message: 'Failed to place order. Please try again.',
         isError: true,
       );
+      return false;
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:doctor_hunt/data/models/cart_model.dart';
 
 class OrderModel {
   final String? id;
+  final String name;
   final String address;
   final String phoneNumber;
   final double subTotal;
@@ -17,6 +18,7 @@ class OrderModel {
 
   OrderModel({
     this.id,
+    required this.name,
     required this.address,
     required this.phoneNumber,
     required this.subTotal,
@@ -32,6 +34,7 @@ class OrderModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'name': name,
       'address': address,
       'phoneNumber': phoneNumber,
       'subTotal': subTotal,
@@ -49,6 +52,7 @@ class OrderModel {
   factory OrderModel.fromMap(Map<String, dynamic> map, String documentId) {
     return OrderModel(
       id: documentId,
+      name: map['name'] ?? '',
       address: map['address'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       subTotal: (map['subTotal'] ?? 0.0).toDouble(),
