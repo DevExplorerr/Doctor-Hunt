@@ -1,5 +1,6 @@
 import 'package:doctor_hunt/presentation/screens/medicine_orders/address_management_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/cart/cart_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/coming_soon.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/pharmacy_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/empty_orders_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/prescription_screen.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MedicineOrdersController extends GetxController {
-  var hasOrders = false.obs;
+  var hasOrders = true.obs;
 
   final List<Map<String, dynamic>> categories = [
     {"title": "Pharmacy", "icon": Icons.local_pharmacy},
@@ -25,11 +26,12 @@ class MedicineOrdersController extends GetxController {
       "Order status",
       "Order delivery",
       "Order returns",
+      "Payments & Refunds",
     ];
 
     if (orderDependentCategories.contains(title)) {
       if (hasOrders.value) {
-        Get.snackbar("Routing", "Going to the populated $title screen.");
+        Get.to(() => ComingSoonScreen(title: title));
       } else {
         Get.to(() => EmptyOrdersScreen(title: title));
       }
