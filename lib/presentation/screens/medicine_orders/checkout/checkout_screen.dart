@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';
@@ -20,22 +22,81 @@ class CheckoutScreen extends StatelessWidget {
         child: Stack(
           children: [
             SingleChildScrollView(
+              padding: const .only(bottom: 140),
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
                   const CustomAppBar(title: "Checkout"),
-                  Padding(
-                    padding: const .symmetric(horizontal: 20),
+                  SectionCard(
+                    title: "Order Items",
+                    child: Container(
+                      height: 180,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.03),
+                        borderRadius: .circular(12),
+                      ),
+                      child: ListView.separated(
+                        padding: const .all(12),
+                        itemCount: controller.cartItems.length,
+                        separatorBuilder: (_, __) => const Divider(height: 15),
+                        itemBuilder: (context, index) {
+                          final item = controller.cartItems[index];
+                          return Row(
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: .circular(8),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: item.image,
+                                  fit: .contain,
+                                  errorWidget: (_, __, ___) =>
+                                      const Icon(Icons.medication, size: 20),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  item.name,
+                                  maxLines: 1,
+                                  overflow: .ellipsis,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                "${item.quantityCount}x",
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "\$${(item.price * item.quantityCount).toStringAsFixed(2)}",
+                                style: textTheme.titleSmall?.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: .w700,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  SectionCard(
+                    title: "Shipping Details",
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        Text(
-                          "Shipping Details",
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: .w700,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
                         CustomTextField(
                           controller: controller.addressController,
                           hintText: "Full Delivery Address",
@@ -53,49 +114,14 @@ class CheckoutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 25),
-                  const Divider(indent: 20, endIndent: 20),
+
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const .symmetric(horizontal: 20),
-                    child: Row(
+
+                  SectionCard(
+                    title: "Payment Method",
+                    child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        Expanded(
-                          child: CustomTextField(
-                            controller: controller.promoController,
-                            hintText: "Promo Code (e.g. SAVE10)",
-                            textInputAction: .done,
-                            keyboardType: .text,
-                            prefixIcon: Icons.local_offer_outlined,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        CustomButton(
-                          text: "Apply",
-                          width: 100,
-                          onTap: () {
-                            controller.applyPromoCode();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  const Divider(indent: 20, endIndent: 20),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Payment Method",
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
                         _buildPaymentOption(
                           title: "Cash on Delivery (COD)",
                           icon: Icons.money,
@@ -119,21 +145,39 @@ class CheckoutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 25),
-                  const Divider(indent: 20, endIndent: 20),
+
                   const SizedBox(height: 20),
+
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: const .symmetric(horizontal: 15),
+                    child: Row(
+                      crossAxisAlignment: .start,
                       children: [
-                        Text(
-                          "Order Summary",
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.promoController,
+                            hintText: "Promo Code (e.g. SAVE10)",
+                            textInputAction: .done,
+                            keyboardType: .text,
+                            prefixIcon: Icons.local_offer_outlined,
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(width: 10),
+                        CustomButton(
+                          text: "Apply",
+                          width: 100,
+                          onTap: controller.applyPromoCode,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  SectionCard(
+                    title: "Order Summary",
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      children: [
                         Obx(
                           () => _buildSummaryRow(
                             "Subtotal",
@@ -198,7 +242,7 @@ class CheckoutScreen extends StatelessWidget {
                             Text(
                               "Grand Total",
                               style: textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
+                                fontWeight: .w700,
                               ),
                             ),
                             Obx(

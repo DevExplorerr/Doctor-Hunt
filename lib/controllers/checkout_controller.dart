@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:doctor_hunt/data/models/order_model.dart';
 import 'package:doctor_hunt/data/repositories/checkout_repository.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/order_succes_screen.dart';
@@ -21,6 +22,7 @@ class CheckoutController extends GetxController {
   final double taxRate = 0.05;
   final double shippingFee = 10.00;
 
+  List<CartModel> get cartItems => _cartController.cartItems;
   double get subTotal => _cartController.totalPrice;
   double get taxAmount => subTotal * taxRate;
   double get grandTotal =>
