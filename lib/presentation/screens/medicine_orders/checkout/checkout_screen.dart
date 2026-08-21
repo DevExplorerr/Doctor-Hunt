@@ -3,6 +3,7 @@ import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/payment_option_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/summary_row.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';
@@ -176,35 +177,30 @@ class CheckoutScreen extends StatelessWidget {
                   SectionCard(
                     title: "Order Summary",
                     child: Column(
-                      crossAxisAlignment: .start,
                       children: [
                         Obx(
-                          () => _buildSummaryRow(
-                            "Subtotal",
-                            controller.subTotal,
-                            textTheme,
+                          () => SummaryRow(
+                            title: "Subtotal",
+                            amount: controller.subTotal,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Obx(
-                          () => _buildSummaryRow(
-                            "Tax (5%)",
-                            controller.taxAmount,
-                            textTheme,
+                          () => SummaryRow(
+                            title: "Tax (5%)",
+                            amount: controller.taxAmount,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        _buildSummaryRow(
-                          "Shipping Fee",
-                          controller.shippingFee,
-                          textTheme,
+                        SummaryRow(
+                          title: "Shipping Fee",
+                          amount: controller.shippingFee,
                         ),
                         const SizedBox(height: 8),
                         Obx(
-                          () => _buildSummaryRow(
-                            "Discount",
-                            -controller.discountAmount.value,
-                            textTheme,
+                          () => SummaryRow(
+                            title: "Discount",
+                            amount: -controller.discountAmount.value,
                             isDiscount: true,
                           ),
                         ),
@@ -276,34 +272,6 @@ class CheckoutScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSummaryRow(
-    String title,
-    double amount,
-    TextTheme textTheme, {
-    bool isDiscount = false,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-        ),
-        Text(
-          amount == 0 && isDiscount
-              ? "\$0.00"
-              : "${isDiscount ? '-' : ''}\$${amount.abs().toStringAsFixed(2)}",
-          style: textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: isDiscount && amount != 0
-                ? Colors.green
-                : AppColors.textPrimary,
-          ),
-        ),
-      ],
     );
   }
 }
