@@ -347,19 +347,17 @@ class CheckoutScreen extends StatelessWidget {
                     title: "Order Summary",
                     child: Column(
                       children: [
-                        Obx(
-                          () => SummaryRow(
-                            title: "Subtotal",
-                            amount: controller.subTotal,
-                          ),
+                        SummaryRow(
+                          title: "Subtotal",
+                          amount: controller.subTotal,
                         ),
+
                         const SizedBox(height: 8),
-                        Obx(
-                          () => SummaryRow(
-                            title: "Tax (5%)",
-                            amount: controller.taxAmount,
-                          ),
+                        SummaryRow(
+                          title: "Tax (5%)",
+                          amount: controller.taxAmount,
                         ),
+
                         const SizedBox(height: 8),
                         SummaryRow(
                           title: "Shipping Fee",
@@ -437,6 +435,7 @@ class CheckoutScreen extends StatelessWidget {
                               if (success) {
                                 CustomDialog.show(
                                   context,
+                                  barrierDismissible: false,
                                   child: Column(
                                     mainAxisSize: .min,
                                     children: [
@@ -486,6 +485,7 @@ class CheckoutScreen extends StatelessWidget {
                                         text: "Done",
                                         borderRadius: 16,
                                         onTap: () {
+                                          controller.clearLocalCart();
                                           Get.offAll(() => const HomeScreen());
                                         },
                                       ),

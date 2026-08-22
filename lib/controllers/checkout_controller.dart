@@ -30,8 +30,12 @@ class CheckoutController extends GetxController {
   final double taxRate = 0.05;
   final double shippingFee = 10.00;
 
-  List<CartModel> get cartItems => _cartController.cartItems;
-  double get subTotal => _cartController.totalPrice;
+  late final List<CartModel> checkoutItems;
+  late final double checkoutSubTotal;
+
+  List<CartModel> get cartItems => checkoutItems;
+  double get subTotal => checkoutSubTotal;
+
   double get taxAmount => subTotal * taxRate;
   double get grandTotal =>
       (subTotal + taxAmount + shippingFee) - discountAmount.value;
@@ -39,6 +43,8 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    checkoutItems = List.from(_cartController.cartItems);
+    checkoutSubTotal = _cartController.totalPrice;
     savedAddresses.bindStream(_repository.getSavedAddresses());
   }
 
@@ -125,13 +131,13 @@ class CheckoutController extends GetxController {
         phoneController.text.trim().isEmpty) {
       AppSnackBar.show(
         title: 'Required',
-        message: 'Please enter shipping details',
+        message: 'Please add/select shipping details',
         isError: true,
       );
       return false;
     }
 
-    if (_cartController.cartItems.isEmpty) return false;
+    if (checkoutItems.isEmpty) return false;
 
     isProcessing.value = true;
 
@@ -145,7 +151,7 @@ class CheckoutController extends GetxController {
       discount: discountAmount.value,
       grandTotal: grandTotal,
       paymentMethod: selectedPaymentMethod.value,
-      items: _cartController.cartItems.toList(),
+      items: checkoutItems,
       orderDate: DateTime.now(),
     );
 
@@ -154,7 +160,6 @@ class CheckoutController extends GetxController {
     isProcessing.value = false;
 
     if (success) {
-      _cartController.cartItems.clear();
       return true;
     } else {
       AppSnackBar.show(
@@ -164,6 +169,10 @@ class CheckoutController extends GetxController {
       );
       return false;
     }
+  }
+
+  void clearLocalCart() {
+    _cartController.cartItems.clear();
   }
 
   @override
