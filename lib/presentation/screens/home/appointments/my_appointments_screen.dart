@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/appointment_controller.dart';
+import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';
@@ -27,7 +28,13 @@ class MyAppointmentsScreen extends StatelessWidget {
           leading: Padding(
             padding: const .only(left: 18),
             child: IconButton(
-              onPressed: () => Get.back(),
+              onPressed: () {
+                if (Get.isRegistered<HomeController>()) {
+                  Get.find<HomeController>().changeTabIndex(0);
+                } else {
+                  Get.back();
+                }
+              },
               icon: const Icon(Icons.arrow_back, color: AppColors.white),
               style: IconButton.styleFrom(
                 backgroundColor: AppColors.primary,
@@ -101,7 +108,7 @@ class MyAppointmentsScreen extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const .all(20),
+      padding: const .only(right: 15, left: 15, top: 15, bottom: 120),
       itemCount: appointments.length,
       itemBuilder: (context, index) {
         final appt = appointments[index];

@@ -1,8 +1,8 @@
 import 'package:doctor_hunt/controllers/home_controller.dart';
-import 'package:doctor_hunt/presentation/screens/home/favorite/favorite_screen.dart';
-import 'package:doctor_hunt/presentation/screens/home/medical_records/medical_records_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/profile/profile_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_content.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/navigation/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,8 +16,8 @@ class HomeScreen extends GetView<HomeController> {
 
     final List<Widget> pages = [
       HomeContent(controller: controller),
-      const FavoriteScreen(),
-      const MedicalRecordsScreen(),
+      const MyAppointmentsScreen(),
+      const MedicineOrdersScreen(),
       const ProfileScreen(),
     ];
 

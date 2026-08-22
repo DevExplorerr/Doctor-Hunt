@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/controllers/medicine_orders_controller.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/widgets/medicine_category_grid.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -13,11 +14,20 @@ class MedicineOrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(MedicineOrdersController());
     Get.put(CartController());
-    return const MainWrapper(
+    return MainWrapper(
       child: Column(
         children: [
-          CustomAppBar(title: "Medicine Orders"),
-          Expanded(child: MedicineCategoryGrid()),
+          CustomAppBar(
+            title: "Medicine Orders",
+            onBackPressed: () {
+              if (Get.isRegistered<HomeController>()) {
+                Get.find<HomeController>().changeTabIndex(0);
+              } else {
+                Get.back();
+              }
+            },
+          ),
+          const Expanded(child: MedicineCategoryGrid()),
         ],
       ),
     );

@@ -52,11 +52,12 @@ class ProfileScreen extends StatelessWidget {
 
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
+                padding: const .only(bottom: 120),
                 child: Column(
                   children: [
                     Container(
                       margin: const .symmetric(horizontal: 20),
-                      padding: const .all(20),
+                      padding: const .all(15),
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: .circular(16),
@@ -161,7 +162,6 @@ class ProfileScreen extends StatelessWidget {
                       textColor: AppColors.red,
                       onTap: () => _showLogoutConfirmation(context, controller),
                     ),
-                    const SizedBox(height: 20),
                   ],
                 ),
               );
