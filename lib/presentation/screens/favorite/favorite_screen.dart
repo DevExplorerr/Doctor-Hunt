@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/controllers/favorite_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/presentation/screens/home/favorite/widget/favorite_card.dart';
+import 'package:doctor_hunt/presentation/screens/favorite/widget/favorite_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/state/app_empty_state.dart';
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
