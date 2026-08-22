@@ -11,7 +11,7 @@ import 'package:doctor_hunt/presentation/screens/auth/login_screen.dart';
 import 'package:doctor_hunt/presentation/screens/auth/signup_screen.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
-import 'package:doctor_hunt/presentation/screens/home/medical_records/add_record_form_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medical_records/add_record_form_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/profile/edit_profile_screen.dart';
 import 'package:doctor_hunt/presentation/screens/layout/main_layout.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/search_medicines_screen.dart';
