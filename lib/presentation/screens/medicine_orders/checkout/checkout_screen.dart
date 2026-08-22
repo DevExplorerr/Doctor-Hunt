@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/address_model.dart';
-import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
+import 'package:doctor_hunt/presentation/screens/layout/main_layout.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/add_address_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/payment_option_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/checkout/widget/section_card.dart';
@@ -486,7 +486,7 @@ class CheckoutScreen extends StatelessWidget {
                                         borderRadius: 16,
                                         onTap: () {
                                           controller.clearLocalCart();
-                                          Get.offAll(() => const HomeScreen());
+                                          Get.offAll(() => const MainLayout());
                                         },
                                       ),
                                     ],
