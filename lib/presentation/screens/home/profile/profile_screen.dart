@@ -4,6 +4,7 @@ import 'package:doctor_hunt/controllers/profile_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/home/profile/widgets/profile_menu_item.dart';
 import 'package:doctor_hunt/presentation/screens/privacy_policy/privacy_policy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/settings/settings_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -150,7 +151,9 @@ class ProfileScreen extends StatelessWidget {
                     ProfileMenuItem(
                       icon: Icons.settings_outlined,
                       title: "Settings",
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const SettingsScreen());
+                      },
                     ),
 
                     const Padding(

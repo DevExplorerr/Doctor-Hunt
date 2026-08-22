@@ -3,6 +3,7 @@ import 'package:doctor_hunt/presentation/screens/home/favorite/favorite_screen.d
 import 'package:doctor_hunt/presentation/screens/home/medical_records/medical_records_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders_screen.dart';
 import 'package:doctor_hunt/presentation/screens/privacy_policy/privacy_policy_screen.dart';
+import 'package:doctor_hunt/presentation/screens/settings/settings_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,10 +66,10 @@ class AppMenuController extends GetxController {
           Get.to(() => const PrivacyPolicyScreen());
           break;
         case "Settings":
-          // Get.to(() => const SettingsScreen());
+          Get.to(() => const SettingsScreen());
           break;
         default:
-          debugPrint("⚠️ No route defined for: $title");
+          debugPrint("No route defined for: $title");
       }
     });
   }
