@@ -47,9 +47,8 @@ flutter:
 
   assets:
     - assets/
-    - assets/images/
+    - assets/app_logo.png
     - assets/images/onboarding_screen/
-    - assets/images/live_doctor_screen/
     - assets/images/background/
 
   fonts:
