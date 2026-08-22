@@ -29,10 +29,10 @@ class MyAppointmentsScreen extends StatelessWidget {
             padding: const .only(left: 18),
             child: IconButton(
               onPressed: () {
-                if (Get.isRegistered<HomeController>()) {
-                  Get.find<HomeController>().changeTabIndex(0);
-                } else {
+                if (Navigator.of(context).canPop()) {
                   Get.back();
+                } else if (Get.isRegistered<HomeController>()) {
+                  Get.find<HomeController>().changeTabIndex(0);
                 }
               },
               icon: const Icon(Icons.arrow_back, color: AppColors.white),

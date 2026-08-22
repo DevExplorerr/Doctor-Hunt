@@ -20,10 +20,10 @@ class MedicineOrdersScreen extends StatelessWidget {
           CustomAppBar(
             title: "Medicine Orders",
             onBackPressed: () {
-              if (Get.isRegistered<HomeController>()) {
-                Get.find<HomeController>().changeTabIndex(0);
-              } else {
+              if (Navigator.of(context).canPop()) {
                 Get.back();
+              } else if (Get.isRegistered<HomeController>()) {
+                Get.find<HomeController>().changeTabIndex(0);
               }
             },
           ),

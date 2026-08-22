@@ -24,10 +24,10 @@ class MedicalRecordsScreen extends StatelessWidget {
           CustomAppBar(
             title: "Medical Records",
             onBackPressed: () {
-              if (Get.isRegistered<HomeController>()) {
-                Get.find<HomeController>().changeTabIndex(0);
-              } else {
+              if (Navigator.of(context).canPop()) {
                 Get.back();
+              } else if (Get.isRegistered<HomeController>()) {
+                Get.find<HomeController>().changeTabIndex(0);
               }
             },
           ),

@@ -1,6 +1,5 @@
 import 'package:doctor_hunt/controllers/booking_controller.dart';
 import 'package:doctor_hunt/controllers/favorite_controller.dart';
-import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/home/favorite/widget/favorite_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -20,16 +19,7 @@ class FavoriteScreen extends StatelessWidget {
     return MainWrapper(
       child: Column(
         children: [
-          CustomAppBar(
-            title: "Favorite Doctors",
-            onBackPressed: () {
-              if (Get.isRegistered<HomeController>()) {
-                Get.find<HomeController>().changeTabIndex(0);
-              } else {
-                Get.back();
-              }
-            },
-          ),
+          const CustomAppBar(title: "Favorite Doctors"),
           const SizedBox(height: 15),
           Expanded(
             child: Obx(() {
