@@ -15,9 +15,9 @@ class SidebarMenuScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final List<Map<String, dynamic>> menuItemsList = [
-      {'icon': Icons.person, 'title': "My Appointments"},
       {'icon': Icons.receipt_long, 'title': "Medical Records"},
-      {'icon': Icons.payment, 'title': "Payments"},
+      {'icon': Icons.favorite, 'title': "Favorite Doctors"},
+      {'icon': Icons.person, 'title': "My Appointments"},
       {'icon': Icons.medication, 'title': "Medicine Orders"},
       {'icon': Icons.privacy_tip, 'title': "Privacy & Policy"},
       {'icon': Icons.settings, 'title': "Settings"},

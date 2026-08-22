@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
+import 'package:doctor_hunt/presentation/screens/home/favorite/favorite_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/medical_records/medical_records_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
@@ -47,14 +48,14 @@ class AppMenuController extends GetxController {
 
     Future.delayed(const Duration(milliseconds: 250), () {
       switch (title) {
-        case "My Appointments":
-          Get.to(() => const MyAppointmentsScreen());
-          break;
         case "Medical Records":
           Get.to(() => const MedicalRecordsScreen());
           break;
-        case "Payments":
-          // Get.to(() => const PaymentsScreen());
+        case "Favorite Doctors":
+          Get.to(() => const FavoriteScreen());
+          break;
+        case "My Appointments":
+          Get.to(() => const MyAppointmentsScreen());
           break;
         case "Medicine Orders":
           Get.to(() => const MedicineOrdersScreen());
