@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/booking_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

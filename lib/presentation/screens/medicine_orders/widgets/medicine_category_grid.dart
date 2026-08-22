@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/medicine_orders_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/medicine_orders_controller.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/widgets/medicine_grid_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

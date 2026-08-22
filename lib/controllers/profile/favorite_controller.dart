@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/data/repositories/favorite_repository.dart';
 import 'package:get/get.dart';
-import '../data/models/doctor_model.dart';
-import '../presentation/widgets/feedback/app_snack_bar.dart';
+import '../../data/models/doctor_model.dart';
+import '../../presentation/widgets/feedback/app_snack_bar.dart';
 
 class FavoriteController extends GetxController {
   final FavoriteRepository _favoriteRepository = FavoriteRepository();

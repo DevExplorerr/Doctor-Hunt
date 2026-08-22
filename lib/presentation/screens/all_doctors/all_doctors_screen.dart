@@ -1,5 +1,5 @@
-import 'package:doctor_hunt/controllers/all_doctors_controller.dart';
-import 'package:doctor_hunt/controllers/booking_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/all_doctors_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/all_doctors/widgets/all_doctors_shimmer.dart';
 import 'package:doctor_hunt/presentation/screens/all_doctors/widgets/doctor_list_item.dart';

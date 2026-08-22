@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/pharmacy_controller.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/medicine_details_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/medicine_grid_card.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/widgets/shimmer/search_medicine_shimmer.dart';

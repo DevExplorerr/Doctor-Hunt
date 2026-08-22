@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_hunt/controllers/checkout_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/checkout_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/address_model.dart';
 import 'package:doctor_hunt/presentation/screens/layout/main_layout.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/booking_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/widgets/doctor_stats_row.dart';
 import 'package:doctor_hunt/presentation/screens/doctor_details/widgets/services_section.dart';
 import 'package:doctor_hunt/presentation/widgets/card/doctor_details_card.dart';

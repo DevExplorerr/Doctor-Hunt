@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/home_controller.dart';
+import 'package:doctor_hunt/controllers/layout/home_controller.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/category_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/feature_doctor_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/live_doctor_section.dart';

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/cart_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';

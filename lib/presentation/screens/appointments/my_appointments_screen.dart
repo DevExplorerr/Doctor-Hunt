@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_hunt/controllers/appointment_controller.dart';
-import 'package:doctor_hunt/controllers/home_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/appointment_controller.dart';
+import 'package:doctor_hunt/controllers/layout/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/custom_dialog.dart';

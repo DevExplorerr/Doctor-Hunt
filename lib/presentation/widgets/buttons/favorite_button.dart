@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/favorite_controller.dart';
+import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';

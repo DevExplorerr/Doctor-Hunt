@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/checkout_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/checkout_controller.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';

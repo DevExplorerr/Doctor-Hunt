@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/pharmacy_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/pharmacy_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/pharmacy_model.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/all_medicines_screen.dart';

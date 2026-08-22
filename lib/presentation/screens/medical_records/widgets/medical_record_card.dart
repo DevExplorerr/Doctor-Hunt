@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/medical_record_controller.dart';
+import 'package:doctor_hunt/controllers/profile/medical_record_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/data/models/medical_record_model.dart';
 import 'package:doctor_hunt/presentation/screens/medical_records/widgets/full_screen_image_viewer.dart';

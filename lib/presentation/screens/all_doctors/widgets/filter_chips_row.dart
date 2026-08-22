@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/all_doctors_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/all_doctors_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/favorite_controller.dart';
+import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/data/models/user_model.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/user_repository.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/menu_controller.dart';
+import 'package:doctor_hunt/controllers/layout/menu_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/layout/sidebar_menu_screen.dart';

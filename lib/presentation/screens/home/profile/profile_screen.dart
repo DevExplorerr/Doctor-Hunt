@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_hunt/controllers/home_controller.dart';
-import 'package:doctor_hunt/controllers/profile_controller.dart';
+import 'package:doctor_hunt/controllers/layout/home_controller.dart';
+import 'package:doctor_hunt/controllers/profile/profile_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/home/profile/widgets/profile_menu_item.dart';
 import 'package:doctor_hunt/presentation/screens/privacy_policy/privacy_policy_screen.dart';

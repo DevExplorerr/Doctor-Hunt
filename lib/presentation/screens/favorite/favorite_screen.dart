@@ -1,5 +1,5 @@
-import 'package:doctor_hunt/controllers/booking_controller.dart';
-import 'package:doctor_hunt/controllers/favorite_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
+import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/favorite/widget/favorite_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';

@@ -1,6 +1,6 @@
-import 'package:doctor_hunt/controllers/all_doctors_controller.dart';
-import 'package:doctor_hunt/controllers/booking_controller.dart';
-import 'package:doctor_hunt/controllers/favorite_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/all_doctors_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
+import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';

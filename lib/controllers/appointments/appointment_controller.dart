@@ -1,5 +1,5 @@
-import 'package:doctor_hunt/controllers/booking_controller.dart';
-import 'package:doctor_hunt/controllers/home_controller.dart';
+import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
+import 'package:doctor_hunt/controllers/layout/home_controller.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:get/get.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/medical_record_controller.dart';
+import 'package:doctor_hunt/controllers/profile/medical_record_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';

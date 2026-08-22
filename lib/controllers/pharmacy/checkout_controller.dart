@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/cart_controller.dart';
 import 'package:doctor_hunt/data/models/address_model.dart';
 import 'package:doctor_hunt/data/models/cart_model.dart';
 import 'package:doctor_hunt/data/models/order_model.dart';

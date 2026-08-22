@@ -1,5 +1,5 @@
-import 'package:doctor_hunt/controllers/home_controller.dart';
-import 'package:doctor_hunt/controllers/menu_controller.dart';
+import 'package:doctor_hunt/controllers/layout/home_controller.dart';
+import 'package:doctor_hunt/controllers/layout/menu_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

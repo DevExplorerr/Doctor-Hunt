@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/cart_controller.dart';
+import 'package:doctor_hunt/controllers/pharmacy/cart_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/cart/cart_screen.dart';
 import 'package:flutter/material.dart';

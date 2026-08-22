@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/controllers/profile_controller.dart';
+import 'package:doctor_hunt/controllers/profile/profile_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';

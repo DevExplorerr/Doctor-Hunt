@@ -1,8 +1,8 @@
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../../../data/models/doctor_model.dart';
-import '../../../data/repositories/doctor_repository.dart';
+import '../../../../data/models/doctor_model.dart';
+import '../../../../data/repositories/doctor_repository.dart';
 
 class HomeController extends GetxController {
   final DoctorRepository _repo = DoctorRepository.instance;

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../data/models/doctor_model.dart';
-import '../../../data/repositories/doctor_repository.dart';
+import '../../../../data/models/doctor_model.dart';
+import '../../../../data/repositories/doctor_repository.dart';
 
 class AllDoctorsController extends GetxController {
   final DoctorRepository _repo = DoctorRepository.instance;
