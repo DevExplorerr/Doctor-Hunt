@@ -1,4 +1,4 @@
-import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
+import 'package:doctor_hunt/presentation/screens/appointments/my_appointments_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/favorite/favorite_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/medical_records/medical_records_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders_screen.dart';

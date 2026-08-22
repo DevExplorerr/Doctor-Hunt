@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_hunt/controllers/home_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
-import 'package:doctor_hunt/presentation/screens/home/appointments/my_appointments_screen.dart';
+import 'package:doctor_hunt/presentation/screens/appointments/my_appointments_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_headline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
