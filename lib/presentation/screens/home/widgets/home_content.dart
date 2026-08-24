@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/controllers/layout/home_controller.dart';
+import 'package:doctor_hunt/presentation/screens/triage/widget/symptom_checker_card.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/category_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/feature_doctor_section.dart';
-import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/live_doctor_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_app_bar.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/popular_doctor_section.dart';
 import 'package:doctor_hunt/presentation/screens/home/widgets/home_sections/upcoming_appointment_section.dart';
@@ -44,15 +44,15 @@ class HomeContent extends StatelessWidget {
             ),
 
             Padding(
-              padding: const .only(top: 40, bottom: 120),
+              padding: const .only(top: 30, bottom: 120),
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
                   const SizedBox(height: 15),
                   const UpcomingAppointmentSection(),
-                  LiveDoctorSection(controller: controller),
-                  const SizedBox(height: 30),
                   const CategorySection(),
+                  const SizedBox(height: 15),
+                  const SymptomCheckerCard(),
                   const SizedBox(height: 15),
                   PopularDoctorSection(controller: controller),
                   const SizedBox(height: 15),
