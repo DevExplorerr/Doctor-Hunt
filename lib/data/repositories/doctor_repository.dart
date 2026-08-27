@@ -13,8 +13,6 @@ class DoctorRepository extends GetxService {
       _fetchSimple('isPopular', true, 5);
   Future<List<DoctorModel>> getFeatureDoctors() async =>
       _fetchSimple('isFeature', true, 5);
-  Future<List<DoctorModel>> getLiveDoctors() async =>
-      _fetchSimple('isLive', true);
 
   Future<List<DoctorModel>> _fetchSimple(
     String field,

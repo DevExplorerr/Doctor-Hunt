@@ -8,7 +8,6 @@ class DoctorModel {
   final double rating;
   final int reviews;
   final double pricePerHour;
-  final bool isLive;
   final bool isPopular;
   final bool isFeature;
   final int experience;
@@ -24,7 +23,6 @@ class DoctorModel {
     this.rating = 0.0,
     this.reviews = 0,
     this.pricePerHour = 0.0,
-    this.isLive = false,
     this.isPopular = false,
     this.isFeature = false,
     required this.experience,
@@ -45,7 +43,6 @@ class DoctorModel {
       rating: (data['rating'] ?? 0.0).toDouble(),
       reviews: data['reviews'] ?? 0,
       pricePerHour: (data['pricePerHour'] ?? 0.0).toDouble(),
-      isLive: data['isLive'] ?? false,
       isPopular: data['isPopular'] ?? false,
       isFeature: data['isFeature'] ?? false,
       experience: data['experience'] ?? 0,
@@ -64,7 +61,6 @@ class DoctorModel {
       rating: (data['rating'] ?? 0.0).toDouble(),
       reviews: data['reviews'] ?? 0,
       pricePerHour: (data['pricePerHour'] ?? 0.0).toDouble(),
-      isLive: data['isLive'] ?? false,
       isPopular: data['isPopular'] ?? false,
       isFeature: data['isFeature'] ?? false,
       experience: data['experience'] ?? 0,
@@ -82,7 +78,6 @@ class DoctorModel {
       'rating': rating,
       'reviews': reviews,
       'pricePerHour': pricePerHour,
-      'isLive': isLive,
       'isPopular': isPopular,
       'isFeature': isFeature,
       'experience': experience,

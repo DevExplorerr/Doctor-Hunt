@@ -1,22 +1,6 @@
 import 'package:doctor_hunt/presentation/widgets/loading/shimmer_loading.dart';
 import 'package:flutter/material.dart';
 
-class LiveDoctorSkeleton extends StatelessWidget {
-  const LiveDoctorSkeleton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const .only(right: 12),
-      child: const ShimmerWidget.rectangular(
-        height: 150,
-        width: 100,
-        shapeBorder: RoundedRectangleBorder(borderRadius: .all(.circular(12))),
-      ),
-    );
-  }
-}
-
 class PopularDoctorSkeleton extends StatelessWidget {
   const PopularDoctorSkeleton({super.key});
 

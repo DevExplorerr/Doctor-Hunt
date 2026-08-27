@@ -14,7 +14,6 @@ class HomeController extends GetxController {
 
   var popularDoctors = <DoctorModel>[].obs;
   var featureDoctors = <DoctorModel>[].obs;
-  var liveDoctors = <DoctorModel>[].obs;
 
   var upcomingAppointments = <Map<String, dynamic>>[].obs;
 
@@ -33,12 +32,10 @@ class HomeController extends GetxController {
       final results = await Future.wait([
         _repo.getPopularDoctors(),
         _repo.getFeatureDoctors(),
-        _repo.getLiveDoctors(),
       ]);
 
       popularDoctors.assignAll(results[0]);
       featureDoctors.assignAll(results[1]);
-      liveDoctors.assignAll(results[2]);
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {
