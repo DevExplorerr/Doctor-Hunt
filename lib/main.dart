@@ -4,6 +4,7 @@ import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
+import 'package:doctor_hunt/data/repositories/triage_repository.dart';
 import 'package:doctor_hunt/firebase_options.dart';
 import 'package:doctor_hunt/presentation/screens/all_doctors/all_doctors_screen.dart';
 import 'package:doctor_hunt/presentation/screens/appointment_details/appointment_details_screen.dart';
@@ -28,6 +29,7 @@ void main() async {
 
   Get.put(AuthRepository());
   Get.put(DoctorRepository());
+  Get.put(TriageRepository());
   Get.put(FavoriteController(), permanent: true);
 
   runApp(const DoctorHunt());

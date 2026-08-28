@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/core/constants/specialties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,69 +12,63 @@ class CategorySection extends StatelessWidget {
     final List<Map<String, dynamic>> categories = [
       {
         'name': 'Skin',
-        'searchKey': 'Dermatologist',
+        'searchKey': Specialties.dermatologist,
         'icon': Icons.face_retouching_natural_rounded,
         'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
       },
       {
         'name': 'General',
-        'searchKey': 'General Physician',
+        'searchKey': Specialties.generalPhysician,
         'icon': Icons.medical_services_rounded,
         'colors': [const Color(0xff2753F3), const Color(0xff765AFC)],
       },
       {
         'name': 'Surgery',
-        'searchKey': 'Surgeon',
+        'searchKey': Specialties.surgeon,
         'icon': Icons.content_cut_rounded,
         'colors': [const Color(0xff0EBE7E), const Color(0xff07D9AD)],
       },
       {
         'name': 'Bone',
-        'searchKey': 'Orthopedic',
+        'searchKey': Specialties.orthopedic,
         'icon': Icons.accessibility_new_rounded,
         'colors': [const Color(0xffFF484C), const Color(0xffFF6C60)],
       },
       {
         'name': 'Mental',
-        'searchKey': 'Psychologist',
+        'searchKey': Specialties.psychologist,
         'icon': Icons.psychology_rounded,
         'colors': [const Color(0xff765AFC), const Color(0xff2753F3)],
       },
       {
         'name': 'Women',
-        'searchKey': 'Gynecologist',
+        'searchKey': Specialties.gynecologist,
         'icon': Icons.pregnant_woman_rounded,
         'colors': [const Color(0xffFF6C60), const Color(0xffFF484C)],
       },
       {
         'name': 'Brain',
-        'searchKey': 'Neurologist',
+        'searchKey': Specialties.neurologist,
         'icon': Icons.settings_suggest_rounded,
         'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
       },
       {
         'name': 'Dental',
-        'searchKey': 'Dentist',
+        'searchKey': Specialties.dentist,
         'icon': Icons.health_and_safety,
         'colors': [const Color(0xff2753F3), const Color(0xff765AFC)],
       },
       {
         'name': 'Kids',
-        'searchKey': 'Pediatrician',
+        'searchKey': Specialties.pediatrician,
         'icon': Icons.child_care_rounded,
         'colors': [const Color(0xff0EBE7E), const Color(0xff07D9AD)],
       },
       {
         'name': 'Heart',
-        'searchKey': 'Cardiologist',
+        'searchKey': Specialties.cardiologist,
         'icon': CupertinoIcons.heart_fill,
         'colors': [const Color(0xffFF484C), const Color(0xffFF6C60)],
-      },
-      {
-        'name': 'Medicine',
-        'searchKey': 'Medicine',
-        'icon': Icons.medication_rounded,
-        'colors': [const Color(0xffFE7F44), const Color(0xffFFCF68)],
       },
     ];
 

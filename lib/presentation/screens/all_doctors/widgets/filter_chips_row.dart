@@ -1,5 +1,6 @@
 import 'package:doctor_hunt/controllers/appointments/all_doctors_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/core/constants/specialties.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,20 +9,7 @@ class FilterChipsRow extends StatelessWidget {
   const FilterChipsRow({super.key, required this.controller});
   @override
   Widget build(BuildContext context) {
-    final List<String> filters = [
-      "All",
-      "Dermatologist",
-      "General Physician",
-      "Surgeon",
-      "Orthopedic",
-      "Psychologist",
-      "Gynecologist",
-      "Neurologist",
-      "Dentist",
-      "Pediatrician",
-      "Cardiologist",
-      "Medicine",
-    ];
+    final List<String> filters = ['All', ...Specialties.all];
 
     final textTheme = Theme.of(context).textTheme;
     return SizedBox(
