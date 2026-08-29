@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -11,6 +13,10 @@ class SpeechService extends GetxService {
 
   void Function(String errorCode, String message)? _onError;
   void Function(String status)? _onStatus;
+
+  String? _activeLocale;
+  void Function(String words, bool isFinal)? _activeOnResult;
+  bool _busyRetried = false;
 
   bool get isInitialized => _isInitialized;
   bool get isAvailable => _isInitialized && _speech.isAvailable;
@@ -34,7 +40,17 @@ class SpeechService extends GetxService {
           SpeechToText.androidIntentLookup,
         ],
         onError: (error) {
-          _onError?.call(error.errorMsg, _mapError(error.errorMsg));
+          final code = error.errorMsg;
+          if (code == 'error_busy' &&
+              _activeOnResult != null &&
+              !_busyRetried) {
+            _busyRetried = true;
+            unawaited(_retryAfterBusy());
+            return;
+          }
+          _busyRetried = false;
+          _activeOnResult = null;
+          _onError?.call(code, _mapError(code));
         },
         onStatus: (status) {
           _onStatus?.call(status);
@@ -84,6 +100,10 @@ class SpeechService extends GetxService {
       return;
     }
 
+    _activeLocale = localeId;
+    _activeOnResult = onResult;
+    _busyRetried = false;
+
     try {
       await _speech.listen(
         onResult: (SpeechRecognitionResult result) {
@@ -99,6 +119,7 @@ class SpeechService extends GetxService {
         ),
       );
     } on Exception catch (_) {
+      _activeOnResult = null;
       _onError?.call(
         'listen_failed',
         'Unable to start voice recognition. Please try again.',
@@ -106,16 +127,32 @@ class SpeechService extends GetxService {
     }
   }
 
-  Future<void> stopListening() async {
-    if (_speech.isListening) {
-      await _speech.stop();
+  Future<void> _retryAfterBusy() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _speech.cancel();
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final onResult = _activeOnResult;
+    final locale = _activeLocale;
+    if (onResult == null || !_isInitialized) {
+      _activeOnResult = null;
+      _onError?.call(
+        'error_busy',
+        'Speech recognition is busy. Please try again.',
+      );
+      return;
     }
+
+    _busyRetried = false;
+    await startListening(localeId: locale, onResult: onResult);
+  }
+
+  Future<void> stopListening() async {
+    await _speech.stop();
   }
 
   Future<void> cancelListening() async {
-    if (_speech.isListening) {
-      await _speech.cancel();
-    }
+    await _speech.cancel();
   }
 
   static String _mapError(String errorCode) {

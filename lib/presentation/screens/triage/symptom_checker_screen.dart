@@ -252,27 +252,6 @@ class SymptomCheckerScreen extends StatelessWidget {
     return Column(
       mainAxisSize: .min,
       children: [
-        Obx(() {
-          if (controller.isCompleted) return const SizedBox.shrink();
-          return Padding(
-            padding: const .only(bottom: 8),
-            child: Row(
-              children: [
-                _buildLanguageChip(
-                  'EN',
-                  controller.selectedSttLanguage.value == 'en',
-                  controller.toggleSttLanguage,
-                ),
-                const SizedBox(width: 6),
-                _buildLanguageChip(
-                  '\u0627\u0631\u062F\u0648',
-                  controller.selectedSttLanguage.value == 'ur',
-                  controller.toggleSttLanguage,
-                ),
-              ],
-            ),
-          );
-        }),
         Row(
           crossAxisAlignment: .end,
           children: [
@@ -347,34 +326,6 @@ class SymptomCheckerScreen extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildLanguageChip(String label, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const .symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.15)
-              : AppColors.secondary.withValues(alpha: 0.05),
-          borderRadius: .circular(16),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.transparent,
-            width: 1,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-            color: isSelected ? AppColors.primary : AppColors.textSecondary,
-          ),
-        ),
-      ),
     );
   }
 }

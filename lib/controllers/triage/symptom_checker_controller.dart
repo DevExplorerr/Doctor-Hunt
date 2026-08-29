@@ -126,6 +126,9 @@ class SymptomCheckerController extends GetxController {
     await _speechService.cancelListening();
     if (_isDisposed) return;
 
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (_isDisposed) return;
+
     _recordingSession++;
     _committedSegments.clear();
     _lastFinalSegment = '';
@@ -232,7 +235,7 @@ class SymptomCheckerController extends GetxController {
     }
   }
 
-  void _onSpeechStatus(String status) {
+  void _onSpeechStatus(String status) async {
     if (_isDisposed) return;
     if (status != 'done') return;
 
@@ -245,6 +248,9 @@ class SymptomCheckerController extends GetxController {
     }
 
     if (!isListening.value) return;
+
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (_isDisposed || _recordingSession != session || _stopRequested) return;
 
     unawaited(_listenSegment(session));
   }
@@ -407,11 +413,6 @@ class SymptomCheckerController extends GetxController {
     _scrollToBottom();
 
     unawaited(_triageRepository.resetSession(previousSessionId));
-  }
-
-  void toggleSttLanguage() {
-    if (isListening.value) return;
-    selectedSttLanguage.value = selectedSttLanguage.value == 'en' ? 'ur' : 'en';
   }
 
   void _applyResponse(TriageData data) {
