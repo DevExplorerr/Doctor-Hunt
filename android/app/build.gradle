@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId "com.devexplorerr.doctor_hunt"
-        minSdk = flutter.minSdkVersion
+        minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
