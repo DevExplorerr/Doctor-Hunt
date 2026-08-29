@@ -4,6 +4,7 @@ import 'package:doctor_hunt/core/constants/specialties.dart';
 import 'package:doctor_hunt/data/models/triage_response_model.dart';
 import 'package:doctor_hunt/presentation/screens/triage/widget/emergency_warning_card.dart';
 import 'package:doctor_hunt/presentation/screens/triage/widget/follow_up_chips.dart';
+import 'package:doctor_hunt/presentation/screens/triage/widget/recording_panel.dart';
 import 'package:doctor_hunt/presentation/screens/triage/widget/thinking_loader.dart';
 import 'package:doctor_hunt/presentation/screens/triage/widget/triage_result_card.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
@@ -132,7 +133,7 @@ class SymptomCheckerScreen extends StatelessWidget {
         !isUser &&
         !controller.isTyping.value &&
         !controller.isCompleted &&
-        controller.quickReplies.isNotEmpty;
+        controller.hasChipQuestions;
 
     return Column(
       crossAxisAlignment: .start,
@@ -140,8 +141,8 @@ class SymptomCheckerScreen extends StatelessWidget {
         _buildMessageBubble(context, message),
         if (showFollowUps)
           FollowUpChips(
-            replies: controller.quickReplies.toList(),
-            onSelected: controller.sendQuickReply,
+            questions: controller.followUpQuestions.toList(),
+            onSelected: controller.sendFollowUpAnswer,
           ),
       ],
     );
@@ -230,7 +231,49 @@ class SymptomCheckerScreen extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Obx(() {
+          if (controller.isListening.value) {
+            return RecordingPanel(
+              onStop: controller.stopRecording,
+              onCancel: controller.cancelRecording,
+            );
+          }
+          return _buildIdleInput(context, controller, textTheme);
+        }),
+      ),
+    );
+  }
+
+  Widget _buildIdleInput(
+    BuildContext context,
+    SymptomCheckerController controller,
+    TextTheme textTheme,
+  ) {
+    return Column(
+      mainAxisSize: .min,
+      children: [
+        Obx(() {
+          if (controller.isCompleted) return const SizedBox.shrink();
+          return Padding(
+            padding: const .only(bottom: 8),
+            child: Row(
+              children: [
+                _buildLanguageChip(
+                  'EN',
+                  controller.selectedSttLanguage.value == 'en',
+                  controller.toggleSttLanguage,
+                ),
+                const SizedBox(width: 6),
+                _buildLanguageChip(
+                  '\u0627\u0631\u062F\u0648',
+                  controller.selectedSttLanguage.value == 'ur',
+                  controller.toggleSttLanguage,
+                ),
+              ],
+            ),
+          );
+        }),
+        Row(
           crossAxisAlignment: .end,
           children: [
             Expanded(
@@ -261,6 +304,8 @@ class SymptomCheckerScreen extends StatelessWidget {
             Obx(() {
               final isBusy = controller.isTyping.value;
               final isCompleted = controller.isCompleted;
+              final canSend =
+                  !isBusy && !isCompleted && !controller.isTextEmpty.value;
 
               return GestureDetector(
                 onTap: isBusy
@@ -268,7 +313,7 @@ class SymptomCheckerScreen extends StatelessWidget {
                     : () {
                         if (isCompleted) {
                           controller.startNewTriage();
-                        } else if (!controller.isTextEmpty.value) {
+                        } else if (canSend) {
                           controller.sendMessage();
                         } else {
                           controller.onMicPressed();
@@ -288,12 +333,10 @@ class SymptomCheckerScreen extends StatelessWidget {
                     child: Icon(
                       isCompleted
                           ? Icons.refresh_rounded
-                          : (controller.isTextEmpty.value
-                                ? Icons.mic
-                                : Icons.send),
-                      key: ValueKey<bool>(
-                        isCompleted || controller.isTextEmpty.value,
-                      ),
+                          : canSend
+                          ? Icons.send
+                          : Icons.mic,
+                      key: ValueKey<String>('$isCompleted-$canSend'),
                       color: AppColors.white,
                       size: 24,
                     ),
@@ -302,6 +345,34 @@ class SymptomCheckerScreen extends StatelessWidget {
               );
             }),
           ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLanguageChip(String label, bool isSelected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const .symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withValues(alpha: 0.15)
+              : AppColors.secondary.withValues(alpha: 0.05),
+          borderRadius: .circular(16),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            color: isSelected ? AppColors.primary : AppColors.textSecondary,
+          ),
         ),
       ),
     );

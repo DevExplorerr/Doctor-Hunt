@@ -4,6 +4,70 @@ enum TriageStage { collecting, complete }
 
 enum TriageUrgency { normal, elevated, urgent, emergency }
 
+enum FollowUpAnswerType { singleChoice, freeText }
+
+class FollowUpQuestion {
+  final String id;
+  final String question;
+  final FollowUpAnswerType answerType;
+  final List<String> options;
+
+  const FollowUpQuestion({
+    required this.id,
+    required this.question,
+    required this.answerType,
+    this.options = const [],
+  });
+
+  bool get hasChips =>
+      answerType == FollowUpAnswerType.singleChoice && options.isNotEmpty;
+
+  factory FollowUpQuestion.fromJson(dynamic json) {
+    if (json is String) {
+      final question = json.trim();
+      return FollowUpQuestion(
+        id: 'legacy',
+        question: question,
+        answerType: FollowUpAnswerType.freeText,
+      );
+    }
+    if (json is! Map<String, dynamic>) {
+      return const FollowUpQuestion(
+        id: 'invalid',
+        question: '',
+        answerType: FollowUpAnswerType.freeText,
+      );
+    }
+
+    final question = json['question'] is String
+        ? (json['question'] as String).trim()
+        : '';
+
+    var answerType = FollowUpAnswerType.freeText;
+    if (json['answerType'] == 'single_choice') {
+      answerType = FollowUpAnswerType.singleChoice;
+    }
+
+    var options = _stringList(json['options']);
+
+    if (answerType == FollowUpAnswerType.singleChoice && options.length < 2) {
+      answerType = FollowUpAnswerType.freeText;
+      options = const [];
+    }
+
+    final id = json['id'] is String && (json['id'] as String).trim().isNotEmpty
+        ? (json['id'] as String).trim()
+        : 'question';
+
+    return FollowUpQuestion(
+      id: id,
+      question: question,
+      answerType: answerType,
+      options: options,
+    );
+  }
+}
+
 class ChatMessage {
   final bool isUser;
   final String text;
@@ -36,7 +100,7 @@ class TriageData {
   final String language;
   final TriageUrgency urgency;
   final String? specialty;
-  final List<String> followUpQuestions;
+  final List<FollowUpQuestion> followUpQuestions;
   final TriageResult? triage;
   final String? homeCare;
 
@@ -67,7 +131,7 @@ class TriageData {
       specialty: json['specialty'] is String
           ? json['specialty'] as String
           : null,
-      followUpQuestions: _stringList(json['followUpQuestions']),
+      followUpQuestions: _followUpList(json['followUpQuestions']),
       triage: triageJson is Map<String, dynamic>
           ? TriageResult.fromJson(triageJson)
           : null,
@@ -128,4 +192,13 @@ List<String> _stringList(dynamic value) {
         .toList();
   }
   return const [];
+}
+
+List<FollowUpQuestion> _followUpList(dynamic value) {
+  if (value is! List) return const [];
+  return value
+      .map(FollowUpQuestion.fromJson)
+      .where((q) => q.question.isNotEmpty)
+      .take(2)
+      .toList();
 }

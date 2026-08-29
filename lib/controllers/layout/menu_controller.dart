@@ -5,7 +5,6 @@ import 'package:doctor_hunt/presentation/screens/medicine_orders/medicine_orders
 import 'package:doctor_hunt/presentation/screens/privacy_policy/privacy_policy_screen.dart';
 import 'package:doctor_hunt/presentation/screens/settings/settings_screen.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
@@ -69,7 +68,7 @@ class AppMenuController extends GetxController {
           Get.to(() => const SettingsScreen());
           break;
         default:
-          debugPrint("No route defined for: $title");
+          break;
       }
     });
   }

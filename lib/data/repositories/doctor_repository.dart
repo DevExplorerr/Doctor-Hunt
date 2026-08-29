@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../models/doctor_model.dart';
@@ -144,7 +143,6 @@ class DoctorRepository extends GetxService {
           });
       return true;
     } catch (e) {
-      debugPrint("Reschedule Update Error: $e");
       return false;
     }
   }
@@ -201,7 +199,6 @@ class DoctorRepository extends GetxService {
 
       return appointments.take(3).toList();
     } catch (e) {
-      debugPrint("Fetch Upcoming Appointments Error: $e");
       return [];
     }
   }
@@ -222,7 +219,6 @@ class DoctorRepository extends GetxService {
         return data;
       }).toList();
     } catch (e) {
-      debugPrint("Fetch All Appointments Error: $e");
       return [];
     }
   }
@@ -241,7 +237,6 @@ class DoctorRepository extends GetxService {
           .update({'status': newStatus});
       return true;
     } catch (e) {
-      debugPrint("Update Appointment Error: $e");
       return false;
     }
   }
