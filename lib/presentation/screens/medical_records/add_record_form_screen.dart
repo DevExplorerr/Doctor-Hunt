@@ -80,18 +80,14 @@ class AddRecordFormScreen extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     Text(
-                      "Record for",
+                      "Choose a title for this record: ",
                       style: textTheme.bodyLarge?.copyWith(fontWeight: .bold),
                     ),
                     const SizedBox(height: 10),
                     CustomTextField(
                       controller: controller.titleController,
-                      hintText: "E.g. John Doe",
-                    ),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                      controller: controller.doctorNameController,
-                      hintText: "Enter Doctor Name",
+                      hintText: "Document title",
+                      textInputAction: .done,
                     ),
                     const SizedBox(height: 25),
 

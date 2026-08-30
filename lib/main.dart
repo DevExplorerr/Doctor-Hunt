@@ -3,6 +3,7 @@ import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
 import 'package:doctor_hunt/controllers/profile/favorite_controller.dart';
 import 'package:doctor_hunt/core/theme/app_theme.dart';
 import 'package:doctor_hunt/data/repositories/auth_repository.dart';
+import 'package:doctor_hunt/data/repositories/decoder_repository.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
 import 'package:doctor_hunt/data/repositories/triage_repository.dart';
 import 'package:doctor_hunt/data/services/speech_service.dart';
@@ -16,6 +17,7 @@ import 'package:doctor_hunt/presentation/screens/home/home_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medical_records/add_record_form_screen.dart';
 import 'package:doctor_hunt/presentation/screens/home/profile/edit_profile_screen.dart';
 import 'package:doctor_hunt/presentation/screens/layout/main_layout.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/document_decoder_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/search_medicines_screen.dart';
 import 'package:doctor_hunt/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:doctor_hunt/presentation/screens/select_time/select_time_screen.dart';
@@ -31,6 +33,7 @@ void main() async {
   Get.put(AuthRepository());
   Get.put(DoctorRepository());
   Get.put(TriageRepository());
+  Get.put(DecoderRepository());
   Get.put(SpeechService());
   Get.put(FavoriteController(), permanent: true);
 
@@ -84,6 +87,10 @@ class DoctorHunt extends StatelessWidget {
         GetPage(
           name: '/search-medicines',
           page: () => const SearchMedicinesScreen(),
+        ),
+        GetPage(
+          name: '/document-decoder',
+          page: () => const DocumentDecoderScreen(),
         ),
       ],
     );

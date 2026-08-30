@@ -100,12 +100,12 @@ class MedicalRecordCard extends StatelessWidget {
                 crossAxisAlignment: .start,
                 children: [
                   Text(
-                    "Records added by you",
-                    style: textTheme.titleMedium?.copyWith(fontWeight: .w700),
+                    "Record for ${record.title}",
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "Record for ${record.title}",
+                    "Records added by you",
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: .w500,

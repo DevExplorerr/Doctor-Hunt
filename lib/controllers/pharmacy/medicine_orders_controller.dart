@@ -3,7 +3,7 @@ import 'package:doctor_hunt/presentation/screens/medicine_orders/cart/cart_scree
 import 'package:doctor_hunt/presentation/screens/medicine_orders/coming_soon.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/pharmacy/pharmacy_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/empty_orders_screen.dart';
-import 'package:doctor_hunt/presentation/screens/medicine_orders/prescription_screen.dart';
+import 'package:doctor_hunt/presentation/screens/medicine_orders/document_decoder_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +14,7 @@ class MedicineOrdersController extends GetxController {
     {"title": "Pharmacy", "icon": Icons.local_pharmacy},
     {"title": "Cart", "icon": Icons.shopping_cart},
     {"title": "Addresses", "icon": Icons.location_on},
-    {"title": "Prescription", "icon": Icons.medication},
+    {"title": "Document Decoder", "icon": Icons.document_scanner_outlined},
     {"title": "Order status", "icon": Icons.shopping_cart_checkout},
     {"title": "Order delivery", "icon": Icons.local_shipping_outlined},
     {"title": "Payments & Refunds", "icon": Icons.payment_outlined},
@@ -37,8 +37,8 @@ class MedicineOrdersController extends GetxController {
       }
     } else if (title == "Pharmacy") {
       Get.to(() => const PharmacyScreen());
-    } else if (title == "Prescription") {
-      Get.to(() => const PrescriptionScreen());
+    } else if (title == "Document Decoder") {
+      Get.to(() => const DocumentDecoderScreen());
     } else if (title == "Cart") {
       Get.to(() => const CartScreen());
     } else if (title == "Addresses") {

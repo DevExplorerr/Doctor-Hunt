@@ -17,7 +17,6 @@ class MedicalRecordController extends GetxController {
   var selectedRecordType = 'Prescription'.obs;
 
   late TextEditingController titleController;
-  late TextEditingController doctorNameController;
 
   var selectedFile = Rxn<File>();
   var selectedFileName = "".obs;
@@ -26,14 +25,12 @@ class MedicalRecordController extends GetxController {
   void onInit() {
     super.onInit();
     titleController = TextEditingController();
-    doctorNameController = TextEditingController();
     fetchRecords();
   }
 
   @override
   void onClose() {
     titleController.dispose();
-    doctorNameController.dispose();
     super.onClose();
   }
 
@@ -101,9 +98,8 @@ class MedicalRecordController extends GetxController {
 
   Future<bool> saveRecord() async {
     final title = titleController.text.trim();
-    final doctor = doctorNameController.text.trim();
 
-    if (title.isEmpty || doctor.isEmpty || selectedFile.value == null) {
+    if (title.isEmpty || selectedFile.value == null) {
       AppSnackBar.show(
         title: "Required",
         message: "Please fill all fields and select a file",
@@ -126,7 +122,6 @@ class MedicalRecordController extends GetxController {
       final newRecord = MedicalRecordModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: title,
-        doctorName: doctor.isEmpty ? "General Doctor" : doctor,
         fileUrl: fileUrl,
         recordType: selectedRecordType.value,
         createdAt: DateTime.now(),
@@ -136,7 +131,6 @@ class MedicalRecordController extends GetxController {
 
       records.insert(0, newRecord);
       titleController.clear();
-      doctorNameController.clear();
       clearSelection();
 
       return true;
