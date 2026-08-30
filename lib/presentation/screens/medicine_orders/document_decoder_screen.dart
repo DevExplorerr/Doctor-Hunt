@@ -1,7 +1,9 @@
 import 'package:doctor_hunt/controllers/decoder/decoder_controller.dart';
 import 'package:doctor_hunt/core/constants/app_colors.dart';
+import 'package:doctor_hunt/presentation/screens/medical_records/medical_records_screen.dart';
 import 'package:doctor_hunt/presentation/screens/medicine_orders/widgets/decoder_result_card.dart';
 import 'package:doctor_hunt/presentation/widgets/buttons/custom_button.dart';
+import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/header/custom_app_bar.dart';
 import 'package:doctor_hunt/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:doctor_hunt/presentation/widgets/overlays/custom_bottom_sheet.dart';
@@ -374,15 +376,51 @@ class DocumentDecoderScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Obx(
-                      () => CustomButton(
-                        text: 'Save to Records',
-                        height: 46,
-                        isLoading: controller.isSavingRecord.value,
-                        buttonColor: AppColors.secondary,
-                        onTap: () => _showSaveDialog(context, controller),
-                      ),
-                    ),
+                    child: Obx(() {
+                      if (controller.isSavedToMedicalRecords.value) {
+                        return Center(
+                          child: Container(
+                            height: 46,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary.withValues(
+                                alpha: 0.15,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.secondary,
+                                  size: 18,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Saved to Records',
+                                  style: TextStyle(
+                                    color: AppColors.secondary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: CustomButton(
+                          text: 'Save to Records',
+                          height: 46,
+                          isLoading: controller.isSavingRecord.value,
+                          buttonColor: AppColors.secondary,
+                          onTap: () => _showSaveDialog(context, controller),
+                        ),
+                      );
+                    }),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -482,13 +520,14 @@ class DocumentDecoderScreen extends StatelessWidget {
 
   void _showSaveDialog(BuildContext context, DecoderController controller) {
     final analysis = controller.analysisResult.value;
-    if (analysis == null) return;
+    if (analysis == null || controller.isSavedToMedicalRecords.value) return;
 
     final titleController = TextEditingController(
       text: 'Decoded ${analysis.documentTypeLabel}',
     );
 
     Get.bottomSheet(
+      isDismissible: false,
       Material(
         color: AppColors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
@@ -528,16 +567,16 @@ class DocumentDecoderScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Obx(
-                () => CustomButton(
-                  text: 'Save',
-                  height: 50,
-                  isLoading: controller.isSavingRecord.value,
-                  onTap: () async {
-                    await controller.saveToMedicalRecords(
-                      titleController.text.trim(),
-                    );
-                    Get.back();
-                  },
+                () => Center(
+                  child: CustomButton(
+                    text: 'Save',
+                    height: 50,
+                    isLoading: controller.isSavingRecord.value,
+                    onTap: () {
+                      if (controller.isSavingRecord.value) return;
+                      _handleSave(controller, titleController);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -546,6 +585,42 @@ class DocumentDecoderScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _handleSave(
+    DecoderController controller,
+    TextEditingController titleController,
+  ) async {
+    final success = await controller.saveToMedicalRecords(
+      titleController.text.trim(),
+    );
+    if (success) {
+      Get.back();
+      AppSnackBar.show(
+        title: 'Saved',
+        message:
+            'Document saved successfully. You can view it anytime in Medical Records.',
+        mainButton: TextButton(
+          onPressed: () {
+            Get.back();
+            Get.to(() => const MedicalRecordsScreen());
+          },
+          child: const Text(
+            'View',
+            style: TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
+    } else if (!controller.isSavedToMedicalRecords.value) {
+      AppSnackBar.show(
+        title: 'Save Failed',
+        message: 'Could not save to medical records. Please try again.',
+        isError: true,
+      );
+    }
   }
 }
 

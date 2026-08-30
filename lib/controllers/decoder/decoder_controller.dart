@@ -5,7 +5,6 @@ import 'package:doctor_hunt/data/models/medical_record_model.dart';
 import 'package:doctor_hunt/data/repositories/decoder_repository.dart';
 import 'package:doctor_hunt/data/repositories/medical_record_repository.dart';
 import 'package:doctor_hunt/data/services/decoder_pdf_generator.dart';
-import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -26,6 +25,7 @@ class DecoderController extends GetxController {
   var analysisResult = Rxn<DecoderAnalysis>();
   var errorMessage = ''.obs;
   var isSavingRecord = false.obs;
+  var isSavedToMedicalRecords = false.obs;
 
   bool get isPdf => selectedFileName.value.toLowerCase().endsWith('.pdf');
 
@@ -44,13 +44,7 @@ class DecoderController extends GetxController {
         analysisResult.value = null;
         decoderState.value = DecoderState.fileSelected;
       }
-    } catch (e) {
-      AppSnackBar.show(
-        title: "Camera Error",
-        message: "Failed to capture photo with device camera.",
-        isError: true,
-      );
-    }
+    } catch (_) {}
   }
 
   Future<void> pickImage() async {
@@ -67,13 +61,7 @@ class DecoderController extends GetxController {
         analysisResult.value = null;
         decoderState.value = DecoderState.fileSelected;
       }
-    } catch (e) {
-      AppSnackBar.show(
-        title: "Error",
-        message: "Could not pick image file.",
-        isError: true,
-      );
-    }
+    } catch (_) {}
   }
 
   Future<void> pickFile() async {
@@ -90,13 +78,7 @@ class DecoderController extends GetxController {
         analysisResult.value = null;
         decoderState.value = DecoderState.fileSelected;
       }
-    } catch (e) {
-      AppSnackBar.show(
-        title: "Error",
-        message: "Could not pick file.",
-        isError: true,
-      );
-    }
+    } catch (_) {}
   }
 
   void clearSelection() {
@@ -105,6 +87,7 @@ class DecoderController extends GetxController {
     uploadedImageUrl.value = null;
     analysisResult.value = null;
     errorMessage.value = '';
+    isSavedToMedicalRecords.value = false;
     decoderState.value = DecoderState.idle;
   }
 
@@ -129,6 +112,7 @@ class DecoderController extends GetxController {
 
       final result = await _decoderRepo.analyzeDocument(imageUrl);
       analysisResult.value = result;
+      isSavedToMedicalRecords.value = false;
       decoderState.value = DecoderState.success;
     } on DecoderException catch (e) {
       errorMessage.value = e.message;
@@ -149,6 +133,7 @@ class DecoderController extends GetxController {
           uploadedImageUrl.value!,
         );
         analysisResult.value = result;
+        isSavedToMedicalRecords.value = false;
         decoderState.value = DecoderState.success;
       } on DecoderException catch (e) {
         errorMessage.value = e.message;
@@ -162,11 +147,11 @@ class DecoderController extends GetxController {
     }
   }
 
-  Future<void> saveToMedicalRecords(String title) async {
+  Future<bool> saveToMedicalRecords(String title) async {
     final imageUrl = uploadedImageUrl.value;
-    if (imageUrl == null) return;
+    if (imageUrl == null) return false;
 
-    if (isSavingRecord.value) return;
+    if (isSavingRecord.value || isSavedToMedicalRecords.value) return false;
     isSavingRecord.value = true;
 
     try {
@@ -184,17 +169,10 @@ class DecoderController extends GetxController {
       );
 
       await _medicalRepo.saveRecordMetadata(record);
-
-      AppSnackBar.show(
-        title: "Saved",
-        message: "Document saved to your medical records.",
-      );
+      isSavedToMedicalRecords.value = true;
+      return true;
     } catch (e) {
-      AppSnackBar.show(
-        title: "Save Failed",
-        message: "Could not save to medical records. Please try again.",
-        isError: true,
-      );
+      return false;
     } finally {
       isSavingRecord.value = false;
     }
@@ -206,11 +184,6 @@ class DecoderController extends GetxController {
 
     final text = analysis.toMedicalContentText();
     Clipboard.setData(ClipboardData(text: text));
-
-    AppSnackBar.show(
-      title: "Copied",
-      message: "Medical content copied to clipboard.",
-    );
   }
 
   Future<void> downloadAnalysis() async {
@@ -219,15 +192,8 @@ class DecoderController extends GetxController {
 
     try {
       final pdfFile = await DecoderPdfGenerator.generateAndSave(analysis);
-
       await SharePlus.instance.share(ShareParams(files: [XFile(pdfFile.path)]));
-    } catch (e) {
-      AppSnackBar.show(
-        title: "Download Failed",
-        message: "Could not generate the PDF. Please try again.",
-        isError: true,
-      );
-    }
+    } catch (_) {}
   }
 
   void resetToInitial() {
@@ -236,6 +202,7 @@ class DecoderController extends GetxController {
     uploadedImageUrl.value = null;
     analysisResult.value = null;
     errorMessage.value = '';
+    isSavedToMedicalRecords.value = false;
     decoderState.value = DecoderState.idle;
   }
 }

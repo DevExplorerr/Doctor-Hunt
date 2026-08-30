@@ -8,6 +8,7 @@ class AppSnackBar {
     required String message,
     bool isError = false,
     SnackPosition? snackPosition = .TOP,
+    TextButton? mainButton,
   }) {
     Get.snackbar(
       title,
@@ -23,12 +24,13 @@ class AppSnackBar {
         isError ? Icons.error_outline : Icons.check_circle_outline,
         color: isError ? AppColors.error : AppColors.primary,
       ),
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
       barBlur: 10,
       borderWidth: 1,
       borderColor: isError
           ? AppColors.favorite.withValues(alpha: 0.2)
           : AppColors.primary.withValues(alpha: 0.2),
+      mainButton: mainButton,
     );
   }
 }
