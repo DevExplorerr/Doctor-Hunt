@@ -189,6 +189,66 @@ class DecoderAnalysis {
     return buffer.toString();
   }
 
+  String toMedicalContentText() {
+    final buffer = StringBuffer();
+
+    buffer.writeln('Document Type: $documentTypeLabel');
+    buffer.writeln();
+    buffer.writeln('Summary');
+    buffer.writeln(summary);
+    buffer.writeln();
+
+    if (medications.isNotEmpty) {
+      buffer.writeln('Medications');
+      for (final med in medications) {
+        buffer.writeln('- ${med.name}');
+        if (med.purpose.isNotEmpty) {
+          buffer.writeln('  Purpose: ${med.purpose}');
+        }
+        if (med.dosage.isNotEmpty) {
+          buffer.writeln('  Dosage: ${med.dosage}');
+        }
+        if (med.frequency.isNotEmpty) {
+          buffer.writeln('  Frequency: ${med.frequency}');
+        }
+        if (med.duration.isNotEmpty) {
+          buffer.writeln('  Duration: ${med.duration}');
+        }
+        if (med.instructions.isNotEmpty) {
+          buffer.writeln('  Instructions: ${med.instructions}');
+        }
+      }
+      buffer.writeln();
+    }
+
+    if (labFindings.isNotEmpty) {
+      buffer.writeln('Lab Findings');
+      for (final finding in labFindings) {
+        buffer.writeln('- ${finding.testName}: ${finding.displayValue}');
+        if (finding.referenceRange.isNotEmpty) {
+          buffer.writeln('  Reference Range: ${finding.referenceRange}');
+        }
+        if (finding.interpretation.isNotEmpty) {
+          buffer.writeln('  Interpretation: ${finding.interpretation}');
+        }
+        if (finding.isOutOfRange) {
+          buffer.writeln('  Status: Out of reference range');
+        }
+      }
+      buffer.writeln();
+    }
+
+    if (keyFindings.isNotEmpty) {
+      buffer.writeln('Key Findings');
+      for (final finding in keyFindings) {
+        buffer.writeln('- $finding');
+      }
+      buffer.writeln();
+    }
+
+    return buffer.toString().trimRight();
+  }
+
   factory DecoderAnalysis.fromJson(Map<String, dynamic> json) {
     return DecoderAnalysis(
       documentType: _parseDocumentType(json['documentType']),

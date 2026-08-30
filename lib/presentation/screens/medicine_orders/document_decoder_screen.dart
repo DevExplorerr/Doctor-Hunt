@@ -8,7 +8,6 @@ import 'package:doctor_hunt/presentation/widgets/overlays/custom_bottom_sheet.da
 import 'package:doctor_hunt/presentation/widgets/wrapper/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class DocumentDecoderScreen extends StatelessWidget {
   const DocumentDecoderScreen({super.key});
@@ -286,17 +285,22 @@ class DocumentDecoderScreen extends StatelessWidget {
   }
 
   Widget _buildAnalyzingState() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LoadingAnimationWidget.staggeredDotsWave(
-            color: AppColors.primary,
-            size: 50,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: const LinearProgressIndicator(
+              minHeight: 6,
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+              backgroundColor: Color(0xFFE0E0E0),
+            ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
           const Text(
-            'Analyzing your document...',
+            'Analyzing document...',
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 18,

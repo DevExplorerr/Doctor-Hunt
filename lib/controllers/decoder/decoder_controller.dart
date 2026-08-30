@@ -4,12 +4,12 @@ import 'package:doctor_hunt/data/models/decoder_response_model.dart';
 import 'package:doctor_hunt/data/models/medical_record_model.dart';
 import 'package:doctor_hunt/data/repositories/decoder_repository.dart';
 import 'package:doctor_hunt/data/repositories/medical_record_repository.dart';
+import 'package:doctor_hunt/data/services/decoder_pdf_generator.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 enum DecoderState { idle, fileSelected, analyzing, success, failed }
@@ -204,10 +204,13 @@ class DecoderController extends GetxController {
     final analysis = analysisResult.value;
     if (analysis == null) return;
 
-    final text = analysis.toPlainText();
+    final text = analysis.toMedicalContentText();
     Clipboard.setData(ClipboardData(text: text));
 
-    AppSnackBar.show(title: "Copied", message: "Analysis copied to clipboard.");
+    AppSnackBar.show(
+      title: "Copied",
+      message: "Medical content copied to clipboard.",
+    );
   }
 
   Future<void> downloadAnalysis() async {
@@ -215,18 +218,13 @@ class DecoderController extends GetxController {
     if (analysis == null) return;
 
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final filePath = '${directory.path}/decoder_result_$timestamp.txt';
-      final file = File(filePath);
+      final pdfFile = await DecoderPdfGenerator.generateAndSave(analysis);
 
-      await file.writeAsString(analysis.toPlainText());
-
-      await SharePlus.instance.share(ShareParams(files: [XFile(filePath)]));
+      await SharePlus.instance.share(ShareParams(files: [XFile(pdfFile.path)]));
     } catch (e) {
       AppSnackBar.show(
         title: "Download Failed",
-        message: "Could not save the analysis. Please try again.",
+        message: "Could not generate the PDF. Please try again.",
         isError: true,
       );
     }
