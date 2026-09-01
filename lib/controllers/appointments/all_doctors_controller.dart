@@ -22,6 +22,10 @@ class AllDoctorsController extends GetxController {
   DocumentSnapshot? _lastDocument;
   String? currentType;
 
+  bool _isSearchActive = false;
+  bool _hasMoreBeforeSearch = true;
+  int _searchSequence = 0;
+
   var selectedFilter = "All".obs;
   var title = "Doctors".obs;
 
@@ -122,15 +126,28 @@ class AllDoctorsController extends GetxController {
   }
 
   void searchDoctors(String query) async {
+    final sequence = ++_searchSequence;
+
     if (query.isEmpty) {
       isSearching.value = false;
+      if (_isSearchActive) {
+        _isSearchActive = false;
+        hasMore.value = _hasMoreBeforeSearch;
+      }
       filteredDoctors.assignAll(allDoctors);
       return;
     }
+
+    if (!_isSearchActive) {
+      _isSearchActive = true;
+      _hasMoreBeforeSearch = hasMore.value;
+    }
+
     isSearching.value = true;
 
     try {
       final result = await _repo.getAllDoctors(limit: 20, type: null);
+      if (sequence != _searchSequence) return;
       List<DoctorModel> searchResults = result['doctors'];
       filteredDoctors.assignAll(
         searchResults
@@ -145,13 +162,20 @@ class AllDoctorsController extends GetxController {
     } catch (e) {
       throw "Search Error $e";
     } finally {
-      isSearching.value = false;
+      if (sequence == _searchSequence) isSearching.value = false;
     }
+  }
+
+  void _cancelActiveSearch() {
+    _isSearchActive = false;
+    _searchSequence++;
+    isSearching.value = false;
   }
 
   void filterByCategory(String category) async {
     selectedFilter.value = category;
     title.value = category;
+    _cancelActiveSearch();
     if (category == "All") {
       fetchInitialData(type: currentType);
     } else {
@@ -173,6 +197,7 @@ class AllDoctorsController extends GetxController {
     selectedFilter.value = "All";
     title.value = "All";
     currentType = null;
+    _cancelActiveSearch();
     searchController.clear();
 
     fetchInitialData(type: null);

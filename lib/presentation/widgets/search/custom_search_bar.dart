@@ -39,6 +39,7 @@ class CustomSearchBar extends StatelessWidget {
           icon: const Icon(Icons.clear, color: AppColors.icon),
           onPressed: () {
             controller?.clear();
+            onChanged?.call('');
             FocusScope.of(context).unfocus();
           },
         ),
