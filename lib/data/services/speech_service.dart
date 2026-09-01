@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -41,6 +40,7 @@ class SpeechService extends GetxService {
         ],
         onError: (error) {
           final code = error.errorMsg;
+
           if (code == 'error_busy' &&
               _activeOnResult != null &&
               !_busyRetried) {
@@ -48,8 +48,16 @@ class SpeechService extends GetxService {
             unawaited(_retryAfterBusy());
             return;
           }
+
           _busyRetried = false;
-          _activeOnResult = null;
+
+          // IMPORTANT:
+          // Do not clear _activeOnResult for timeout/no-match errors.
+          // The controller may restart the current recording segment.
+          if (code != 'error_speech_timeout' && code != 'error_no_match') {
+            _activeOnResult = null;
+          }
+
           _onError?.call(code, _mapError(code));
         },
         onStatus: (status) {
@@ -58,18 +66,23 @@ class SpeechService extends GetxService {
       );
     } on PlatformException catch (e) {
       _isInitialized = false;
+      _activeOnResult = null;
+
       _onError?.call(
         e.code,
         'Speech recognition is not available on this device.',
       );
     } catch (e) {
       _isInitialized = false;
+      _activeOnResult = null;
+
       _onError?.call('init_failed', 'Unable to initialize speech recognition.');
     }
 
     if (_isInitialized) {
       try {
         final locales = await _speech.locales();
+
         _supportsUrdu = locales.any(
           (l) => l.localeId.toLowerCase().startsWith('ur'),
         );
@@ -77,6 +90,7 @@ class SpeechService extends GetxService {
         _supportsUrdu = false;
       }
     }
+
     return _isInitialized;
   }
 
@@ -112,14 +126,15 @@ class SpeechService extends GetxService {
         listenOptions: SpeechListenOptions(
           localeId: localeId,
           partialResults: true,
-          cancelOnError: true,
-          listenMode: ListenMode.confirmation,
+          cancelOnError: false,
+          listenMode: ListenMode.dictation,
           listenFor: const Duration(seconds: 30),
-          pauseFor: const Duration(seconds: 10),
+          pauseFor: const Duration(seconds: 6),
         ),
       );
     } on Exception catch (_) {
       _activeOnResult = null;
+
       _onError?.call(
         'listen_failed',
         'Unable to start voice recognition. Please try again.',
@@ -128,14 +143,18 @@ class SpeechService extends GetxService {
   }
 
   Future<void> _retryAfterBusy() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    await _speech.cancel();
     await Future.delayed(const Duration(milliseconds: 300));
+
+    await _speech.cancel();
+
+    await Future.delayed(const Duration(milliseconds: 150));
 
     final onResult = _activeOnResult;
     final locale = _activeLocale;
+
     if (onResult == null || !_isInitialized) {
       _activeOnResult = null;
+
       _onError?.call(
         'error_busy',
         'Speech recognition is busy. Please try again.',
@@ -144,6 +163,7 @@ class SpeechService extends GetxService {
     }
 
     _busyRetried = false;
+
     await startListening(localeId: locale, onResult: onResult);
   }
 
@@ -152,6 +172,7 @@ class SpeechService extends GetxService {
   }
 
   Future<void> cancelListening() async {
+    _activeOnResult = null;
     await _speech.cancel();
   }
 
@@ -159,30 +180,40 @@ class SpeechService extends GetxService {
     switch (errorCode) {
       case 'error_audio_error':
         return 'Microphone error. Please try again.';
+
       case 'error_permission':
         return 'Microphone permission is required for voice input.';
+
       case 'error_no_match':
-        return 'No speech detected. Please try again.';
+        return 'No speech detected.';
+
       case 'error_speech_timeout':
-        return 'No speech detected. Please try again.';
+        return 'Speech recognition paused.';
+
       case 'error_network':
       case 'error_network_timeout':
         return 'Network error during speech recognition.';
+
       case 'error_language_not_supported':
       case 'error_language_unavailable':
         return 'This language is not available for speech recognition.';
+
       case 'error_too_many_requests':
         return 'Too many speech requests. Please wait a moment.';
+
       case 'error_busy':
         return 'Speech recognition is busy. Please try again.';
+
       case 'error_client':
       case 'error_server':
       case 'error_server_disconnected':
         return 'Unable to start voice recognition. Please try again.';
+
       default:
         if (errorCode.startsWith('error_')) {
           return 'Voice recognition error ($errorCode).';
         }
+
         return errorCode;
     }
   }

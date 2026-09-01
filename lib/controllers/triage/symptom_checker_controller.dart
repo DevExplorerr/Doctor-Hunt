@@ -89,6 +89,7 @@ class SymptomCheckerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     textController.addListener(() {
       isTextEmpty.value = textController.text.trim().isEmpty;
     });
@@ -104,6 +105,7 @@ class SymptomCheckerController extends GetxController {
         onError: _onSpeechError,
         onStatus: _onSpeechStatus,
       );
+
       if (_isDisposed) return;
       if (!ok) return;
     }
@@ -118,6 +120,7 @@ class SymptomCheckerController extends GetxController {
     }
 
     if (_isDisposed) return;
+
     _startRecordingSession();
   }
 
@@ -125,15 +128,19 @@ class SymptomCheckerController extends GetxController {
     if (_isDisposed) return;
 
     await _speechService.cancelListening();
+
     if (_isDisposed) return;
 
     await Future.delayed(const Duration(milliseconds: 200));
+
     if (_isDisposed) return;
 
     _recordingSession++;
+
     _committedSegments.clear();
     _lastFinalSegment = '';
     _stopRequested = false;
+
     interimTranscript.value = '';
     recordingPreview.value = '';
     recordingSeconds.value = 0;
@@ -141,8 +148,11 @@ class SymptomCheckerController extends GetxController {
     isListening.value = true;
 
     _recordingTimer?.cancel();
+
     _recordingTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (!_isDisposed) recordingSeconds.value++;
+      if (!_isDisposed) {
+        recordingSeconds.value++;
+      }
     });
 
     unawaited(_listenSegment(_recordingSession));
@@ -157,6 +167,7 @@ class SymptomCheckerController extends GetxController {
       localeId: locale,
       onResult: (words, isFinal) {
         if (_isDisposed || _recordingSession != session) return;
+
         if (isFinal) {
           _commitSegment(words);
         } else {
@@ -165,29 +176,49 @@ class SymptomCheckerController extends GetxController {
         }
       },
     );
-
-    if (!_isDisposed &&
-        _recordingSession != session &&
-        _recordingSession == 0) {
-      await _speechService.cancelListening();
-    }
   }
 
   void _commitSegment(String words) {
     final segment = words.trim().replaceAll(_whitespaceRegex, ' ');
+
     interimTranscript.value = '';
+
     if (segment.isEmpty) return;
 
-    if (_committedSegments.isNotEmpty && segment == _lastFinalSegment) return;
+    if (_committedSegments.isNotEmpty && segment == _lastFinalSegment) {
+      return;
+    }
 
     _committedSegments.add(segment);
     _lastFinalSegment = segment;
+
+    _refreshRecordingPreview();
+  }
+
+  void _commitCurrentInterim() {
+    final interim = interimTranscript.value.trim().replaceAll(
+      _whitespaceRegex,
+      ' ',
+    );
+
+    if (interim.isEmpty) return;
+
+    final isDuplicate =
+        _committedSegments.isNotEmpty && interim == _lastFinalSegment;
+
+    if (!isDuplicate) {
+      _committedSegments.add(interim);
+      _lastFinalSegment = interim;
+    }
+
+    interimTranscript.value = '';
     _refreshRecordingPreview();
   }
 
   void _refreshRecordingPreview() {
     final committed = _committedSegments.join(' ').trim();
     final interim = interimTranscript.value.trim();
+
     if (committed.isEmpty) {
       recordingPreview.value = interim;
     } else if (interim.isEmpty) {
@@ -199,6 +230,7 @@ class SymptomCheckerController extends GetxController {
 
   Future<void> stopRecording() async {
     if (_recordingSession == 0) return;
+
     _stopRequested = true;
     isStopping.value = true;
 
@@ -208,7 +240,7 @@ class SymptomCheckerController extends GetxController {
       await _speechService.cancelListening();
     }
 
-    // Brief pause to allow any pending final result callback to arrive.
+    // Give Android/STT time to send the final result.
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (_recordingSession != 0) {
@@ -218,27 +250,35 @@ class SymptomCheckerController extends GetxController {
 
   Future<void> cancelRecording() async {
     if (_recordingSession == 0) return;
+
+    _stopRequested = true;
+
     await _speechService.cancelListening();
+
     _endRecordingSession(discard: true);
   }
 
   void _endRecordingSession({required bool discard}) {
     if (_recordingSession == 0) return;
+
     _recordingSession = 0;
+
     _recordingTimer?.cancel();
     _recordingTimer = null;
 
-    // Fallback: commit any remaining interim text if stop() did not
-    // produce a final onResult callback (common on Android).
+    // Fallback: commit any remaining interim text if stop()
+    // did not produce a final onResult callback.
     if (!discard) {
       final remainingInterim = interimTranscript.value.trim().replaceAll(
         _whitespaceRegex,
         ' ',
       );
+
       if (remainingInterim.isNotEmpty) {
         final isDuplicate =
             _committedSegments.isNotEmpty &&
             remainingInterim == _lastFinalSegment;
+
         if (!isDuplicate) {
           _committedSegments.add(remainingInterim);
         }
@@ -249,8 +289,10 @@ class SymptomCheckerController extends GetxController {
         .join(' ')
         .replaceAll(_whitespaceRegex, ' ')
         .trim();
+
     _committedSegments.clear();
     _lastFinalSegment = '';
+
     interimTranscript.value = '';
     recordingPreview.value = '';
 
@@ -262,23 +304,39 @@ class SymptomCheckerController extends GetxController {
     isStopping.value = false;
   }
 
-  void _onSpeechStatus(String status) async {
+  Future<void> _onSpeechStatus(String status) async {
     if (_isDisposed) return;
+
     if (status != 'done') return;
 
     final session = _recordingSession;
+
     if (session == 0) return;
 
+    // The user explicitly pressed Stop.
+    // stopRecording() handles the final shutdown.
     if (_stopRequested) {
-      // stopRecording() is managing the shutdown directly; do not
-      // end the session here to avoid a race.
       return;
     }
 
     if (!isListening.value) return;
 
-    await Future.delayed(const Duration(milliseconds: 300));
-    if (_isDisposed || _recordingSession != session || _stopRequested) return;
+    /*
+   * Android has ended THIS speech-recognition segment.
+   *
+   * The latest words may still only exist as an interim result.
+   * Preserve them before starting the next segment.
+   */
+    _commitCurrentInterim();
+
+    await Future.delayed(const Duration(milliseconds: 150));
+
+    if (_isDisposed ||
+        _recordingSession != session ||
+        _stopRequested ||
+        !isListening.value) {
+      return;
+    }
 
     unawaited(_listenSegment(session));
   }
@@ -286,10 +344,9 @@ class SymptomCheckerController extends GetxController {
   void _onSpeechError(String errorCode, String message) {
     if (_isDisposed) return;
 
-    // Errors with no active session (service init failures, or late
-    // callbacks after the session already ended) must not touch session
-    // state — only surface meaningful feedback to the user.
-    if (_recordingSession == 0) {
+    final session = _recordingSession;
+
+    if (session == 0) {
       if (errorCode == 'error_permission') {
         _handlePermissionError();
       } else if (errorCode == 'recognizerNotAvailable' ||
@@ -299,25 +356,43 @@ class SymptomCheckerController extends GetxController {
           message: "Speech recognition is not available on this device.",
           isError: true,
         );
-      } else if (errorCode != 'error_no_match' &&
-          errorCode != 'error_speech_timeout') {
-        AppSnackBar.show(title: "Voice Error", message: message, isError: true);
       }
+
       return;
     }
 
+    /*
+   * These errors mean the CURRENT STT SEGMENT ended.
+   * They must NOT end the user's overall recording.
+   *
+   * Most importantly, preserve the current interim transcript
+   * before starting another recognition segment.
+   */
     if (errorCode == 'error_no_match' || errorCode == 'error_speech_timeout') {
-      _endRecordingSession(discard: false);
-      AppSnackBar.show(title: "No Speech", message: message, isError: true);
+      if (_stopRequested || !isListening.value) {
+        return;
+      }
+
+      _commitCurrentInterim();
+
+      unawaited(_restartSpeechSegment(session));
+
       return;
     }
 
-    _endRecordingSession(discard: false);
+    // SpeechService handles busy retries.
+    if (errorCode == 'error_busy') {
+      return;
+    }
 
     if (errorCode == 'error_permission') {
+      _endRecordingSession(discard: false);
       _handlePermissionError();
       return;
     }
+
+    // Genuine fatal error.
+    _endRecordingSession(discard: false);
 
     if (errorCode == 'recognizerNotAvailable' ||
         errorCode == 'not_initialized') {
@@ -332,13 +407,53 @@ class SymptomCheckerController extends GetxController {
     AppSnackBar.show(title: "Voice Error", message: message, isError: true);
   }
 
+  Future<void> _restartSpeechSegment(int session) async {
+    if (_isDisposed ||
+        _recordingSession != session ||
+        _stopRequested ||
+        !isListening.value) {
+      return;
+    }
+
+    /*
+   * Preserve anything that Android delivered as an interim result
+   * before destroying the old recognition instance.
+   */
+    _commitCurrentInterim();
+
+    if (_speechService.isListening) {
+      await _speechService.cancelListening();
+    }
+
+    if (_isDisposed ||
+        _recordingSession != session ||
+        _stopRequested ||
+        !isListening.value) {
+      return;
+    }
+
+    await Future.delayed(const Duration(milliseconds: 150));
+
+    if (_isDisposed ||
+        _recordingSession != session ||
+        _stopRequested ||
+        !isListening.value) {
+      return;
+    }
+
+    unawaited(_listenSegment(session));
+  }
+
   Future<void> _handlePermissionError() async {
     final granted = await _speechService.hasPermission();
+
     if (_isDisposed) return;
 
     if (granted) {
       _speechServicePackage ??= await _detectSpeechServicePackage();
+
       if (_isDisposed) return;
+
       if (_isShowingDialog) {
         _pendingDialogShow = true;
       } else {
@@ -363,20 +478,24 @@ class SymptomCheckerController extends GetxController {
         AppSnackBar.show(
           title: "Triage Complete",
           message:
-              "Your symptom check is finished. Start a new check to continue "
-              "chatting.",
+              "Your symptom check is finished. Start a new check to "
+              "continue chatting.",
         );
       }
+
       return;
     }
 
     final text = textController.text.trim();
+
     if (text.isEmpty) return;
 
     messages.add(ChatMessage(isUser: true, text: text));
+
     textController.clear();
     followUpQuestions.clear();
     isTyping.value = true;
+
     _scrollToBottom();
 
     try {
@@ -387,9 +506,11 @@ class SymptomCheckerController extends GetxController {
       );
 
       if (_isDisposed) return;
+
       _applyResponse(data);
     } on TriageException catch (e) {
       if (_isDisposed) return;
+
       AppSnackBar.show(
         title: "Connection Problem",
         message: e.message,
@@ -405,6 +526,7 @@ class SymptomCheckerController extends GetxController {
 
   void sendFollowUpAnswer(String answer) {
     if (isTyping.value || isCompleted) return;
+
     textController.text = answer;
     sendMessage();
   }
@@ -414,6 +536,7 @@ class SymptomCheckerController extends GetxController {
     if (isEmergency) return;
 
     final target = specialty.value ?? Specialties.fallback;
+
     if (!Specialties.isValid(target)) return;
 
     Get.toNamed(
@@ -434,6 +557,7 @@ class SymptomCheckerController extends GetxController {
 
   Future<void> startNewTriage() async {
     if (isTyping.value) return;
+
     if (_recordingSession != 0) {
       await cancelRecording();
     }
@@ -441,23 +565,28 @@ class SymptomCheckerController extends GetxController {
     final previousSessionId = _sessionId;
 
     _sessionId = _generateSessionId();
+
     language.value = 'en';
     stage.value = TriageStage.collecting;
     urgency.value = TriageUrgency.normal;
+
     specialty.value = null;
     homeCare.value = null;
     triage.value = null;
+
     followUpQuestions.clear();
 
     messages.assignAll([
       const ChatMessage(
         isUser: false,
         text:
-            "Let's start again. Please describe your symptoms in English or "
-            "Urdu.",
+            "Let's start again. Please describe your symptoms in "
+            "English or Urdu.",
       ),
     ]);
+
     textController.clear();
+
     _scrollToBottom();
 
     unawaited(_triageRepository.resetSession(previousSessionId));
@@ -467,9 +596,12 @@ class SymptomCheckerController extends GetxController {
     language.value = data.language;
     stage.value = data.stage;
     urgency.value = data.urgency;
+
     specialty.value = Specialties.sanitize(data.specialty);
+
     homeCare.value = data.homeCare;
     triage.value = data.triage;
+
     followUpQuestions.assignAll(
       data.stage == TriageStage.collecting
           ? data.followUpQuestions
@@ -478,24 +610,30 @@ class SymptomCheckerController extends GetxController {
 
     final reply = data.aiMessage.isNotEmpty
         ? data.aiMessage
-        : "I need a little more information about your symptoms before I "
-              "can suggest the right specialist.";
+        : "I need a little more information about your symptoms "
+              "before I can suggest the right specialist.";
 
     messages.add(ChatMessage(isUser: false, text: reply));
+
     _scrollToBottom();
   }
 
   String _detectLanguage(String text) {
     if (language.value == 'ur') return 'ur';
+
     return _urduScriptRegex.hasMatch(text) ? 'ur' : 'en';
   }
 
   String _generateSessionId() {
     final random = Random.secure();
+
     final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
     final hex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+
     return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-'
         '${hex.substring(12, 16)}-${hex.substring(16, 20)}-'
         '${hex.substring(20, 32)}';
@@ -506,15 +644,18 @@ class SymptomCheckerController extends GetxController {
       'com.google.android.googlequicksearchbox',
       'com.google.android.apps.search',
     ];
+
     return googlePackages.first;
   }
 
   Future<void> openSpeechSettings() async {
     try {
       const channel = MethodChannel('doctor_hunt/speech_settings');
+
       final opened = await channel.invokeMethod<bool>('openAppSettings', {
         'package': _speechServicePackage,
       });
+
       if (opened != true) {
         _showManualSettingsHelp();
       }
@@ -529,20 +670,23 @@ class SymptomCheckerController extends GetxController {
     AppSnackBar.show(
       title: "Settings",
       message:
-          "Please open Settings manually, go to Apps \u2192 Google, and allow "
-          "Microphone permission.",
+          "Please open Settings manually, go to Apps → Google, and "
+          "allow Microphone permission.",
       isError: true,
     );
   }
 
   void _showSpeechTroubleshootingDialog() {
     if (_isShowingDialog || _isDisposed) return;
+
     _isShowingDialog = true;
+
     SpeechServiceDialog.show(
       onOpenSettings: openSpeechSettings,
       onTryAgain: retryAfterSpeechServiceDialog,
     ).then((_) {
       _isShowingDialog = false;
+
       if (_pendingDialogShow && !_isDisposed) {
         _pendingDialogShow = false;
         _showSpeechTroubleshootingDialog();
@@ -552,6 +696,7 @@ class SymptomCheckerController extends GetxController {
 
   Future<void> retryAfterSpeechServiceDialog() async {
     final granted = await _speechService.hasPermission();
+
     if (_isDisposed) return;
 
     if (!granted) {
@@ -560,6 +705,7 @@ class SymptomCheckerController extends GetxController {
         message: "Microphone permission is required for voice input.",
         isError: true,
       );
+
       return;
     }
 
@@ -568,10 +714,12 @@ class SymptomCheckerController extends GetxController {
         onError: _onSpeechError,
         onStatus: _onSpeechStatus,
       );
+
       if (!ok) return;
     }
 
     if (isCompleted) return;
+
     _startRecordingSession();
   }
 
@@ -591,10 +739,14 @@ class SymptomCheckerController extends GetxController {
   void onClose() {
     _isDisposed = true;
     _recordingSession = 0;
+
     _recordingTimer?.cancel();
+
     _speechService.cancelListening();
+
     textController.dispose();
     scrollController.dispose();
+
     super.onClose();
   }
 }
