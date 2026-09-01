@@ -115,7 +115,7 @@ class SpeechService extends GetxService {
           cancelOnError: true,
           listenMode: ListenMode.confirmation,
           listenFor: const Duration(seconds: 30),
-          pauseFor: const Duration(seconds: 3),
+          pauseFor: const Duration(seconds: 10),
         ),
       );
     } on Exception catch (_) {

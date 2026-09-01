@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../../../../controllers/triage/symptom_checker_controller.dart';
 
 class RecordingPanel extends StatelessWidget {
-  final VoidCallback onStop;
-  final VoidCallback onCancel;
+  final VoidCallback? onStop;
+  final VoidCallback? onCancel;
 
   const RecordingPanel({
     super.key,
@@ -106,7 +106,7 @@ class RecordingPanel extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: .circular(14)),
                   padding: const .symmetric(vertical: 12),
                 ),
-                child: const Text('Stop'),
+                child: Text(onStop == null ? 'Processing…' : 'Stop'),
               ),
             ),
           ],

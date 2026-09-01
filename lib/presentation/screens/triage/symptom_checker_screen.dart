@@ -232,10 +232,13 @@ class SymptomCheckerScreen extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Obx(() {
-          if (controller.isListening.value) {
+          final showRecording =
+              controller.isListening.value || controller.isStopping.value;
+          if (showRecording) {
+            final stopping = controller.isStopping.value;
             return RecordingPanel(
-              onStop: controller.stopRecording,
-              onCancel: controller.cancelRecording,
+              onStop: stopping ? null : controller.stopRecording,
+              onCancel: stopping ? null : controller.cancelRecording,
             );
           }
           return _buildIdleInput(context, controller, textTheme);

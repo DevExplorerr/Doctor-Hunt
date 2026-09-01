@@ -26,6 +26,7 @@ class SymptomCheckerController extends GetxController {
   var isTyping = false.obs;
   var isTextEmpty = true.obs;
   var isListening = false.obs;
+  var isStopping = false.obs;
   var selectedSttLanguage = 'en'.obs;
 
   var interimTranscript = ''.obs;
@@ -199,13 +200,20 @@ class SymptomCheckerController extends GetxController {
   Future<void> stopRecording() async {
     if (_recordingSession == 0) return;
     _stopRequested = true;
+    isStopping.value = true;
 
     if (_speechService.isListening) {
       await _speechService.stopListening();
-      return;
+    } else {
+      await _speechService.cancelListening();
     }
 
-    _endRecordingSession(discard: false);
+    // Brief pause to allow any pending final result callback to arrive.
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (_recordingSession != 0) {
+      _endRecordingSession(discard: false);
+    }
   }
 
   Future<void> cancelRecording() async {
@@ -219,9 +227,23 @@ class SymptomCheckerController extends GetxController {
     _recordingSession = 0;
     _recordingTimer?.cancel();
     _recordingTimer = null;
-    isListening.value = false;
-    interimTranscript.value = '';
-    recordingPreview.value = '';
+
+    // Fallback: commit any remaining interim text if stop() did not
+    // produce a final onResult callback (common on Android).
+    if (!discard) {
+      final remainingInterim = interimTranscript.value.trim().replaceAll(
+        _whitespaceRegex,
+        ' ',
+      );
+      if (remainingInterim.isNotEmpty) {
+        final isDuplicate =
+            _committedSegments.isNotEmpty &&
+            remainingInterim == _lastFinalSegment;
+        if (!isDuplicate) {
+          _committedSegments.add(remainingInterim);
+        }
+      }
+    }
 
     final transcript = _committedSegments
         .join(' ')
@@ -229,10 +251,15 @@ class SymptomCheckerController extends GetxController {
         .trim();
     _committedSegments.clear();
     _lastFinalSegment = '';
+    interimTranscript.value = '';
+    recordingPreview.value = '';
 
     if (!discard && transcript.isNotEmpty) {
       textController.text = transcript;
     }
+
+    isListening.value = false;
+    isStopping.value = false;
   }
 
   void _onSpeechStatus(String status) async {
@@ -243,7 +270,8 @@ class SymptomCheckerController extends GetxController {
     if (session == 0) return;
 
     if (_stopRequested) {
-      _endRecordingSession(discard: false);
+      // stopRecording() is managing the shutdown directly; do not
+      // end the session here to avoid a race.
       return;
     }
 
@@ -257,6 +285,26 @@ class SymptomCheckerController extends GetxController {
 
   void _onSpeechError(String errorCode, String message) {
     if (_isDisposed) return;
+
+    // Errors with no active session (service init failures, or late
+    // callbacks after the session already ended) must not touch session
+    // state — only surface meaningful feedback to the user.
+    if (_recordingSession == 0) {
+      if (errorCode == 'error_permission') {
+        _handlePermissionError();
+      } else if (errorCode == 'recognizerNotAvailable' ||
+          errorCode == 'not_initialized') {
+        AppSnackBar.show(
+          title: "Speech Unavailable",
+          message: "Speech recognition is not available on this device.",
+          isError: true,
+        );
+      } else if (errorCode != 'error_no_match' &&
+          errorCode != 'error_speech_timeout') {
+        AppSnackBar.show(title: "Voice Error", message: message, isError: true);
+      }
+      return;
+    }
 
     if (errorCode == 'error_no_match' || errorCode == 'error_speech_timeout') {
       _endRecordingSession(discard: false);
