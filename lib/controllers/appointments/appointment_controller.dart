@@ -2,7 +2,9 @@ import 'package:doctor_hunt/controllers/appointments/booking_controller.dart';
 import 'package:doctor_hunt/controllers/layout/home_controller.dart';
 import 'package:doctor_hunt/data/repositories/doctor_repository.dart';
 import 'package:doctor_hunt/presentation/widgets/feedback/app_snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentController extends GetxService {
   final DoctorRepository _repo = DoctorRepository.instance;
@@ -55,12 +57,17 @@ class AppointmentController extends GetxService {
 
   Future<void> cancelAppointment(String appointmentId) async {
     isLoading.value = true;
-    bool success = await _repo.updateAppointmentStatus(
-      appointmentId,
-      'canceled',
-    );
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) {
+        throw 'You must be signed in to cancel an appointment.';
+      }
 
-    if (success) {
+      await _repo.cancelAppointmentTransactionally(
+        userId: uid,
+        appointmentId: appointmentId,
+      );
+
       final apptIndex = upcomingAppointments.indexWhere(
         (a) => a['id'] == appointmentId,
       );
@@ -78,14 +85,15 @@ class AppointmentController extends GetxService {
         title: "Canceled",
         message: "Appointment canceled successfully",
       );
-    } else {
+    } catch (e) {
       AppSnackBar.show(
         title: "Error",
-        message: "Failed to cancel appointment",
+        message: "Failed to cancel appointment: $e",
         isError: true,
       );
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   Future<void> initiateReschedule(
@@ -96,11 +104,27 @@ class AppointmentController extends GetxService {
     try {
       final doctor = await _repo.getDoctorById(doctorId);
 
+      final existingAppt = upcomingAppointments.firstWhereOrNull(
+        (a) => a['id'] == oldAppointmentId,
+      );
+      String? oldDate;
+      String? oldTime;
+      if (existingAppt != null) {
+        try {
+          oldDate = DateFormat(
+            'yyyy-MM-dd',
+          ).format(DateTime.parse(existingAppt['date']));
+          oldTime = existingAppt['time'] as String?;
+        } catch (_) {}
+      }
+
       final bookingController = Get.put(BookingController());
 
       bookingController.startBooking(
         doctor,
         oldAppointmentId: oldAppointmentId,
+        oldDate: oldDate,
+        oldTime: oldTime,
       );
     } catch (e) {
       AppSnackBar.show(

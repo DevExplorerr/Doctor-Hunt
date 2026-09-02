@@ -4,6 +4,30 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../models/doctor_model.dart';
 
+class SlotReservation {
+  final String doctorId;
+  final String date;
+  final String time;
+  final String appointmentId;
+  final String userId;
+
+  SlotReservation({
+    required this.doctorId,
+    required this.date,
+    required this.time,
+    required this.appointmentId,
+    required this.userId,
+  });
+
+  Map<String, dynamic> toMap() => {
+    'doctorId': doctorId,
+    'date': date,
+    'time': time,
+    'appointmentId': appointmentId,
+    'userId': userId,
+  };
+}
+
 class DoctorRepository extends GetxService {
   static DoctorRepository get instance => Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -107,6 +131,135 @@ class DoctorRepository extends GetxService {
     } catch (e) {
       throw "Could not fetch time slots: $e";
     }
+  }
+
+  Future<void> manageSlotsForBooking({
+    required String userId,
+    SlotReservation? newSlot,
+    SlotReservation? oldSlot,
+    Map<String, dynamic>? appointmentData,
+    String? reschedulingAppointmentId,
+  }) async {
+    await _db.runTransaction((transaction) async {
+      if (newSlot != null) {
+        final newKey = buildBookingKey(newSlot.date, newSlot.time);
+        final newRef = _db
+            .collection('doctors')
+            .doc(newSlot.doctorId)
+            .collection('booked_slots')
+            .doc(newKey);
+
+        final newDoc = await transaction.get(newRef);
+        if (newDoc.exists) {
+          throw 'This time slot is no longer available. It may have been booked by another user. Please select a different time.';
+        }
+
+        final bool isNewOccurrence =
+            oldSlot == null ||
+            oldSlot.date != newSlot.date ||
+            oldSlot.time != newSlot.time;
+
+        if (isNewOccurrence) {
+          transaction.set(newRef, newSlot.toMap());
+        }
+      }
+
+      if (oldSlot != null) {
+        final bool shouldRelease =
+            newSlot == null ||
+            newSlot.date != oldSlot.date ||
+            newSlot.time != oldSlot.time;
+
+        if (shouldRelease) {
+          final oldKey = buildBookingKey(oldSlot.date, oldSlot.time);
+          final oldRef = _db
+              .collection('doctors')
+              .doc(oldSlot.doctorId)
+              .collection('booked_slots')
+              .doc(oldKey);
+          transaction.delete(oldRef);
+        }
+      }
+
+      if (reschedulingAppointmentId != null && appointmentData != null) {
+        final apptRef = _db
+            .collection('users')
+            .doc(userId)
+            .collection('appointments')
+            .doc(reschedulingAppointmentId);
+        transaction.update(apptRef, {
+          'date': appointmentData['date'],
+          'time': appointmentData['time'],
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      } else if (appointmentData != null) {
+        final apptRef = _db
+            .collection('users')
+            .doc(userId)
+            .collection('appointments')
+            .doc();
+        transaction.set(apptRef, appointmentData);
+      }
+    });
+  }
+
+  static String buildBookingKey(String dateStr, String timeStr) {
+    final date = DateTime.parse(dateStr);
+    final dateKey = DateFormat('yyyy-MM-dd').format(date);
+    final time = DateFormat('hh:mm a').parse(timeStr);
+    final timeKey = DateFormat('HH-mm').format(time);
+    return '${dateKey}_$timeKey';
+  }
+
+  Future<void> cancelAppointmentTransactionally({
+    required String userId,
+    required String appointmentId,
+  }) async {
+    final apptRef = _db
+        .collection('users')
+        .doc(userId)
+        .collection('appointments')
+        .doc(appointmentId);
+
+    await _db.runTransaction((transaction) async {
+      final apptDoc = await transaction.get(apptRef);
+
+      if (!apptDoc.exists || apptDoc.data() == null) {
+        throw 'Appointment not found. It may have already been removed.';
+      }
+
+      final data = apptDoc.data()!;
+
+      final doctorId = data['doctorId'] as String?;
+      final dateStr = data['date'] as String?;
+      final time = data['time'] as String?;
+
+      DocumentReference? reservationRef;
+      if (doctorId != null && dateStr != null && time != null) {
+        try {
+          final dateOnly = DateFormat(
+            'yyyy-MM-dd',
+          ).format(DateTime.parse(dateStr));
+          reservationRef = _db
+              .collection('doctors')
+              .doc(doctorId)
+              .collection('booked_slots')
+              .doc(buildBookingKey(dateOnly, time));
+        } catch (_) {
+          // Malformed date — reservation is unidentifiable, cancel anyway
+        }
+      }
+
+      // 1. Mark the appointment canceled
+      transaction.update(apptRef, {
+        'status': 'canceled',
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      if (reservationRef != null) {
+        transaction.delete(reservationRef);
+      }
+    });
   }
 
   Future<void> saveAppointment(

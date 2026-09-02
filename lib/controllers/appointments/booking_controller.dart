@@ -26,14 +26,24 @@ class BookingController extends GetxController {
   var patientNameController = TextEditingController();
   var contactNumberController = TextEditingController();
 
+  String? _reschedulingOldDate;
+  String? _reschedulingOldTime;
+
   List<DateTime> get upcomingDays =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
 
-  void startBooking(DoctorModel doctor, {String? oldAppointmentId}) {
+  void startBooking(
+    DoctorModel doctor, {
+    String? oldAppointmentId,
+    String? oldDate,
+    String? oldTime,
+  }) {
     selectedDoctor.value = doctor;
     selectedDate.value = DateTime.now();
     selectedTime.value = "";
     reschedulingAppointmentId.value = oldAppointmentId;
+    _reschedulingOldDate = oldDate;
+    _reschedulingOldTime = oldTime;
     fetchSlots(doctor.id);
     Get.toNamed('/select-time');
   }
@@ -229,35 +239,58 @@ class BookingController extends GetxController {
     isLoading.value = true;
     try {
       String uid = FirebaseAuth.instance.currentUser!.uid;
+      final DateFormat dateFmt = DateFormat('yyyy-MM-dd');
+      final String dateStr = dateFmt.format(selectedDate.value);
+
+      Map<String, dynamic> appointment = {
+        'doctorId': selectedDoctor.value!.id,
+        'doctorName': selectedDoctor.value!.name,
+        'image': selectedDoctor.value!.image,
+        'specialty': selectedDoctor.value!.specialty,
+        'experience': selectedDoctor.value!.experience,
+        'pricePerHour': selectedDoctor.value!.pricePerHour.toDouble(),
+        'date': selectedDate.value.toIso8601String(),
+        'time': selectedTime.value,
+        'patientName': patientNameController.text.trim(),
+        'contact': contactNumberController.text.trim(),
+        'patientType': selectedPatientType.value,
+        'status': 'upcoming',
+        'createdAt': FieldValue.serverTimestamp(),
+      };
+
+      final newSlot = SlotReservation(
+        doctorId: selectedDoctor.value!.id,
+        date: dateStr,
+        time: selectedTime.value,
+        appointmentId: reschedulingAppointmentId.value ?? '',
+        userId: uid,
+      );
+
+      SlotReservation? oldSlot;
+      if (_reschedulingOldDate != null && _reschedulingOldTime != null) {
+        oldSlot = SlotReservation(
+          doctorId: selectedDoctor.value!.id,
+          date: _reschedulingOldDate!,
+          time: _reschedulingOldTime!,
+          appointmentId: reschedulingAppointmentId.value ?? '',
+          userId: uid,
+        );
+      }
+
+      await _repo.manageSlotsForBooking(
+        userId: uid,
+        newSlot: newSlot,
+        oldSlot: oldSlot,
+        appointmentData: appointment,
+        reschedulingAppointmentId: reschedulingAppointmentId.value,
+      );
 
       if (reschedulingAppointmentId.value != null) {
-        await _repo.updateAppointmentTime(
-          reschedulingAppointmentId.value!,
-          selectedDate.value.toIso8601String(),
-          selectedTime.value,
-        );
         AppSnackBar.show(
           title: "Rescheduled",
           message: "Appointment time updated successfully!",
         );
       } else {
-        Map<String, dynamic> appointment = {
-          'doctorId': selectedDoctor.value!.id,
-          'doctorName': selectedDoctor.value!.name,
-          'image': selectedDoctor.value!.image,
-          'specialty': selectedDoctor.value!.specialty,
-          'experience': selectedDoctor.value!.experience,
-          'pricePerHour': selectedDoctor.value!.pricePerHour.toDouble(),
-          'date': selectedDate.value.toIso8601String(),
-          'time': selectedTime.value,
-          'patientName': patientNameController.text.trim(),
-          'contact': contactNumberController.text.trim(),
-          'patientType': selectedPatientType.value,
-          'status': 'upcoming',
-          'createdAt': FieldValue.serverTimestamp(),
-        };
-
-        await _repo.saveAppointment(uid, appointment);
         AppSnackBar.show(
           title: "Success",
           message: "Appointment booked successfully!",
@@ -273,6 +306,8 @@ class BookingController extends GetxController {
       }
 
       reschedulingAppointmentId.value = null;
+      _reschedulingOldDate = null;
+      _reschedulingOldTime = null;
 
       return true;
     } catch (e) {
