@@ -211,6 +211,34 @@ class DoctorRepository extends GetxService {
     return '${dateKey}_$timeKey';
   }
 
+  Future<List<String>> getBookedSlotKeys({
+    required String doctorId,
+    required DateTime fromDate,
+    required DateTime toDate,
+  }) async {
+    final DateFormat dateFmt = DateFormat('yyyy-MM-dd');
+    final from = dateFmt.format(fromDate);
+    final to = dateFmt.format(toDate);
+
+    final snapshot = await _db
+        .collection('doctors')
+        .doc(doctorId)
+        .collection('booked_slots')
+        .where('date', isGreaterThanOrEqualTo: from)
+        .where('date', isLessThanOrEqualTo: to)
+        .get();
+
+    return snapshot.docs
+        .map((doc) {
+          final date = doc['date'] as String?;
+          final time = doc['time'] as String?;
+          if (date == null || time == null) return null;
+          return buildBookingKey(date, time);
+        })
+        .whereType<String>()
+        .toList();
+  }
+
   Future<void> cancelAppointmentTransactionally({
     required String userId,
     required String appointmentId,

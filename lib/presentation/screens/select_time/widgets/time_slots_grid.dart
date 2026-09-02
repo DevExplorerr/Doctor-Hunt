@@ -47,14 +47,19 @@ class TimeSlotsGrid extends StatelessWidget {
 
             return Obx(() {
               final isSelected = controller.selectedTime.value == timeSlot;
+              final isBooked = controller.isSlotBooked(timeSlot);
 
               return GestureDetector(
-                onTap: () => controller.selectedTime.value = timeSlot,
+                onTap: isBooked
+                    ? null
+                    : () => controller.selectedTime.value = timeSlot,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
                   alignment: .center,
                   decoration: BoxDecoration(
-                    color: isSelected
+                    color: isBooked
+                        ? AppColors.grey.withValues(alpha: 0.08)
+                        : isSelected
                         ? AppColors.primary
                         : AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: .circular(8),
@@ -62,8 +67,13 @@ class TimeSlotsGrid extends StatelessWidget {
                   child: Text(
                     timeSlot,
                     style: textTheme.bodyMedium?.copyWith(
-                      color: isSelected ? AppColors.white : AppColors.primary,
+                      color: isBooked
+                          ? AppColors.grey
+                          : isSelected
+                          ? AppColors.white
+                          : AppColors.primary,
                       fontWeight: .w700,
+                      decoration: isBooked ? TextDecoration.lineThrough : null,
                     ),
                   ),
                 ),

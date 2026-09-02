@@ -29,6 +29,8 @@ class BookingController extends GetxController {
   String? _reschedulingOldDate;
   String? _reschedulingOldTime;
 
+  final bookedSlots = <String>[].obs;
+
   List<DateTime> get upcomingDays =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
 
@@ -119,7 +121,28 @@ class BookingController extends GetxController {
   void fetchSlots(String doctorId) async {
     isLoading.value = true;
     try {
-      final slots = await _repo.getDoctorTimeSlots(doctorId);
+      final dates = upcomingDays;
+
+      final slotsFuture = _repo.getDoctorTimeSlots(doctorId);
+      final bookedFuture = _repo.getBookedSlotKeys(
+        doctorId: doctorId,
+        fromDate: dates.first,
+        toDate: dates.last,
+      );
+
+      final slots = await slotsFuture;
+      final bookedKeys = await bookedFuture;
+
+      if (_reschedulingOldDate != null && _reschedulingOldTime != null) {
+        bookedKeys.remove(
+          DoctorRepository.buildBookingKey(
+            _reschedulingOldDate!,
+            _reschedulingOldTime!,
+          ),
+        );
+      }
+
+      bookedSlots.assignAll(bookedKeys);
       availableSlots.assignAll(slots);
 
       List<String> afternoon = [];
@@ -154,15 +177,29 @@ class BookingController extends GetxController {
     }
   }
 
+  bool isSlotBooked(String slot) {
+    final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    return bookedSlots.contains(
+      DoctorRepository.buildBookingKey(dateKey, slot),
+    );
+  }
+
   int getAvailableSlotsCountForDate(DateTime date) {
     int dayOfWeek = date.weekday;
     if (dayOfWeek == 7) return 0;
 
+    final dateKey = DateFormat('yyyy-MM-dd').format(date);
+
+    bool isBooked(String slot) =>
+        bookedSlots.contains(DoctorRepository.buildBookingKey(dateKey, slot));
+
     int afternoonCount = masterAfternoonSlots
         .where((slot) => !_isSlotBlocked(slot, dayOfWeek, date))
+        .where((slot) => !isBooked(slot))
         .length;
     int eveningCount = masterEveningSlots
         .where((slot) => !_isSlotBlocked(slot, dayOfWeek, date))
+        .where((slot) => !isBooked(slot))
         .length;
 
     return afternoonCount + eveningCount;
@@ -284,6 +321,23 @@ class BookingController extends GetxController {
         appointmentData: appointment,
         reschedulingAppointmentId: reschedulingAppointmentId.value,
       );
+
+      final newKey = DoctorRepository.buildBookingKey(
+        dateStr,
+        selectedTime.value,
+      );
+      if (!bookedSlots.contains(newKey)) {
+        bookedSlots.add(newKey);
+      }
+      if (_reschedulingOldDate != null && _reschedulingOldTime != null) {
+        final oldKey = DoctorRepository.buildBookingKey(
+          _reschedulingOldDate!,
+          _reschedulingOldTime!,
+        );
+        if (oldKey != newKey) {
+          bookedSlots.remove(oldKey);
+        }
+      }
 
       if (reschedulingAppointmentId.value != null) {
         AppSnackBar.show(
