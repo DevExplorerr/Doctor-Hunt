@@ -33,7 +33,7 @@ class SpeechService extends GetxService {
 
     try {
       _isInitialized = await _speech.initialize(
-        debugLogging: true,
+        debugLogging: false,
         options: [
           SpeechToText.androidNoBluetooth,
           SpeechToText.androidIntentLookup,
@@ -51,9 +51,6 @@ class SpeechService extends GetxService {
 
           _busyRetried = false;
 
-          // IMPORTANT:
-          // Do not clear _activeOnResult for timeout/no-match errors.
-          // The controller may restart the current recording segment.
           if (code != 'error_speech_timeout' && code != 'error_no_match') {
             _activeOnResult = null;
           }

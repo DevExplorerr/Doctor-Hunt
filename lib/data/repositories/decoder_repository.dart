@@ -19,7 +19,7 @@ class DecoderRepository extends GetxService {
 
   static const String baseUrl = String.fromEnvironment(
     'DOCTOR_HUNT_AI_BASE_URL',
-    defaultValue: 'http://10.0.2.2:3000',
+    defaultValue: 'https://doctor-hunt-ai.onrender.com',
   );
 
   static const Duration _timeout = Duration(seconds: 90);
