@@ -289,8 +289,8 @@ The backend repository includes a [`.env.example`](https://github.com/DevExplore
 | ---------------------- | -------- | -------------- | ------------------------------------------------ |
 | `ALIBABA_API_KEY`      | Yes      | —              | API key for Alibaba Cloud Model Studio           |
 | `ALIBABA_ENDPOINT`     | Yes      | —              | OpenAI-compatible chat-completions endpoint URL  |
-| `ALIBABA_MODEL`        | No       | `qwen-plus`    | Text model used for symptom triage               |
-| `ALIBABA_VISION_MODEL` | No       | `qwen-vl-plus` | Vision model used for document decoding          |
+| `ALIBABA_MODEL`        | No       | `qwen-max`    | Text model used for symptom triage               |
+| `ALIBABA_VISION_MODEL` | No       | `qwen-vl-max` | Vision model used for document decoding          |
 | `ALIBABA_JSON_MODE`    | No       | `true`         | Structured JSON output mode (`false` to disable) |
 | `PORT`                 | No       | `3000`         | Server port (injected by Render in production)   |
 
